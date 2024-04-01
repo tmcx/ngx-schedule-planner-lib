@@ -1,16 +1,17 @@
 import { NgModule } from '@angular/core';
-import { NgxSchedulePlannerComponent } from './ngx-schedule-planner.component';
-
-
+import { NgxSchedulePlannerComponent } from './main/ngx-schedule-planner.component';
+import { CalendarComponent } from './components/calendar/calendar.component';
+import { BrowserModule } from '@angular/platform-browser';
+import { NavigationComponent } from './components/navigation/navigation.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    NgxSchedulePlannerComponent
+    NgxSchedulePlannerComponent,
+    NavigationComponent,
+    CalendarComponent,
   ],
-  imports: [
-  ],
-  exports: [
-    NgxSchedulePlannerComponent
-  ]
+  imports: [BrowserModule, FormsModule],
+  exports: [NgxSchedulePlannerComponent],
 })
-export class NgxSchedulePlannerModule { }
+export class NgxSchedulePlannerModule {}

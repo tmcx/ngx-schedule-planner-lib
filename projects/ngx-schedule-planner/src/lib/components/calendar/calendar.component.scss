@@ -1,0 +1,40 @@
+$border-color: #b9b9b9;
+$table-border: solid 1px $border-color;
+$column-width: min-content;
+$row-height: 24px;
+
+.columns {
+  display: grid;
+  grid-auto-columns: minmax(min-content, 1fr);
+  grid-auto-flow: column;
+}
+
+.column {
+  grid-auto-rows: $row-height;
+  display: grid;
+}
+
+.title {
+  @extend .center-column;
+  border: $table-border;
+  font-weight: bold;
+}
+
+.sub-columns {
+  display: grid;
+  grid-auto-columns: minmax($column-width, 1fr);
+  grid-auto-rows: $row-height;
+  grid-auto-flow: column;
+}
+
+.sub-column {
+  @extend .center-column;
+  border: $table-border;
+}
+
+.center-column {
+  display: grid;
+  align-content: center;
+  text-align: center;
+  padding: 0 5px;
+}

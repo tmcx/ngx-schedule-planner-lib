@@ -1,0 +1,17 @@
+::ng-deep ngx-schedule-planner {
+  * {
+    font-family: "Roboto", "sans-serif";
+    font-size: 12px;
+    color: #fff;
+  }
+
+  p {
+    margin: auto;
+  }
+  select,
+  button {
+    background: #222;
+    border: solid 1px #b2b2b2;
+    cursor: pointer;
+  }
+}
