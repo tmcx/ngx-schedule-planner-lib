@@ -1,9 +1,10 @@
+<app-navigation></app-navigation>
 <section class="columns">
   <section class="column" *ngFor="let column of columns">
     <section class="title">{{ column.title }}</section>
     <section class="sub-columns">
       <section class="sub-column" *ngFor="let subColumn of column.subColumns">
-        {{ subColumn }}
+        {{ subColumn.label }}
       </section>
     </section>
   </section>

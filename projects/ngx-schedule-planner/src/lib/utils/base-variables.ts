@@ -1,4 +1,7 @@
-import { EMode, EPeriod } from '../components/calendar/calendar.interface';
+import {
+  EMode,
+  EPeriod,
+} from '../modules/calendar/header-grid/header-grid.interface';
 import { DurationConstructor } from './moment';
 
 export class BaseVariables {

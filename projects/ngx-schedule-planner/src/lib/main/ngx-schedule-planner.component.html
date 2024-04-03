@@ -1,2 +1,48 @@
-<app-navigation></app-navigation>
-<app-calendar></app-calendar>
+<app-header></app-header>
+
+<section class="schedules">
+  <section class="user-schedule" *ngFor="let userSchedule of content">
+    <section class="header">
+      <section class="profile">
+        <img
+          [src]="userSchedule.profile.imageUrl"
+          [alt]="userSchedule.profile.name"
+        />
+        <h1>{{ userSchedule.profile.name }}</h1>
+        <p>{{ userSchedule.profile.description }}</p>
+        <section class="tags">
+          <span *ngFor="let tag of userSchedule.profile.tags">{{
+            tag.name
+          }}</span>
+        </section>
+      </section>
+
+      <section class="groups">
+        <section class="group" *ngFor="let group of userSchedule.groups">
+          <h1>{{ group.name }}</h1>
+        </section>
+      </section>
+    </section>
+
+    <section class="activities">
+      <section class="group" *ngFor="let group of userSchedule.groups">
+        <section class="new-activity">
+          <ng-container *ngFor="let subColumn of subColumns">
+            <span
+              (mousedown)="addActivity('start', group, subColumn, subColumn.firstDate)"
+              (mouseup)="addActivity('end', group, subColumn, subColumn.firstDate)"
+              (mouseenter)="addActivity('enter', group, subColumn, subColumn.firstDate)"
+              [ngClass]="{ creating: isInTheCreation(group, subColumn.firstDate) }"
+            ></span>
+            <span
+              (mousedown)="addActivity('start', group, subColumn, subColumn.lastDate)"
+              (mouseup)="addActivity('end', group, subColumn, subColumn.lastDate)"
+              (mouseenter)="addActivity('enter', group, subColumn, subColumn.lastDate)"
+              [ngClass]="{ creating: isInTheCreation(group, subColumn.lastDate) }"
+            ></span>
+          </ng-container>
+        </section>
+      </section>
+    </section>
+  </section>
+</section>

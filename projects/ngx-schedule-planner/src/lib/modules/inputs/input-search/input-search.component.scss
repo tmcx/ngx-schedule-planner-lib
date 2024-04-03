@@ -1,0 +1,21 @@
+$border: solid 1px #b2b2b2;
+
+:host {
+  position: relative;
+  width: 100%;
+}
+
+input {
+  width: 100%;
+}
+
+.icon {
+  position: absolute;
+  right: 1px;
+  top: 0;
+  height: 100%;
+  fill: #b2b2b2;
+  width: fit-content;
+  border-left: $border;
+  padding: 3px;
+}

@@ -1,4 +1,4 @@
-import { IColumn } from '../components/calendar/calendar.interface';
+import { IColumn } from '../modules/calendar/header-grid/header-grid.interface';
 import { getWeekDays, moment } from './moment';
 
 export class WeeklyCalendar {
@@ -12,13 +12,17 @@ export class WeeklyCalendar {
     for (let stWeek = startWeek; stWeek < endWeek + 1; stWeek++) {
       const days = getWeekDays(currentYear, stWeek);
       columns.push({
-        title: (stWeek - startWeek).toString(),
-        subColumns: days.map(({ name, num }) => `${name}, ${num}`),
+        title: (stWeek - startWeek + 1).toString() + ' week',
+        subColumns: days.map(({ name, num, date }) => ({
+          label: `${name}, ${num}`,
+          firstDate: date,
+          lastDate: moment(date).startOf('d').add(12, 'h').toDate(),
+        })),
       });
     }
-    const desiredWeek = (
-      moment(date).week() - moment(date).startOf('M').week()
-    ).toString();
+    const desiredWeek =
+      (moment(date).week() - moment(date).startOf('M').week() + 1).toString() +
+      ' week';
     return columns.filter((column) => column.title == desiredWeek);
   }
 }

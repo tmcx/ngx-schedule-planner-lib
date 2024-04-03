@@ -1,4 +1,4 @@
-import { IColumn } from '../components/calendar/calendar.interface';
+import { IColumn } from '../modules/calendar/header-grid/header-grid.interface';
 import { arrayOf } from './functions';
 import { moment } from './moment';
 
@@ -8,7 +8,16 @@ export class MonthlyCalendar {
     for (const month of moment.months()) {
       columns.push({
         title: month,
-        subColumns: arrayOf(moment(date).daysInMonth() - 1, 1),
+        subColumns: arrayOf(moment(date).daysInMonth() - 1, 1).map(
+          (day, i) => ({
+            label: day,
+            firstDate: moment(date).startOf('d').add(i, 'd').toDate(),
+            lastDate: moment(date)
+              .startOf('d')
+              .add(i + 12, 'h')
+              .toDate(),
+          })
+        ),
       });
     }
     const desiredMonth = moment(date).format('MMMM');

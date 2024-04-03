@@ -30,6 +30,7 @@ export function getWeekDays(year: number, week: number) {
     days.push({
       name: day.format('dddd'),
       num: +day.format('D'),
+      date: day.toDate(),
     });
   }
   return days;

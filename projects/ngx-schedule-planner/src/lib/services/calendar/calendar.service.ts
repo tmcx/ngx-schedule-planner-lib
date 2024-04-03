@@ -4,9 +4,10 @@ import {
   EMode,
   ENavigationChange,
   EPeriod,
+  IColumn,
   TMode,
   TNavigationChange,
-} from '../../components/calendar/calendar.interface';
+} from '../../modules/calendar/header-grid/header-grid.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -15,13 +16,17 @@ export class CalendarService {
   onNavigationChange: Subject<TNavigationChange>;
   onPeriodChange: Subject<EPeriod>;
   onModeChange: Subject<EMode>;
-  config: { referenceDate: Date; mode: TMode };
+  config: { referenceDate: Date; mode: TMode; columns: IColumn[] };
 
   constructor() {
     this.onNavigationChange = new Subject<TNavigationChange>();
     this.onPeriodChange = new Subject<EPeriod>();
     this.onModeChange = new Subject<EMode>();
-    this.config = { referenceDate: new Date(), mode: EMode.monthly };
+    this.config = {
+      referenceDate: new Date(),
+      mode: EMode.monthly,
+      columns: [],
+    };
   }
 
   changeNavigation(change: TNavigationChange) {

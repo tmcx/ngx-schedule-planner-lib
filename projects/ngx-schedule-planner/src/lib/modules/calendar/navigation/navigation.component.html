@@ -1,0 +1,18 @@
+<section class="mode">
+  <select (change)="onSelectMode($event)">
+    <option
+      [value]="mode.name"
+      *ngFor="let mode of modes"
+      [selected]="mode.selected"
+    >
+      {{ mode.name }}
+    </option>
+  </select>
+</section>
+
+<section class="navigation">
+  <input type="date" (change)="onSelectDate($event)" />
+  <button (click)="setPeriod(period.today)">Today</button>
+  <button (click)="setPeriod(period.previous)">Previous</button>
+  <button (click)="setPeriod(period.next)">Next</button>
+</section>
