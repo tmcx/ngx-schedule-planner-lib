@@ -5,9 +5,9 @@ import {
   EPeriod,
   TMode,
 } from '../header-grid/header-grid.interface';
-import { CalendarService } from '../../../services/calendar/calendar.service';
-import { BaseVariables } from '../../../utils/base-variables';
-import { moment } from '../../../utils/moment';
+import { CalendarService } from '../../../../../services/calendar/calendar.service';
+import { BaseVariables } from '../../../../../utils/base-variables';
+import { moment } from '../../../../../utils/moment';
 
 @Component({
   selector: 'app-navigation',

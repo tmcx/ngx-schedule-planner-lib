@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { EMode } from './header-grid.interface';
-import { CalendarService } from '../../../services/calendar/calendar.service';
-import { BaseVariables } from '../../../utils/base-variables';
-import { MonthlyCalendar } from '../../../utils/monthly-calendar';
-import { WeeklyCalendar } from '../../../utils/weekly-calendar';
-import { DailyCalendar } from '../../../utils/daily-calendar';
+import { CalendarService } from '../../../../../services/calendar/calendar.service';
+import { BaseVariables } from '../../../../../utils/base-variables';
+import { MonthlyCalendar } from '../../../../../utils/monthly-calendar';
+import { WeeklyCalendar } from '../../../../../utils/weekly-calendar';
+import { DailyCalendar } from '../../../../../utils/daily-calendar';
 
 @Component({
   selector: 'app-header-grid',

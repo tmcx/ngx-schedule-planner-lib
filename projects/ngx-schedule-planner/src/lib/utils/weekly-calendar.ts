@@ -1,4 +1,4 @@
-import { IColumn } from '../modules/calendar/header-grid/header-grid.interface';
+import { IColumn } from '../modules/calendar/header/components/header-grid/header-grid.interface';
 import { getWeekDays, moment } from './moment';
 
 export class WeeklyCalendar {

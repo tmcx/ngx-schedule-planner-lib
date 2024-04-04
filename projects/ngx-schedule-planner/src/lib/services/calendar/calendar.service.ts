@@ -7,7 +7,8 @@ import {
   IColumn,
   TMode,
   TNavigationChange,
-} from '../../modules/calendar/header-grid/header-grid.interface';
+} from '../../modules/calendar/header/components/header-grid/header-grid.interface';
+import { IContent } from '../../main/ngx-schedule-planner.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -16,12 +17,19 @@ export class CalendarService {
   onNavigationChange: Subject<TNavigationChange>;
   onPeriodChange: Subject<EPeriod>;
   onModeChange: Subject<EMode>;
+  onContentChange: Subject<{ all: IContent[]; filtered: IContent[] }>;
   config: { referenceDate: Date; mode: TMode; columns: IColumn[] };
+  content: { all: IContent[]; filtered: IContent[] };
 
   constructor() {
     this.onNavigationChange = new Subject<TNavigationChange>();
+    this.onContentChange = new Subject<{
+      all: IContent[];
+      filtered: IContent[];
+    }>();
     this.onPeriodChange = new Subject<EPeriod>();
     this.onModeChange = new Subject<EMode>();
+    this.content = { all: [], filtered: [] };
     this.config = {
       referenceDate: new Date(),
       mode: EMode.monthly,
@@ -48,5 +56,10 @@ export class CalendarService {
   changeReferenceDate(date: Date) {
     this.config.referenceDate = date;
     this.changePeriod(EPeriod.referenceDate);
+  }
+
+  changeContent(content: IContent[], type: 'all' | 'filtered') {
+    this.content[type] = content;
+    this.onContentChange.next(this.content);
   }
 }

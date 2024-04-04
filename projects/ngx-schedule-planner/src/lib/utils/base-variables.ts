@@ -1,7 +1,7 @@
 import {
   EMode,
   EPeriod,
-} from '../modules/calendar/header-grid/header-grid.interface';
+} from '../modules/calendar/header/components/header-grid/header-grid.interface';
 import { DurationConstructor } from './moment';
 
 export class BaseVariables {

@@ -1,0 +1,54 @@
+$border: solid 1px #b2b2b2;
+
+:host {
+  display: grid;
+  grid-auto-flow: row;
+}
+
+.group {
+  &:not(:last-of-type) {
+    border-bottom: $border;
+  }
+}
+
+.new-activity {
+  width: 100%;
+  background: #00ffe938;
+  height: 30px;
+  border-bottom: $border;
+  display: grid;
+  grid-auto-flow: column;
+
+  span {
+    position: relative;
+    user-select: none;
+
+    &.creating {
+      background-color: #00ffe938;
+
+      &::before {
+        @extend .plus-icon;
+      }
+    }
+
+    &:hover {
+      background-color: #00ffe938;
+      cursor: pointer;
+
+      &::before {
+        @extend .plus-icon;
+      }
+    }
+  }
+}
+
+.plus-icon {
+  content: "+";
+  position: absolute;
+  user-select: none;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.5;
+  font-size: 18px;
+}
