@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { BaseVariables } from '../../../../../utils/base-variables';
 import { CalendarService } from '../../../../../services/calendar/calendar.service';
-import { moment } from '../../../../../utils/moment';
 import { EMode } from '../header-grid/header-grid.interface';
 import { clone } from '../../../../../utils/functions';
+import moment from 'moment';
 
 @Component({
   selector: 'app-action-panel',

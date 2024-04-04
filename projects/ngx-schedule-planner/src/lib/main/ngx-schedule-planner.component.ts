@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CalendarService } from '../services/calendar/calendar.service';
-import { moment } from '../utils/moment';
 import { IContent } from './ngx-schedule-planner.interface';
 import { EMode } from '../modules/calendar/header/components/header-grid/header-grid.interface';
+import moment from 'moment';
 
 @Component({
   selector: 'ngx-schedule-planner',

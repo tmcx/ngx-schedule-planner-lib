@@ -10,7 +10,7 @@ import { NgxSchedulePlannerModule } from 'ngx-schedule-planner';
   ],
   imports: [
     BrowserModule,
-    NgxSchedulePlannerModule
+    NgxSchedulePlannerModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

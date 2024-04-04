@@ -1,5 +1,4 @@
-import moment_ from 'moment';
-export const moment = moment_;
+import moment from 'moment';
 
 export type DurationConstructor = moment.unitOfTime.DurationConstructor;
 

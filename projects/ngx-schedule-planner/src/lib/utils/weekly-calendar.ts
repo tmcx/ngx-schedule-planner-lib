@@ -1,10 +1,10 @@
+import moment from 'moment';
 import { IColumn } from '../modules/calendar/header/components/header-grid/header-grid.interface';
-import { getWeekDays, moment } from './moment';
+import { getWeekDays } from './moment';
 
 export class WeeklyCalendar {
   static getColumns(date: Date): IColumn[] {
     const columns: IColumn[] = [];
-    console.log(date);
 
     const currentYear = moment(date).year();
     const startWeek = moment(date).startOf('M').week();

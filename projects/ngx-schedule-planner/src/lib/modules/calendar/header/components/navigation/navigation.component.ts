@@ -1,13 +1,8 @@
 import { Component } from '@angular/core';
-import {
-  EMode,
-  ENavigationChange,
-  EPeriod,
-  TMode,
-} from '../header-grid/header-grid.interface';
+import { EMode, EPeriod, TMode } from '../header-grid/header-grid.interface';
 import { CalendarService } from '../../../../../services/calendar/calendar.service';
 import { BaseVariables } from '../../../../../utils/base-variables';
-import { moment } from '../../../../../utils/moment';
+import moment from 'moment';
 
 @Component({
   selector: 'app-navigation',

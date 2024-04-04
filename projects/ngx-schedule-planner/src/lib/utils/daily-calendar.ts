@@ -1,6 +1,7 @@
+import moment from 'moment';
 import { IColumn } from '../modules/calendar/header/components/header-grid/header-grid.interface';
 import { arrayOf } from './functions';
-import { moment, getDaysOfMonth } from './moment';
+import { getDaysOfMonth } from './moment';
 
 export class DailyCalendar {
   static getColumns(date: Date): IColumn[] {
