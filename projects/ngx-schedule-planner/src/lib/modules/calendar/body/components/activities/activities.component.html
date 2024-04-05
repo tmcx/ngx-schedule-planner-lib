@@ -1,4 +1,4 @@
-<section class="group" *ngFor="let group of userSchedule.groups">
+<ng-container *ngFor="let group of userSchedule.groups">
   <section class="new-activity">
     <ng-container *ngFor="let subColumn of subColumns">
       <span
@@ -15,4 +15,4 @@
       ></span>
     </ng-container>
   </section>
-</section>
+</ng-container>

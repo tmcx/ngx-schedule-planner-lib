@@ -1,4 +1,4 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { NgxSchedulePlannerComponent } from './main/ngx-schedule-planner.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
@@ -10,11 +10,4 @@ import { CalendarModule } from './modules/calendar/calendar.module';
   imports: [BrowserModule, FormsModule, CalendarModule, InputModule],
   exports: [NgxSchedulePlannerComponent],
 })
-export class NgxSchedulePlannerModule {
-  static forRoot(config?: {}): ModuleWithProviders<NgxSchedulePlannerModule> {
-    return {
-      ngModule: NgxSchedulePlannerModule,
-      providers: [],
-    };
-  }
-}
+export class NgxSchedulePlannerModule {}

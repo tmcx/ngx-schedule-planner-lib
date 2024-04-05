@@ -1,1 +1,6 @@
-<ngx-schedule-planner [content]="mock"></ngx-schedule-planner>
+<ngx-schedule-planner
+  [content]="mock"
+  [mode]="'daily'"
+  (onAddActivityClick)="log($event)"
+  (onSelectRange)="log($event)"
+></ngx-schedule-planner>

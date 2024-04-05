@@ -13,7 +13,7 @@ export class DailyCalendar {
       columns.push({
         title: `${name}, ${num}`,
         subColumns: arrayOf(23, 1).map((hr, i) => ({
-          label: hr,
+          label: `${hr}:00`,
           firstDate: moment(date)
             .startOf('d')
             .add(i + 1, 'h')

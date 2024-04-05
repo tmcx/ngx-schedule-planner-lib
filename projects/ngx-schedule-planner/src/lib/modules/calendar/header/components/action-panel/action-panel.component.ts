@@ -94,4 +94,8 @@ export class ActionPanelComponent extends BaseVariables {
         );
     this.calendarService.changeContent(content, 'filtered');
   }
+
+  addActivity(){
+    this.calendarService.addActivityClicked();
+  }
 }

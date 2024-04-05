@@ -3,9 +3,7 @@ $border: solid 1px #b2b2b2;
 :host {
   display: grid;
   grid-auto-flow: row;
-}
-
-.group {
+  overflow: auto;
   &:not(:last-of-type) {
     border-bottom: $border;
   }

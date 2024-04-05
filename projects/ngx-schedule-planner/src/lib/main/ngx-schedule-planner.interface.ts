@@ -44,3 +44,10 @@ export interface ICreatingActivity {
   fromRefDate: Date | null;
   toRefDate: Date | null;
 }
+
+export interface ISelectedRange {
+  profile: IProfile;
+  startDate: Date;
+  endDate: Date;
+  group: IGroup;
+}

@@ -1,6 +1,6 @@
 <section class="main">
   <h2>{{ title }}</h2>
-  <button>+ Activity</button>
+  <button (click)="addActivity()">+ Activity</button>
 </section>
 <section class="filters">
   <app-input-search [placeholder]="'Username'" (onKeyUp)="filterByUserName($event)"></app-input-search>

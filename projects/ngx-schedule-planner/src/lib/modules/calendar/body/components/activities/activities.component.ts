@@ -51,7 +51,15 @@ export class ActivitiesComponent implements OnInit {
         break;
       case 'end':
         if (this.creatingActivity.isCreating || type == 'end') {
-          this.openCreationModal();
+          const { fromRefDate, toRefDate } = this.creatingActivity;
+          if (fromRefDate && toRefDate) {
+            this.calendarService.onRangeSelection({
+              profile: this.userSchedule.profile,
+              startDate: fromRefDate,
+              endDate: toRefDate,
+              group,
+            });
+          }
           this.resetCreatingActivity();
         }
         break;
@@ -75,13 +83,5 @@ export class ActivitiesComponent implements OnInit {
     const isBeforeLast = toRefDate && toRefDate >= refDate;
 
     return sameGroup && isAfterFirst && isBeforeLast;
-  }
-
-  openCreationModal() {
-    console.log({
-      start: this.creatingActivity.fromRefDate,
-      end: this.creatingActivity.toRefDate,
-    });
-    
   }
 }

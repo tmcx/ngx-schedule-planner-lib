@@ -8,4 +8,8 @@ import { MOCK } from './mock';
 })
 export class AppComponent {
   mock = MOCK;
+
+  log($event: any) {
+    console.log($event);
+  }
 }
