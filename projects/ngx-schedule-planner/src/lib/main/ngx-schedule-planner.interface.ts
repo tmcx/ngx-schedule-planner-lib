@@ -21,6 +21,7 @@ export interface IGroup {
   id: number;
   icon: string;
   activities: IActivity[];
+  style?: { height: number };
 }
 
 export interface IActivity {
@@ -39,10 +40,11 @@ export interface IActivityTag {
 }
 
 export interface ICreatingActivity {
-  isCreating: boolean;
   group: IContent['groups'][0] | null;
   fromRefDate: Date | null;
   toRefDate: Date | null;
+  profile: IProfile | null;
+  isCreating: boolean;
 }
 
 export interface ISelectedRange {

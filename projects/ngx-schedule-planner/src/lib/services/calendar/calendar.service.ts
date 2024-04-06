@@ -7,7 +7,7 @@ import {
   IColumn,
   TMode,
   TNavigationChange,
-} from '../../modules/calendar/header/components/header-grid/header-grid.interface';
+} from '../../modules/right-panel/components/header/header.interface';
 import {
   ISelectedRange,
   IContent,

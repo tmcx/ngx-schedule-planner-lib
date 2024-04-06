@@ -1,0 +1,31 @@
+<ng-template #row let-group="group" let-userSchedule="userSchedule">
+  <ng-container *ngFor="let subColumn of subColumns">
+    <span
+      (mousedown)="addActivity('start', userSchedule, group, subColumn.firstDate)"
+      (mouseup)="addActivity('end',  userSchedule, group, subColumn.firstDate)"
+      (mouseenter)="addActivity( 'enter', userSchedule, group, subColumn.firstDate)"
+      [ngClass]="{ creating: creatingActivity.isCreating ? isInTheCreation(group, subColumn.firstDate) : false }"
+    ></span>
+    <span
+      (mousedown)="addActivity('start', userSchedule, group, subColumn.lastDate)"
+      (mouseup)="addActivity('end', userSchedule, group, subColumn.lastDate)"
+      (mouseenter)="addActivity('enter', userSchedule, group, subColumn.lastDate)"
+      [ngClass]="{ creating: creatingActivity.isCreating ? isInTheCreation(group, subColumn.lastDate) : false }"
+    ></span>
+    </ng-container>
+</ng-template>
+
+<ng-template #userGroups let-userSchedule="userSchedule">
+  <section *ngFor="let group of userSchedule.groups" class="group">
+    <section class="new-activity">
+      <ng-container
+        *ngTemplateOutlet="row; context: { group, userSchedule }"
+      ></ng-container>
+    </section>
+  </section>
+</ng-template>
+
+
+<section class="user-groups" *ngFor="let userSchedule of content">
+  <ng-container *ngTemplateOutlet="userGroups; context: { userSchedule }"></ng-container>
+</section>

@@ -1,0 +1,9 @@
+$border-color: #b9b9b9;
+$border: solid 1px $border-color;
+
+:host {
+  display: grid;
+  grid-template-rows: 149px 1fr;
+  overflow: auto;
+  border-right: $border;
+}

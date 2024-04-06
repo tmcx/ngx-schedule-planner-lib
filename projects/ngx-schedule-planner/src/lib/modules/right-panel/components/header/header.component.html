@@ -1,0 +1,44 @@
+<section class="navigator">
+  <section class="mode">
+    <select (change)="onSelectMode($event)">
+      <option
+        [value]="mode.name"
+        *ngFor="let mode of modes"
+        [selected]="mode.selected"
+      >
+        {{ mode.name }}
+      </option>
+    </select>
+  </section>
+
+  <section class="navigation">
+    <app-input-calendar (onChange)="onSelectDate($event)"></app-input-calendar>
+    <button (click)="setPeriod(period.today)">Today</button>
+    <button (click)="setPeriod(period.previous)">Previous</button>
+    <button (click)="setPeriod(period.next)">Next</button>
+  </section>
+</section>
+
+<section class="title">
+  {{ columns[0].title }}
+</section>
+
+<section class="columns">
+  <section class="column" *ngFor="let column of columns">
+    <section
+      class="sub-columns"
+      [ngStyle]="{
+        'grid-template-columns':
+          'repeat(' +
+          column.subColumns.length +
+          ',calc(100%/' +
+          column.subColumns.length +
+          '))'
+      }"
+    >
+      <section class="sub-column" *ngFor="let subColumn of column.subColumns">
+        {{ subColumn.label }}
+      </section>
+    </section>
+  </section>
+</section>

@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { IColumn } from '../modules/calendar/header/components/header-grid/header-grid.interface';
+import { IColumn } from '../modules/right-panel/components/header/header.interface';
 import { arrayOf } from './functions';
 
 export class MonthlyCalendar {
@@ -21,6 +21,7 @@ export class MonthlyCalendar {
       });
     }
     const desiredMonth = moment(date).format('MMMM');
+    console.log(columns);
     return columns.filter((column) => column.title == desiredMonth);
   }
 }

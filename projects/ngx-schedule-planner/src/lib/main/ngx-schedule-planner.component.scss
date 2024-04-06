@@ -30,4 +30,14 @@ $border: solid 1px #b2b2b2;
       opacity: 0.85;
     }
   }
+
+  app-header {
+    max-height: 150px;
+  }
+}
+
+:host {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 350px 1fr;
 }

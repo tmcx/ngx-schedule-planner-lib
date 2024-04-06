@@ -1,0 +1,29 @@
+$border-color: #b2b2b2;
+$border: solid 1px $border-color;
+
+:host {
+  border: $border;
+  width: 350px;
+  height: 100%;
+  padding: 10px;
+  display: grid;
+  gap: 60px 10px;
+  align-items: start;
+}
+
+button {
+  width: fit-content;
+}
+
+.main,
+.filters {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr minmax(min-content, 1fr);
+  align-items: center;
+  justify-items: end;
+}
+
+h2 {
+  width: 100%;
+}

@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { IColumn } from '../modules/calendar/header/components/header-grid/header-grid.interface';
+import { IColumn } from '../modules/right-panel/components/header/header.interface';
 import { arrayOf } from './functions';
 import { getDaysOfMonth } from './moment';
 

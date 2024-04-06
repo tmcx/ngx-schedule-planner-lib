@@ -1,0 +1,21 @@
+$border-color: #b9b9b9;
+$border: solid 1px $border-color;
+
+:host {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  border: $border;
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
+input[type="date"] {
+  background: transparent;
+  filter: invert(1);
+  cursor: pointer;
+  border: none;
+  width: 16px;
+}

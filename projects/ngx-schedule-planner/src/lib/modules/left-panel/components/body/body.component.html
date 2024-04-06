@@ -1,0 +1,29 @@
+<ng-template #profileGroup let-userSchedule="userSchedule">
+  <section class="profile-group">
+    <section class="profile">
+      <img
+        [src]="userSchedule.profile.imageUrl"
+        [alt]="userSchedule.profile.name"
+      />
+      <h1>{{ userSchedule.profile.name }}</h1>
+      <p>{{ userSchedule.profile.description }}</p>
+      <section class="tags">
+        <span *ngFor="let tag of userSchedule.profile.tags">{{
+          tag.name
+        }}</span>
+      </section>
+    </section>
+
+    <section class="groups">
+      <section class="group" *ngFor="let group of userSchedule.groups">
+        <h1>{{ group.name }}</h1>
+      </section>
+    </section>
+  </section>
+</ng-template>
+
+<ng-container *ngFor="let userSchedule of content">
+  <ng-container
+    *ngTemplateOutlet="profileGroup; context: { userSchedule }"
+  ></ng-container>
+</ng-container>

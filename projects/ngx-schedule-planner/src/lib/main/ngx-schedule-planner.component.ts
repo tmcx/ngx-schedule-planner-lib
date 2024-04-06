@@ -4,7 +4,7 @@ import { IContent, ISelectedRange } from './ngx-schedule-planner.interface';
 import {
   EMode,
   TMode,
-} from '../modules/calendar/header/components/header-grid/header-grid.interface';
+} from '../modules/right-panel/components/header/header.interface';
 
 @Component({
   selector: 'ngx-schedule-planner',
