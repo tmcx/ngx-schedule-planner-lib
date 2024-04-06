@@ -17,16 +17,18 @@ import {
   providedIn: 'root',
 })
 export class CalendarService {
+  onContentChange: Subject<{ all: IContent[]; filtered: IContent[] }>;
+  config: { referenceDate: Date; mode: TMode; columns: IColumn[] };
+  content: { all: IContent[]; filtered: IContent[] };
   onNavigationChange: Subject<TNavigationChange>;
   onSelectRange: Subject<ISelectedRange>;
   onAddActivityClick: Subject<void>;
   onPeriodChange: Subject<EPeriod>;
   onModeChange: Subject<TMode>;
-  onContentChange: Subject<{ all: IContent[]; filtered: IContent[] }>;
-  config: { referenceDate: Date; mode: TMode; columns: IColumn[] };
-  content: { all: IContent[]; filtered: IContent[] };
+  uuid: string;
 
   constructor() {
+    this.uuid = 'ngx-schedule-planner-' + Math.floor(Math.random() * 1000000000).toFixed(0);
     this.onNavigationChange = new Subject<TNavigationChange>();
     this.onSelectRange = new Subject<ISelectedRange>();
     this.onAddActivityClick = new Subject<void>();

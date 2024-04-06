@@ -10,8 +10,10 @@ import {
   selector: 'ngx-schedule-planner',
   templateUrl: './ngx-schedule-planner.component.html',
   styleUrls: ['./ngx-schedule-planner.component.scss'],
+  host: { '[id]': 'uuid' },
 })
 export class NgxSchedulePlannerComponent {
+  uuid: string;
   @Output() onSelectRange: EventEmitter<ISelectedRange>;
   @Output() onAddActivityClick: EventEmitter<void>;
 
@@ -29,6 +31,7 @@ export class NgxSchedulePlannerComponent {
   }
 
   constructor(private calendarService: CalendarService) {
+    this.uuid = this.calendarService.uuid;
     this.calendarService.changeMode(EMode.monthly);
     this.calendarService.changeReferenceDate(new Date());
     this.onSelectRange = new EventEmitter<ISelectedRange>();
