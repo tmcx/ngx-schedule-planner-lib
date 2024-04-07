@@ -6,6 +6,10 @@ export function clone<T>(variable: T): T {
   return JSON.parse(JSON.stringify(variable)) as T;
 }
 
+export function uuid() {
+  return Math.floor(Math.random() * 1000000000).toFixed(0);
+}
+
 export async function querySelector(
   selector: string,
   wait = false
