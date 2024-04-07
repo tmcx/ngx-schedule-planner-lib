@@ -20,8 +20,10 @@ $border: solid 1px $border-color;
     border-right: $border;
     display: grid;
     grid-template-columns: $image-width 1fr;
+    grid-template-rows: repeat(3, min-content);
     gap: 10px;
     padding: 10px;
+    height: 100%;
 
     img {
       width: $image-width;
@@ -39,6 +41,7 @@ $border: solid 1px $border-color;
       display: flex;
       flex-wrap: wrap;
       gap: 4px;
+      align-content: flex-start;
 
       span {
         border: $border;

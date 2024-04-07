@@ -1,5 +1,6 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { CalendarService } from '../../../services/calendar/calendar.service';
+import { querySelector } from '../../../utils/functions';
 
 @Component({
   selector: 'app-right-panel',
@@ -9,22 +10,22 @@ import { CalendarService } from '../../../services/calendar/calendar.service';
 export class RightPanelComponent implements AfterViewInit {
   constructor(private calendarService: CalendarService) {}
 
-  ngAfterViewInit(): void {
+  async ngAfterViewInit(): Promise<void> {
     const { uuid } = this.calendarService;
     const observer = new ResizeObserver((entries) => {
-      entries.forEach((entry) => {
+      entries.forEach(async (entry) => {
         const { width } = entry.contentRect;
-        const navigator = document.querySelector(
+        const navigator = await querySelector(
           `#${uuid} app-right-panel app-header .navigator`
-        ) as HTMLElement;
-        const title = document.querySelector(
+        );
+        const title = await querySelector(
           `#${uuid} app-right-panel app-header .title`
-        ) as HTMLElement;
+        );
         navigator.style.width = width + 'px';
         title.style.width = width + 'px';
       });
     });
 
-    observer.observe(document.querySelector(`#${uuid} app-right-panel`)!);
+    observer.observe(await querySelector(`#${uuid} app-right-panel`));
   }
 }

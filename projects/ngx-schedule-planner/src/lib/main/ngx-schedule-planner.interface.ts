@@ -27,8 +27,8 @@ export interface IGroup {
 export interface IActivity {
   id: number;
   name: string;
-  startDate: string;
-  endDate: string;
+  startDate: Date;
+  endDate: Date;
   repeat: string[];
   tags: IActivityTag[];
 }

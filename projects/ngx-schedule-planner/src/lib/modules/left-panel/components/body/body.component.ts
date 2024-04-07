@@ -1,6 +1,7 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { IContent } from '../../../../main/ngx-schedule-planner.interface';
 import { CalendarService } from '../../../../services/calendar/calendar.service';
+import { querySelectorAll } from '../../../../utils/functions';
 
 @Component({
   selector: 'app-body',
@@ -25,28 +26,20 @@ export class BodyComponent implements AfterViewInit {
 
   async resizeActivities() {
     const { uuid } = this.calendarService;
-    const getActivities = () =>
-      document.querySelectorAll(
-        `#${uuid} app-right-panel app-body .group`
-      ) as unknown as HTMLElement[];
+    const rightPanelGroupsSelector = `#${uuid} app-right-panel app-body .group`;
+    const leftPanelGroupsSelector = `#${uuid} app-left-panel app-body .group`;
 
-    await new Promise<void>((resolve) => {
-      const interval = setInterval(() => {
-        const activities = getActivities();
-        if (activities) {
-          resolve();
-          clearInterval(interval);
-        }
-      }, 100);
-    });
-    const activities = getActivities();
-
-    const users = document.querySelectorAll(
-      `#${uuid} app-left-panel app-body .group`
-    );
+    const activities = await querySelectorAll(rightPanelGroupsSelector, true);
+    const users = await querySelectorAll(leftPanelGroupsSelector, true);
 
     users.forEach((group, i) => {
-      activities[i].style.height = group.clientHeight + 'px';
+      const activitiesHeight = activities[i].clientHeight;
+      const groupsHeight = group.clientHeight;
+      if (groupsHeight < activitiesHeight) {
+        group.style.height = activitiesHeight + 'px';
+      } else {
+        activities[i].style.height = groupsHeight + 'px';
+      }
     });
   }
 }
