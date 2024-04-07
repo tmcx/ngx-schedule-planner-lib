@@ -19,10 +19,9 @@ export class AppComponent {
     const content: IContent[] = JSON.parse(JSON.stringify(MOCK));
     content.forEach(({ groups }) => {
       groups.forEach((group) => {
-        group.activities.forEach(({ startDate, endDate }) => {
-          startDate = moment(new Date(startDate)).date(7).month(3).toDate();
-          endDate = moment(new Date(endDate)).date(7).month(3).toDate();
-          console.log({ startDate, endDate });
+        group.activities.forEach((activity) => {
+          activity.startDate = moment(new Date(activity.startDate)).date(7).month(3).toDate();
+          activity.endDate = moment(new Date(activity.endDate)).date(7).month(3).toDate();
         });
       });
     });

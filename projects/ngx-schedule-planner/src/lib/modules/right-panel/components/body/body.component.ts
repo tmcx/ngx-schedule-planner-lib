@@ -1,10 +1,12 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import {
+  IActivity,
   IContent,
   ICreatingActivity,
   IGroup,
 } from '../../../../main/ngx-schedule-planner.interface';
 import { CalendarService } from '../../../../services/calendar/calendar.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-body',
@@ -95,5 +97,18 @@ export class BodyComponent implements OnInit {
 
   @HostListener('mouseup') onClick() {
     this.finishSelection();
+  }
+
+  startActivity(refStartDate: Date, activity: IActivity) {
+    const firstDateEnd = moment(refStartDate).add(30, 'minutes').toDate();
+    return (
+      refStartDate <= activity.startDate && activity.startDate <= firstDateEnd
+    );
+  }
+
+  activityDuration(activity: IActivity) {
+    const minutes = moment(activity.endDate).diff(activity.startDate, 'm');
+    console.log(activity);
+    return `calc(100% * ${minutes/60})`;
   }
 }

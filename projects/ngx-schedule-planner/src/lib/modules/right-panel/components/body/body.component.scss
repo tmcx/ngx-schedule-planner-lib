@@ -55,3 +55,39 @@ $border: solid 1px #b2b2b2;
   opacity: 0.5;
   font-size: 18px;
 }
+
+.activity > section {
+  position: relative;
+  cursor: pointer;
+
+  .act {
+    background-color: rgb(88, 88, 88);
+    position: absolute;
+    height: 70%;
+    width: 100%;
+    margin-top: 7.75%;
+    border: $border;
+    border-radius: 5px;
+    display: grid;
+    align-items: center;
+    padding: 0 5px;
+    overflow: hidden;
+    grid-auto-flow: column;
+    justify-content: start;
+    cursor: pointer;
+    gap: 3px;
+
+    p {
+      text-wrap: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .tags {
+      span {
+        cursor: pointer;
+      }
+    }
+  }
+}

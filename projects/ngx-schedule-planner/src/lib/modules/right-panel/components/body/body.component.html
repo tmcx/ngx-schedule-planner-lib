@@ -1,7 +1,17 @@
-<ng-template #activitiesRow>
+<ng-template #activitiesRow let-activity="activity">
   <ng-container *ngFor="let subColumn of subColumns">
-    <span></span>
-    <span></span>
+    <section>
+      <section class="content"
+        class="act"
+        [ngStyle]="{'width': activityDuration(activity) }"
+        *ngIf="startActivity(subColumn.firstDate, activity)"
+      >
+      <section class="tags">
+        <span *ngFor="let tag of activity.tags" [title]="tag.name">{{tag.icon}}</span>
+      </section>
+      <p>{{activity.name}}</p>
+      </section>
+    </section>
   </ng-container>
 </ng-template>
 
@@ -32,7 +42,7 @@
 
     <section class="activity" *ngFor="let activity of group.activities">
       <ng-container
-        *ngTemplateOutlet="activitiesRow; context: { group, userSchedule }"
+        *ngTemplateOutlet="activitiesRow; context: { activity }"
       ></ng-container>
     </section>
   </section>

@@ -6,6 +6,7 @@ $border: solid 1px $border-color;
 :host {
   box-shadow: inset 1px 0px 0 0px $border-color;
   border-bottom: $border;
+  overflow: hidden;
 }
 
 .profile-group {
@@ -24,6 +25,16 @@ $border: solid 1px $border-color;
     gap: 10px;
     padding: 10px;
     height: 100%;
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      height: 1000vh;
+      width: 1px;
+      background-color: $border-color;
+      right: -1px;
+    }
 
     img {
       width: $image-width;
@@ -53,6 +64,7 @@ $border: solid 1px $border-color;
 
   .groups {
     border-right: $border;
+    position: relative;
     height: 100%;
     display: grid;
 
@@ -62,6 +74,14 @@ $border: solid 1px $border-color;
       &:not(:last-of-type) {
         border-bottom: $border;
       }
+    }
+    &::after {
+      content: "";
+      position: absolute;
+      height: 1000vh;
+      width: 1px;
+      background-color: $border-color;
+      right: -1px;
     }
   }
 }
