@@ -1,10 +1,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CalendarService } from '../services/calendar/calendar.service';
-import { IContent, ISelectedRange } from './ngx-schedule-planner.interface';
+import { IProcessedContent } from './ngx-schedule-planner.interface';
 import {
   EMode,
   TMode,
 } from '../modules/right-panel/components/header/header.interface';
+import { ISelectedRange } from '../modules/right-panel/components/body/body.interface';
+import { IContent } from '../ngx-schedule-planner.interface';
+import moment from 'moment';
 
 @Component({
   selector: 'ngx-schedule-planner',
@@ -18,8 +21,10 @@ export class NgxSchedulePlannerComponent {
   @Output() onAddActivityClick: EventEmitter<void>;
 
   @Input() set content(content: IContent[]) {
-    this.calendarService.changeContent(content, 'all');
-    this.calendarService.changeContent(content, 'filtered');
+    const processedContent = this.processInputContent(content);
+
+    this.calendarService.changeContent(processedContent, 'all');
+    this.calendarService.changeContent(processedContent, 'filtered');
   }
 
   @Input() set referencedDate(referencedDate: Date) {
@@ -42,5 +47,21 @@ export class NgxSchedulePlannerComponent {
     this.calendarService.onAddActivityClick.subscribe(() => {
       this.onAddActivityClick.emit();
     });
+  }
+
+  processInputContent(content: IContent[]): IProcessedContent[] {
+    (content as IProcessedContent[]).forEach(
+      (userContent: IProcessedContent) => {
+        userContent.groups.forEach((group) => {
+          group.activities.forEach((activity) => {
+            activity['durationInMin'] = moment(activity.endDate).diff(
+              activity.startDate,
+              'm'
+            );
+          });
+        });
+      }
+    );
+    return content as IProcessedContent[];
   }
 }

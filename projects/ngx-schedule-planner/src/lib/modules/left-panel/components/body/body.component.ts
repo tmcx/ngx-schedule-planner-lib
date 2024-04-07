@@ -1,5 +1,5 @@
 import { AfterViewInit, Component } from '@angular/core';
-import { IContent } from '../../../../main/ngx-schedule-planner.interface';
+import { IProcessedContent } from '../../../../main/ngx-schedule-planner.interface';
 import { CalendarService } from '../../../../services/calendar/calendar.service';
 import { querySelectorAll } from '../../../../utils/functions';
 
@@ -9,7 +9,7 @@ import { querySelectorAll } from '../../../../utils/functions';
   styleUrls: ['./body.component.scss'],
 })
 export class BodyComponent implements AfterViewInit {
-  content!: IContent[];
+  content!: IProcessedContent[];
 
   constructor(private calendarService: CalendarService) {
     this.calendarService.onContentChange.subscribe((content) => {

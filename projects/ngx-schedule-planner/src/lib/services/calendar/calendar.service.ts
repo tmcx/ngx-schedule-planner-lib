@@ -8,18 +8,20 @@ import {
   TMode,
   TNavigationChange,
 } from '../../modules/right-panel/components/header/header.interface';
-import {
-  ISelectedRange,
-  IContent,
-} from '../../main/ngx-schedule-planner.interface';
+import { IProcessedContent } from '../../main/ngx-schedule-planner.interface';
+import { ISelectedRange } from '../../modules/right-panel/components/body/body.interface';
+import { uuid } from '../../utils/functions';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CalendarService {
-  onContentChange: Subject<{ all: IContent[]; filtered: IContent[] }>;
+  onContentChange: Subject<{
+    all: IProcessedContent[];
+    filtered: IProcessedContent[];
+  }>;
   config: { referenceDate: Date; mode: TMode; columns: IColumn[] };
-  content: { all: IContent[]; filtered: IContent[] };
+  content: { all: IProcessedContent[]; filtered: IProcessedContent[] };
   onNavigationChange: Subject<TNavigationChange>;
   onSelectRange: Subject<ISelectedRange>;
   onAddActivityClick: Subject<void>;
@@ -28,13 +30,13 @@ export class CalendarService {
   uuid: string;
 
   constructor() {
-    this.uuid = 'ngx-schedule-planner-' + Math.floor(Math.random() * 1000000000).toFixed(0);
+    this.uuid = 'ngx-schedule-planner-' + uuid();
     this.onNavigationChange = new Subject<TNavigationChange>();
     this.onSelectRange = new Subject<ISelectedRange>();
     this.onAddActivityClick = new Subject<void>();
     this.onContentChange = new Subject<{
-      all: IContent[];
-      filtered: IContent[];
+      all: IProcessedContent[];
+      filtered: IProcessedContent[];
     }>();
     this.onPeriodChange = new Subject<EPeriod>();
     this.onModeChange = new Subject<TMode>();
@@ -67,7 +69,7 @@ export class CalendarService {
     this.changePeriod(EPeriod.referenceDate);
   }
 
-  changeContent(content: IContent[], type: 'all' | 'filtered') {
+  changeContent(content: IProcessedContent[], type: 'all' | 'filtered') {
     this.content[type] = content;
     this.onContentChange.next(this.content);
   }

@@ -1,4 +1,4 @@
-export interface IProcessedContent {
+export interface IContent {
   profile: IProfile;
   groups: IGroup[];
 }
@@ -25,7 +25,6 @@ export interface IGroup {
 export interface IActivity {
   id: number;
   name: string;
-  durationInMin: number;
   startDate: Date;
   endDate: Date;
   repeat: string[];
