@@ -67,6 +67,7 @@ $border: solid 1px $border-color;
     position: relative;
     height: 100%;
     display: grid;
+    grid-auto-rows: min-content;
 
     .group {
       padding: 10px;

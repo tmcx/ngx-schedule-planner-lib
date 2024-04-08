@@ -31,12 +31,14 @@ export class HeaderComponent extends BaseVariables {
     const { referenceDate, mode } = this.calendarService.config;
     switch (mode) {
       case EMode.monthly:
-        this.calendarService.config.columns =
-          MonthlyCalendar.getColumns(referenceDate);
+        this.calendarService.config.columns = MonthlyCalendar.getColumns(
+          moment(referenceDate).startOf('month').toDate()
+        );
         break;
       case EMode.weekly:
-        this.calendarService.config.columns =
-          WeeklyCalendar.getColumns(referenceDate);
+        this.calendarService.config.columns = WeeklyCalendar.getColumns(
+          moment(referenceDate).startOf('week').toDate()
+        );
         break;
       case EMode.daily:
         this.calendarService.config.columns =

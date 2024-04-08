@@ -25,7 +25,7 @@ export class CalendarService {
     referenceDate: Date;
     mode: TMode;
     columns: IColumn[];
-    activity: { factor: { width: number } };
+    activity: { factor: { width: string } };
   };
   content: { all: IProcessedContent[]; filtered: IProcessedContent[] };
   onNavigationChange: Subject<TNavigationChange>;
@@ -48,7 +48,7 @@ export class CalendarService {
     this.onModeChange = new Subject<TMode>();
     this.content = { all: [], filtered: [] };
     this.config = {
-      activity: { factor: { width: 1 } },
+      activity: { factor: { width: '' } },
       referenceDate: new Date(),
       mode: EMode.monthly,
       columns: [],
@@ -91,7 +91,7 @@ export class CalendarService {
   }
 
   private refreshWidthFactor() {
-    let WIDTH_FACTOR = 0;
+    let WIDTH_FACTOR = '';
 
     switch (this.config.mode) {
       case EMode.monthly:

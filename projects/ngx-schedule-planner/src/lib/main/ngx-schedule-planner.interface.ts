@@ -18,6 +18,7 @@ export interface IGroup {
   name: string;
   id: number;
   icon: string;
+  groupedActivities: IActivity[][];
   activities: IActivity[];
   style?: { height: number };
 }

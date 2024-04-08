@@ -22,7 +22,7 @@ export const MOCK = [
             id: 1,
             name: "Machine Learning Basics",
             startDate: "2024-03-20T09:00:00",
-            endDate: "2024-03-20T18:00:00",
+            endDate: "2024-03-20T13:00:00",
             repeat: ["2024-04-01", "2024-04-15"],
             tags: [
               { id: 1, icon: "🤖", name: "Machine Learning" },
@@ -43,7 +43,7 @@ export const MOCK = [
           {
             id: 3,
             name: "Deep Learning Fundamentals",
-            startDate: "2024-05-10T11:00:00",
+            startDate: "2024-05-10T13:00:00",
             endDate: "2024-05-10T14:00:00",
             repeat: ["2024-05-25", "2024-06-05"],
             tags: [
@@ -105,7 +105,7 @@ export const MOCK = [
           {
             id: 6,
             name: "Global Refugee Crisis Seminar",
-            startDate: "2024-04-15T14:00:00",
+            startDate: "2024-04-15T16:30:00",
             endDate: "2024-04-15T17:00:00",
             repeat: ["2024-05-01", "2024-05-15"],
             tags: [

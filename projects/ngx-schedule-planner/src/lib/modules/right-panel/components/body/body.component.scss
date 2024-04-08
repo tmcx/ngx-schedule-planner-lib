@@ -9,6 +9,8 @@ $border: solid 1px #b2b2b2;
 
 .new-activity {
   background: #00ffe938;
+  display: grid;
+  grid-auto-flow: column;
 
   span {
     position: relative;
@@ -33,12 +35,12 @@ $border: solid 1px #b2b2b2;
   }
 }
 
-.activity {
+.row {
+  position: relative;
   width: 100%;
   height: 30px;
+  padding: 4px 0 5px 0;
   box-shadow: 0px -1px 0px 0px $border-color;
-  display: grid;
-  grid-auto-flow: column;
 
   &:last-of-type {
     border-bottom: $border;
@@ -56,37 +58,36 @@ $border: solid 1px #b2b2b2;
   font-size: 18px;
 }
 
-.activity > section {
-  position: relative;
+.activity {
+  background-color: #585858;
+  position: absolute;
+  height: 22px;
+  border: $border;
+  border-radius: 4px;
+  display: grid;
+  align-items: center;
+  overflow: hidden;
+  grid-auto-flow: column;
+  justify-content: start;
   cursor: pointer;
+  gap: 3px;
 
-  .act {
-    background-color: #585858;
-    position: absolute;
-    height: 70%;
-    margin-top: 4px;
-    border: $border;
-    border-radius: 4px;
-    display: grid;
-    align-items: center;
-    padding: 0 5px;
+  * {
+    user-select: none;
+  }
+
+  p {
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
     overflow: hidden;
-    grid-auto-flow: column;
-    justify-content: start;
     cursor: pointer;
-    gap: 3px;
+  }
 
-    p {
-      text-wrap: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
+  .tags {
+    display: grid;
+    grid-auto-flow: column;
+    span {
       cursor: pointer;
-    }
-
-    .tags {
-      span {
-        cursor: pointer;
-      }
     }
   }
 }

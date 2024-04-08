@@ -8,6 +8,7 @@ import {
 import { ISelectedRange } from '../modules/right-panel/components/body/body.interface';
 import { IContent } from '../ngx-schedule-planner.interface';
 import moment from 'moment';
+import { clone, groupActivities } from '../utils/functions';
 
 @Component({
   selector: 'ngx-schedule-planner',
@@ -50,18 +51,19 @@ export class NgxSchedulePlannerComponent {
   }
 
   processInputContent(content: IContent[]): IProcessedContent[] {
-    (content as IProcessedContent[]).forEach(
-      (userContent: IProcessedContent) => {
-        userContent.groups.forEach((group) => {
-          group.activities.forEach((activity) => {
-            activity['durationInMin'] = moment(activity.endDate).diff(
-              activity.startDate,
-              'm'
-            );
-          });
+    const parsedContent = clone<any>(content);
+    parsedContent.forEach((userContent: any) => {
+      userContent.groups.forEach((group: any) => {
+        group.activities.forEach((activity: any) => {
+          activity['durationInMin'] = moment(activity.endDate).diff(
+            activity.startDate,
+            'm'
+          );
         });
-      }
-    );
-    return content as IProcessedContent[];
+        const activities = groupActivities(group.activities);
+        group['groupedActivities'] = activities;
+      });
+    });
+    return parsedContent;
   }
 }

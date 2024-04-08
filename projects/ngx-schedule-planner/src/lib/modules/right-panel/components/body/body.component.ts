@@ -7,7 +7,7 @@ import {
 import { CalendarService } from '../../../../services/calendar/calendar.service';
 import moment from 'moment';
 import { ICreatingActivity } from './body.interface';
-import { EMode, ISubColumn } from '../header/header.interface';
+import { EMode } from '../header/header.interface';
 
 @Component({
   selector: 'app-body',
@@ -102,16 +102,6 @@ export class BodyComponent implements OnInit {
     this.finishSelection();
   }
 
-  isActivityStart(
-    type: 'start' | 'end',
-    section: ISubColumn,
-    activity: IActivity
-  ) {
-    const { start, end } =
-      type == 'start' ? section.firstSection : section.lastSection;
-    return start <= activity.startDate && activity.startDate <= end;
-  }
-
   activityStyles(activity: IActivity) {
     const minutes = activity.durationInMin;
     const {
@@ -121,21 +111,50 @@ export class BodyComponent implements OnInit {
     } = this.calendarService.config;
     let left = '';
     let width = '';
+    let leftMinutes = moment(activity.startDate).diff(
+      moment(activity.startDate).startOf('d'),
+      'm'
+    );
     switch (this.calendarService.config.mode) {
       case EMode.monthly:
-        width = `calc((100% / ${moment(activity.startDate).daysInMonth()}) * ${
-          minutes / widthFactor
-        })`;
-        left = `calc((100% / 48) * ${moment(activity.startDate).hour()})`;
+        const daysOfMonth = moment(activity.startDate).daysInMonth();
+        leftMinutes -= 60;
+
+        width = `calc((${widthFactor}/${daysOfMonth}) * ${minutes})`;
+        left = `calc((${widthFactor}/${daysOfMonth}) * ${leftMinutes})`;
         break;
       case EMode.weekly:
-        width = `calc((100% / 24) * ${minutes / widthFactor})`;
-        left = `calc((100% / 48) * ${moment(activity.startDate).hour()})`;
+        width = `calc((${widthFactor}) * ${minutes})`;
+        left = `calc((${widthFactor}) * ${leftMinutes})`;
         break;
       case EMode.daily:
-        width = `calc(100% * ${minutes / widthFactor})`;
+        leftMinutes -= 60;
+        width = `calc((${widthFactor}) * ${minutes})`;
+        left = `calc((${widthFactor}) * ${leftMinutes})`;
         break;
     }
     return { width, left };
+  }
+
+  filterActivities(groupedActivities: IActivity[][]): IActivity[][] {
+    const filtered: IActivity[][] = [];
+    for (const group of groupedActivities) {
+      const tempGroup: IActivity[] = [];
+      for (const activity of group) {
+        const {
+          firstSection: { start },
+        } = this.subColumns.at(0)!;
+        const {
+          lastSection: { end },
+        } = this.subColumns.at(-1)!;
+
+        if (moment(activity.startDate).isBetween(start, end)) {
+          console.log(this.subColumns);
+          tempGroup.push(activity);
+        }
+      }
+      filtered.push(tempGroup);
+    }
+    return filtered;
   }
 }
