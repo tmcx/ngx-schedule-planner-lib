@@ -13,8 +13,8 @@ export interface IColumn {
 
 export interface ISubColumn {
   label: string | number;
-  firstDate: Date;
-  lastDate: Date;
+  firstSection: { start: Date; end: Date };
+  lastSection: { start: Date; end: Date };
 }
 
 export type TNavigationChange = 'mode' | 'prev' | 'next';

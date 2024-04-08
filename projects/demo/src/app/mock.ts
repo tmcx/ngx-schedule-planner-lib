@@ -22,7 +22,7 @@ export const MOCK = [
             id: 1,
             name: "Machine Learning Basics",
             startDate: "2024-03-20T09:00:00",
-            endDate: "2024-03-20T12:00:00",
+            endDate: "2024-03-20T18:00:00",
             repeat: ["2024-04-01", "2024-04-15"],
             tags: [
               { id: 1, icon: "🤖", name: "Machine Learning" },
@@ -62,7 +62,7 @@ export const MOCK = [
             id: 4,
             name: "Blockchain Basics",
             startDate: "2024-06-20T14:00:00",
-            endDate: "2024-06-20T17:00:00",
+            endDate: "2024-06-20T23:59:00",
             repeat: ["2024-07-01", "2024-07-15"],
             tags: [
               { id: 7, icon: "🔗", name: "Blockchain" },

@@ -1,12 +1,13 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import {
   IActivity,
-  IContent,
-  ICreatingActivity,
+  IProcessedContent,
   IGroup,
 } from '../../../../main/ngx-schedule-planner.interface';
 import { CalendarService } from '../../../../services/calendar/calendar.service';
 import moment from 'moment';
+import { ICreatingActivity } from './body.interface';
+import { EMode, ISubColumn } from '../header/header.interface';
 
 @Component({
   selector: 'app-body',
@@ -15,7 +16,7 @@ import moment from 'moment';
 })
 export class BodyComponent implements OnInit {
   creatingActivity!: ICreatingActivity;
-  content!: IContent[];
+  content!: IProcessedContent[];
 
   constructor(private calendarService: CalendarService) {
     this.calendarService.onContentChange.subscribe((content) => {
@@ -27,12 +28,14 @@ export class BodyComponent implements OnInit {
   ngOnInit() {}
 
   get subColumns() {
-    return this.calendarService.config.columns[0].subColumns;
+    return this.calendarService.config.columns.length
+      ? this.calendarService.config.columns[0].subColumns
+      : [];
   }
 
   addActivity(
     type: 'start' | 'end' | 'enter' | 'leave',
-    userSchedule: IContent,
+    userSchedule: IProcessedContent,
     group: IGroup,
     refDate: Date
   ) {
@@ -99,16 +102,40 @@ export class BodyComponent implements OnInit {
     this.finishSelection();
   }
 
-  startActivity(refStartDate: Date, activity: IActivity) {
-    const firstDateEnd = moment(refStartDate).add(30, 'minutes').toDate();
-    return (
-      refStartDate <= activity.startDate && activity.startDate <= firstDateEnd
-    );
+  isActivityStart(
+    type: 'start' | 'end',
+    section: ISubColumn,
+    activity: IActivity
+  ) {
+    const { start, end } =
+      type == 'start' ? section.firstSection : section.lastSection;
+    return start <= activity.startDate && activity.startDate <= end;
   }
 
-  activityDuration(activity: IActivity) {
-    const minutes = moment(activity.endDate).diff(activity.startDate, 'm');
-    console.log(activity);
-    return `calc(100% * ${minutes/60})`;
+  activityStyles(activity: IActivity) {
+    const minutes = activity.durationInMin;
+    const {
+      activity: {
+        factor: { width: widthFactor },
+      },
+    } = this.calendarService.config;
+    let left = '';
+    let width = '';
+    switch (this.calendarService.config.mode) {
+      case EMode.monthly:
+        width = `calc((100% / ${moment(activity.startDate).daysInMonth()}) * ${
+          minutes / widthFactor
+        })`;
+        left = `calc((100% / 48) * ${moment(activity.startDate).hour()})`;
+        break;
+      case EMode.weekly:
+        width = `calc((100% / 24) * ${minutes / widthFactor})`;
+        left = `calc((100% / 48) * ${moment(activity.startDate).hour()})`;
+        break;
+      case EMode.daily:
+        width = `calc(100% * ${minutes / widthFactor})`;
+        break;
+    }
+    return { width, left };
   }
 }

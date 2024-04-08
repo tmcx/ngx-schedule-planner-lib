@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { IColumn } from '../modules/right-panel/components/header/header.interface';
 import { arrayOf } from './functions';
-import { getDaysOfMonth } from './moment';
+import { addToDate, getDaysOfMonth } from './moment';
 
 export class DailyCalendar {
   static getColumns(date: Date): IColumn[] {
@@ -14,15 +14,14 @@ export class DailyCalendar {
         title: `${name}, ${num}`,
         subColumns: arrayOf(23, 1).map((hr, i) => ({
           label: `${hr}:00`,
-          firstDate: moment(date)
-            .startOf('d')
-            .add(i + 1, 'h')
-            .toDate(),
-          lastDate: moment(date)
-            .startOf('d')
-            .add(i + 1, 'h')
-            .add(30, 'm')
-            .toDate(),
+          firstSection: {
+            start: addToDate(date, { h: i + 1 }, { startOf: ['d'] }),
+            end: addToDate(date, { h: i + 1, m: 30 }, { startOf: ['d'] }),
+          },
+          lastSection: {
+            start: addToDate(date, { h: i + 1, m: 31 }, { startOf: ['d'] }),
+            end: addToDate(date, { h: i + 1, m: 59 }, { startOf: ['d'] }),
+          },
         })),
       });
     }

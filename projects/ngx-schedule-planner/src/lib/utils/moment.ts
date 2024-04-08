@@ -34,3 +34,23 @@ export function getWeekDays(year: number, week: number) {
   }
   return days;
 }
+
+export function addToDate(
+  date: Date,
+  attrs: { [key in moment.unitOfTime.Base]?: number } | null = null,
+  position?: { startOf: moment.unitOfTime.StartOf[] }
+) {
+  let momentDate = moment(date);
+  if (position && position['startOf'].length) {
+    for (const unitOfTime of position.startOf) {
+      momentDate = momentDate.startOf(unitOfTime);
+    }
+  }
+  if (attrs != null) {
+    Object.keys(attrs).forEach((key: any) => {
+      const value = (attrs as any)[key];
+      momentDate = momentDate.add(value, key);
+    });
+  }
+  return momentDate.toDate();
+}

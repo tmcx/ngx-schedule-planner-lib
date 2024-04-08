@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { IColumn } from '../modules/right-panel/components/header/header.interface';
-import { getWeekDays } from './moment';
+import { addToDate, getWeekDays } from './moment';
 
 export class WeeklyCalendar {
   static getColumns(date: Date): IColumn[] {
@@ -15,8 +15,14 @@ export class WeeklyCalendar {
         title: (stWeek - startWeek + 1).toString() + ' week',
         subColumns: days.map(({ name, num, date }) => ({
           label: `${name}, ${num}`,
-          firstDate: date,
-          lastDate: moment(date).startOf('d').add(12, 'h').toDate(),
+          firstSection: {
+            start: date,
+            end: addToDate(date, { h: 12 }, { startOf: ['d'] }),
+          },
+          lastSection: {
+            start: addToDate(date, { h: 12, m: 1 }, { startOf: ['d'] }),
+            end: addToDate(date, { h: 23, m: 59 }, { startOf: ['d'] }),
+          },
         })),
       });
     }

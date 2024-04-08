@@ -11,6 +11,7 @@ import {
 import { IProcessedContent } from '../../main/ngx-schedule-planner.interface';
 import { ISelectedRange } from '../../modules/right-panel/components/body/body.interface';
 import { uuid } from '../../utils/functions';
+import { CONFIG } from '../../utils/constants';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +21,12 @@ export class CalendarService {
     all: IProcessedContent[];
     filtered: IProcessedContent[];
   }>;
-  config: { referenceDate: Date; mode: TMode; columns: IColumn[] };
+  config: {
+    referenceDate: Date;
+    mode: TMode;
+    columns: IColumn[];
+    activity: { factor: { width: number } };
+  };
   content: { all: IProcessedContent[]; filtered: IProcessedContent[] };
   onNavigationChange: Subject<TNavigationChange>;
   onSelectRange: Subject<ISelectedRange>;
@@ -42,6 +48,7 @@ export class CalendarService {
     this.onModeChange = new Subject<TMode>();
     this.content = { all: [], filtered: [] };
     this.config = {
+      activity: { factor: { width: 1 } },
       referenceDate: new Date(),
       mode: EMode.monthly,
       columns: [],
@@ -56,11 +63,12 @@ export class CalendarService {
     this.onPeriodChange.next(period);
   }
 
-  changeMode(mode: TMode) {
-    if (this.config.mode !== mode) {
+  changeMode(mode: TMode, force = false) {
+    if (this.config.mode !== mode || force) {
       this.config.mode = mode;
       this.onModeChange.next(mode);
       this.onNavigationChange.next(ENavigationChange.mode);
+      this.refreshWidthFactor();
     }
   }
 
@@ -80,5 +88,22 @@ export class CalendarService {
 
   onRangeSelection(selectedRange: ISelectedRange) {
     this.onSelectRange.next(selectedRange);
+  }
+
+  private refreshWidthFactor() {
+    let WIDTH_FACTOR = 0;
+
+    switch (this.config.mode) {
+      case EMode.monthly:
+        WIDTH_FACTOR = CONFIG.MONTHLY.ACTIVITY.FACTOR.WIDTH;
+        break;
+      case EMode.weekly:
+        WIDTH_FACTOR = CONFIG.WEEKLY.ACTIVITY.FACTOR.WIDTH;
+        break;
+      case EMode.daily:
+        WIDTH_FACTOR = CONFIG.DAILY.ACTIVITY.FACTOR.WIDTH;
+        break;
+    }
+    this.config.activity.factor.width = WIDTH_FACTOR;
   }
 }

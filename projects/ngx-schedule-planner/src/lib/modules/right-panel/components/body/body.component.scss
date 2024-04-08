@@ -61,13 +61,12 @@ $border: solid 1px #b2b2b2;
   cursor: pointer;
 
   .act {
-    background-color: rgb(88, 88, 88);
+    background-color: #585858;
     position: absolute;
     height: 70%;
-    width: 100%;
-    margin-top: 7.75%;
+    margin-top: 4px;
     border: $border;
-    border-radius: 5px;
+    border-radius: 4px;
     display: grid;
     align-items: center;
     padding: 0 5px;

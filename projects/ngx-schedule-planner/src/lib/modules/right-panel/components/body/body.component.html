@@ -1,33 +1,37 @@
-<ng-template #activitiesRow let-activity="activity">
-  <ng-container *ngFor="let subColumn of subColumns">
-    <section>
-      <section class="content"
-        class="act"
-        [ngStyle]="{'width': activityDuration(activity) }"
-        *ngIf="startActivity(subColumn.firstDate, activity)"
+<ng-template #activityContent let-activity="activity" let-subColumn="subColumn" let-section="section">
+  <section [title]="activity|json">
+      <section class="content act"
+        [ngStyle]="activityStyles(activity)"
+        *ngIf="isActivityStart(section, subColumn, activity)"
       >
-      <section class="tags">
-        <span *ngFor="let tag of activity.tags" [title]="tag.name">{{tag.icon}}</span>
-      </section>
-      <p>{{activity.name}}</p>
+        <section class="tags">
+          <span *ngFor="let tag of activity.tags" [title]="tag.name">{{tag.icon}}</span>
+        </section>
+        <p>{{activity.name}}</p>
       </section>
     </section>
+</ng-template>
+
+<ng-template #activitiesRow let-activity="activity">
+  <ng-container *ngFor="let subColumn of subColumns">
+    <ng-container *ngTemplateOutlet="activityContent; context: { activity, subColumn, section: 'start' }"></ng-container>
+    <ng-container *ngTemplateOutlet="activityContent; context: { activity, subColumn, section: 'end' }"></ng-container>
   </ng-container>
 </ng-template>
 
 <ng-template #newActivityRow let-group="group" let-userSchedule="userSchedule">
   <ng-container *ngFor="let subColumn of subColumns">
     <span
-      (mousedown)="addActivity('start', userSchedule, group, subColumn.firstDate)"
-      (mouseup)="addActivity('end',  userSchedule, group, subColumn.firstDate)"
-      (mouseenter)="addActivity( 'enter', userSchedule, group, subColumn.firstDate)"
-      [ngClass]="{ creating: creatingActivity.isCreating ? isInTheCreation(group, subColumn.firstDate) : false }"
+      (mousedown)="addActivity('start', userSchedule, group, subColumn.firstSection.start)"
+      (mouseup)="addActivity('end',  userSchedule, group, subColumn.firstSection.start)"
+      (mouseenter)="addActivity( 'enter', userSchedule, group, subColumn.firstSection.start)"
+      [ngClass]="{ creating: creatingActivity.isCreating ? isInTheCreation(group, subColumn.firstSection.start) : false }"
     ></span>
     <span
-      (mousedown)="addActivity('start', userSchedule, group, subColumn.lastDate)"
-      (mouseup)="addActivity('end', userSchedule, group, subColumn.lastDate)"
-      (mouseenter)="addActivity('enter', userSchedule, group, subColumn.lastDate)"
-      [ngClass]="{ creating: creatingActivity.isCreating ? isInTheCreation(group, subColumn.lastDate) : false }"
+      (mousedown)="addActivity('start', userSchedule, group, subColumn.lastSection.end)"
+      (mouseup)="addActivity('end', userSchedule, group, subColumn.lastSection.end)"
+      (mouseenter)="addActivity('enter', userSchedule, group, subColumn.lastSection.end)"
+      [ngClass]="{ creating: creatingActivity.isCreating ? isInTheCreation(group, subColumn.lastSection.end) : false }"
     ></span>
     </ng-container>
 </ng-template>

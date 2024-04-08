@@ -32,7 +32,7 @@ export class NgxSchedulePlannerComponent {
   }
 
   @Input() set mode(mode: TMode) {
-    this.calendarService.changeMode(mode);
+    this.calendarService.changeMode(mode, true);
   }
 
   constructor(private calendarService: CalendarService) {
