@@ -6,6 +6,6 @@ export const CONFIG = {
     ACTIVITY: { FACTOR: { WIDTH: 60 } },
   },
   DAILY: {
-    ACTIVITY: { FACTOR: { WIDTH: 60 } },
+    ACTIVITY: { FACTOR: { WIDTH: 30 } },
   },
 };
