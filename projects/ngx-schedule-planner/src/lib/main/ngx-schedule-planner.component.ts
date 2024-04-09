@@ -6,7 +6,7 @@ import {
   TMode,
 } from '../modules/right-panel/components/header/header.interface';
 import { ISelectedRange } from '../modules/right-panel/components/body/body.interface';
-import { IContent } from '../ngx-schedule-planner.interface';
+import { IContent, ICustomization } from '../ngx-schedule-planner.interface';
 import moment from 'moment';
 import { clone, groupActivities } from '../utils/functions';
 
@@ -34,6 +34,10 @@ export class NgxSchedulePlannerComponent {
 
   @Input() set mode(mode: TMode) {
     this.calendarService.changeMode(mode, true);
+  }
+
+  @Input() set customization(customization: ICustomization) {
+    this.calendarService.setCustomization(customization);
   }
 
   constructor(private calendarService: CalendarService) {

@@ -5,6 +5,7 @@ import { BaseVariables } from '../../../../utils/base-variables';
 import { MonthlyCalendar } from '../../../../utils/monthly-calendar';
 import { WeeklyCalendar } from '../../../../utils/weekly-calendar';
 import { DailyCalendar } from '../../../../utils/daily-calendar';
+import { addToDate } from '../../../../utils/moment';
 import moment from 'moment';
 
 @Component({
@@ -80,7 +81,7 @@ export class HeaderComponent extends BaseVariables {
         date = new Date();
         break;
       case EPeriod.next:
-        date = moment(referenceDate).add(1, unit).toDate();
+        date = addToDate(referenceDate, { [unit]: 1 });
         break;
     }
     this.calendarService.changeReferenceDate(date);

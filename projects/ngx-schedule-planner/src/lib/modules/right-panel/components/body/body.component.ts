@@ -4,21 +4,21 @@ import {
   IProcessedContent,
   IGroup,
 } from '../../../../main/ngx-schedule-planner.interface';
-import { CalendarService } from '../../../../services/calendar/calendar.service';
 import moment from 'moment';
 import { ICreatingActivity } from './body.interface';
-import { EMode } from '../header/header.interface';
+import { ActivityHTML } from '../../../../utils/classes/activity-html';
 
 @Component({
   selector: 'app-body',
   templateUrl: './body.component.html',
   styleUrls: ['./body.component.scss'],
 })
-export class BodyComponent implements OnInit {
+export class BodyComponent extends ActivityHTML implements OnInit {
   creatingActivity!: ICreatingActivity;
   content!: IProcessedContent[];
 
-  constructor(private calendarService: CalendarService) {
+  constructor() {
+    super();
     this.calendarService.onContentChange.subscribe((content) => {
       this.content = content.filtered;
     });
@@ -102,39 +102,6 @@ export class BodyComponent implements OnInit {
     this.finishSelection();
   }
 
-  activityStyles(activity: IActivity) {
-    const minutes = activity.durationInMin;
-    const {
-      activity: {
-        factor: { width: widthFactor },
-      },
-    } = this.calendarService.config;
-    let left = '';
-    let width = '';
-    let leftMinutes = moment(activity.startDate).diff(
-      moment(activity.startDate).startOf('d'),
-      'm'
-    );
-    switch (this.calendarService.config.mode) {
-      case EMode.monthly:
-        const daysOfMonth = moment(activity.startDate).daysInMonth();
-        leftMinutes -= 60;
-
-        width = `calc((${widthFactor}/${daysOfMonth}) * ${minutes})`;
-        left = `calc((${widthFactor}/${daysOfMonth}) * ${leftMinutes})`;
-        break;
-      case EMode.weekly:
-        width = `calc((${widthFactor}) * ${minutes})`;
-        left = `calc((${widthFactor}) * ${leftMinutes})`;
-        break;
-      case EMode.daily:
-        leftMinutes -= 60;
-        width = `calc((${widthFactor}) * ${minutes})`;
-        left = `calc((${widthFactor}) * ${leftMinutes})`;
-        break;
-    }
-    return { width, left };
-  }
 
   filterActivities(groupedActivities: IActivity[][]): IActivity[][] {
     const filtered: IActivity[][] = [];
@@ -149,7 +116,6 @@ export class BodyComponent implements OnInit {
         } = this.subColumns.at(-1)!;
 
         if (moment(activity.startDate).isBetween(start, end)) {
-          console.log(this.subColumns);
           tempGroup.push(activity);
         }
       }
@@ -157,4 +123,5 @@ export class BodyComponent implements OnInit {
     }
     return filtered;
   }
+
 }

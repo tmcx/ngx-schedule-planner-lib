@@ -86,3 +86,16 @@ export function groupActivities(activities: IActivity[]): IActivity[][] {
 
   return groups;
 }
+
+export function getValueOfObjectByPath<T>(
+  object: { [key: string]: any },
+  path: string
+): T {
+  const route = path.split('.');
+
+  for (const section of route) {
+    object = object[section];
+  }
+
+  return object as T;
+}

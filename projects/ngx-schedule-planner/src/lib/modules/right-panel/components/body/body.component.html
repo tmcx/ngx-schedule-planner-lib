@@ -20,11 +20,7 @@
 </ng-template>
 
 <ng-template #activitiesRow let-activities="activities">
-      <section *ngFor="let activity of activities" class="activity" [ngStyle]="activityStyles(activity)">
-          <section class="tags">
-            <span *ngFor="let tag of activity.tags" [title]="tag.name">{{tag.icon}}</span>
-          </section>
-          <p>{{activity.name}}</p>
+      <section *ngFor="let activity of activities" class="activity" [ngStyle]="activityStyles(activity)" [innerHTML]="activityHTMLContent(activity)" >
       </section>
 </ng-template>
 

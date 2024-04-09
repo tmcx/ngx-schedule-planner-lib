@@ -58,7 +58,7 @@ $border: solid 1px #b2b2b2;
   font-size: 18px;
 }
 
-.activity {
+::ng-deep ngx-schedule-planner app-right-panel .activity {
   background-color: #585858;
   position: absolute;
   height: 22px;
@@ -76,11 +76,15 @@ $border: solid 1px #b2b2b2;
     user-select: none;
   }
 
-  p {
-    text-wrap: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    cursor: pointer;
+  .text {
+    display: grid;
+    grid-auto-flow: column;
+    p {
+      text-wrap: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      cursor: pointer;
+    }
   }
 
   .tags {
@@ -88,6 +92,15 @@ $border: solid 1px #b2b2b2;
     grid-auto-flow: column;
     span {
       cursor: pointer;
+    }
+  }
+
+  .icon-texts {
+    display: grid;
+    grid-auto-flow: column;
+
+    p {
+      text-wrap: nowrap;
     }
   }
 }

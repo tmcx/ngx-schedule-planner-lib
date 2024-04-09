@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MOCK } from './mock';
 import moment from 'moment';
-import { IContent } from 'ngx-schedule-planner';
+import { IContent, ICustomization } from 'ngx-schedule-planner';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +10,28 @@ import { IContent } from 'ngx-schedule-planner';
 })
 export class AppComponent {
   mock = this.format();
+  customization: ICustomization;
+
+  constructor() {
+    this.customization = {
+      CALENDAR: {
+        ACTIVITY: {
+          INLINE_SHOW: [
+            {
+              type: 'icon-text',
+              valuePath: 'assistants',
+              isArray: false,
+            },
+            {
+              type: 'text',
+              valuePath: 'name',
+              isArray: false,
+            },
+          ],
+        },
+      },
+    };
+  }
 
   log($event: any) {
     console.log($event);
@@ -20,8 +42,18 @@ export class AppComponent {
     content.forEach(({ groups }) => {
       groups.forEach((group) => {
         group.activities.forEach((activity) => {
-          activity.startDate = moment(new Date(activity.startDate)).date(7).month(3).toDate();
-          activity.endDate = moment(new Date(activity.endDate)).date(7).month(3).toDate();
+          activity.startDate = moment(new Date(activity.startDate))
+            .date(8)
+            .month(3)
+            .toDate();
+          activity.endDate = moment(new Date(activity.endDate))
+            .date(8)
+            .month(3)
+            .toDate();
+          activity['assistants'] = {
+            icon: '🙋‍♂️',
+            text: '3',
+          };
         });
       });
     });

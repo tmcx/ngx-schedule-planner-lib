@@ -8,7 +8,10 @@ import {
   TMode,
   TNavigationChange,
 } from '../../modules/right-panel/components/header/header.interface';
-import { IProcessedContent } from '../../main/ngx-schedule-planner.interface';
+import {
+  IProcessedContent,
+  IProcessedCustomization,
+} from '../../main/ngx-schedule-planner.interface';
 import { ISelectedRange } from '../../modules/right-panel/components/body/body.interface';
 import { uuid } from '../../utils/functions';
 import { CONFIG } from '../../utils/constants';
@@ -26,6 +29,7 @@ export class CalendarService {
     mode: TMode;
     columns: IColumn[];
     activity: { factor: { width: string } };
+    customization: IProcessedCustomization;
   };
   content: { all: IProcessedContent[]; filtered: IProcessedContent[] };
   onNavigationChange: Subject<TNavigationChange>;
@@ -51,6 +55,7 @@ export class CalendarService {
       activity: { factor: { width: '' } },
       referenceDate: new Date(),
       mode: EMode.monthly,
+      customization: {},
       columns: [],
     };
   }
@@ -105,5 +110,9 @@ export class CalendarService {
         break;
     }
     this.config.activity.factor.width = WIDTH_FACTOR;
+  }
+
+  setCustomization(customization: IProcessedCustomization) {
+    this.config.customization = customization;
   }
 }

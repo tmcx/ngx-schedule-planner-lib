@@ -25,12 +25,47 @@ export interface IGroup {
 export interface IActivity {
   id: number;
   name: string;
+  durationInMin: number;
   startDate: Date;
   endDate: Date;
   repeat: string[];
-  tags: {
-    id: number;
-    icon: string;
-    name: string;
-  }[];
+  tags: ITag[];
+  [key: string]: IIconText | string | number | any;
+}
+
+export interface IIconText {
+  icon: string;
+  text: string;
+}
+
+export interface ITag {
+  id: number;
+  icon: string;
+  name: string;
+}
+
+export interface ICustomization {
+  CALENDAR?: {
+    ACTIVITY?: {
+      INLINE_SHOW?: (ICTag | ICText | ICIConText)[];
+    };
+  };
+}
+
+interface ICTag {
+  valuePath: string;
+  isArray?: boolean;
+  type: 'icon-tag';
+}
+
+interface ICText {
+  valuePath: string;
+  isArray?: boolean;
+  type: 'text';
+}
+
+export interface ICIConText {
+  valuePath: string;
+  isArray?: boolean;
+  type: 'icon-text';
 }
