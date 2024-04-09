@@ -54,3 +54,12 @@ export function addToDate(
   }
   return momentDate.toDate();
 }
+
+export function isBetween(date: string | Date, from: Date, to: Date, inclusive = true) {
+  return moment(date).isBetween(
+    from,
+    to,
+    undefined,
+    inclusive ? '[]' : undefined
+  );
+}

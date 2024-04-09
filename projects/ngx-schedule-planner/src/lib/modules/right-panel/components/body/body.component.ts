@@ -4,9 +4,9 @@ import {
   IProcessedContent,
   IGroup,
 } from '../../../../main/ngx-schedule-planner.interface';
-import moment from 'moment';
 import { ICreatingActivity } from './body.interface';
 import { ActivityHTML } from '../../../../utils/classes/activity-html';
+import { isBetween } from '../../../../utils/moment';
 
 @Component({
   selector: 'app-body',
@@ -91,31 +91,26 @@ export class BodyComponent extends ActivityHTML implements OnInit {
   isInTheCreation(group: IGroup, refDate: Date) {
     const { fromRefDate, toRefDate } = this.creatingActivity;
     const sameGroup = this.creatingActivity.group === group;
+    let isIn = false;
+    if (fromRefDate && toRefDate) {
+      isIn = isBetween(refDate, fromRefDate, toRefDate);
+    }
 
-    const isAfterFirst = fromRefDate && fromRefDate <= refDate;
-    const isBeforeLast = toRefDate && toRefDate >= refDate;
-
-    return sameGroup && isAfterFirst && isBeforeLast;
+    return sameGroup && isIn;
   }
 
   @HostListener('mouseup') onClick() {
     this.finishSelection();
   }
 
-
   filterActivities(groupedActivities: IActivity[][]): IActivity[][] {
+    const start = this.subColumns.at(0)!.firstSection.start;
+    const end = this.subColumns.at(-1)!.lastSection.end;
     const filtered: IActivity[][] = [];
     for (const group of groupedActivities) {
       const tempGroup: IActivity[] = [];
       for (const activity of group) {
-        const {
-          firstSection: { start },
-        } = this.subColumns.at(0)!;
-        const {
-          lastSection: { end },
-        } = this.subColumns.at(-1)!;
-
-        if (moment(activity.startDate).isBetween(start, end)) {
+        if (isBetween(activity.startDate, start, end)) {
           tempGroup.push(activity);
         }
       }
@@ -123,5 +118,4 @@ export class BodyComponent extends ActivityHTML implements OnInit {
     }
     return filtered;
   }
-
 }
