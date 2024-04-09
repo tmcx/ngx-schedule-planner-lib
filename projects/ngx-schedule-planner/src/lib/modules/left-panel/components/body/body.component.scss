@@ -71,6 +71,14 @@ $border: solid 1px $border-color;
 
     .group {
       padding: 10px;
+      display: grid;
+      grid-auto-flow: column;
+      align-items: center;
+      justify-content: start;
+
+      h1 {
+        line-height: 14px;
+      }
 
       &:not(:last-of-type) {
         border-bottom: $border;
