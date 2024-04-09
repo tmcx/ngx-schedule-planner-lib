@@ -48,7 +48,7 @@ export interface ITag {
 export interface IProcessedCustomization {
   CALENDAR?: {
     ACTIVITY?: {
-      INLINE_SHOW?: (ICTag | ICText | ICIConText)[];
+      INLINE_SHOW?: (ICTag | ICText | ICIConText | ICDate)[];
     };
   };
 }
@@ -69,4 +69,11 @@ export interface ICIConText {
   valuePath: string;
   isArray?: boolean;
   type: 'icon-text';
+}
+
+export interface ICDate {
+  valuePath: string;
+  isArray?: boolean;
+  format?: string;
+  type: 'date';
 }

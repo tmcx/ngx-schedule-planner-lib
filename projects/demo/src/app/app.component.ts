@@ -11,6 +11,7 @@ import { IContent, ICustomization } from 'ngx-schedule-planner';
 export class AppComponent {
   mock = this.format();
   customization: ICustomization;
+  referencedDate = moment(new Date()).date(9).toDate();
 
   constructor() {
     this.customization = {
@@ -25,6 +26,18 @@ export class AppComponent {
             {
               type: 'text',
               valuePath: 'name',
+              isArray: false,
+            },
+            {
+              type: 'date',
+              valuePath: 'startDate',
+              format: 'HH:mm',
+              isArray: false,
+            },
+            {
+              type: 'date',
+              valuePath: 'endDate',
+              format: 'HH:mm',
               isArray: false,
             },
           ],
@@ -43,11 +56,9 @@ export class AppComponent {
       groups.forEach((group) => {
         group.activities.forEach((activity) => {
           activity.startDate = moment(new Date(activity.startDate))
-            .date(8)
             .month(3)
             .toDate();
           activity.endDate = moment(new Date(activity.endDate))
-            .date(8)
             .month(3)
             .toDate();
           activity['assistants'] = {

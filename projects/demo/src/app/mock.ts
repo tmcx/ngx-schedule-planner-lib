@@ -21,8 +21,8 @@ export const MOCK = [
           {
             id: 1,
             name: "Machine Learning Basics",
-            startDate: "2024-03-20T09:00:00",
-            endDate: "2024-03-20T13:00:00",
+            startDate: "2024-04-08T09:00:00",
+            endDate: "2024-04-09T13:00:00",
             repeat: ["2024-04-01", "2024-04-15"],
             tags: [
               { id: 1, icon: "🤖", name: "Machine Learning" },
@@ -32,8 +32,8 @@ export const MOCK = [
           {
             id: 2,
             name: "Data Structures and Algorithms",
-            startDate: "2024-04-05T10:00:00",
-            endDate: "2024-04-05T13:00:00",
+            startDate: "2024-04-08T10:00:00",
+            endDate: "2024-04-08T13:00:00",
             repeat: ["2024-04-20", "2024-05-05"],
             tags: [
               { id: 3, icon: "💻", name: "Programming" },
@@ -43,8 +43,8 @@ export const MOCK = [
           {
             id: 3,
             name: "Deep Learning Fundamentals",
-            startDate: "2024-05-10T13:00:00",
-            endDate: "2024-05-10T14:00:00",
+            startDate: "2024-04-08T13:00:00",
+            endDate: "2024-04-08T14:00:00",
             repeat: ["2024-05-25", "2024-06-05"],
             tags: [
               { id: 5, icon: "🧠", name: "Deep Learning" },
@@ -61,8 +61,8 @@ export const MOCK = [
           {
             id: 4,
             name: "Blockchain Basics",
-            startDate: "2024-06-20T14:00:00",
-            endDate: "2024-06-20T23:59:00",
+            startDate: "2024-04-08T14:00:00",
+            endDate: "2024-04-08T23:59:00",
             repeat: ["2024-07-01", "2024-07-15"],
             tags: [
               { id: 7, icon: "🔗", name: "Blockchain" },
@@ -72,8 +72,8 @@ export const MOCK = [
           {
             id: 5,
             name: "Cybersecurity Essentials",
-            startDate: "2024-07-05T10:00:00",
-            endDate: "2024-07-05T13:00:00",
+            startDate: "2024-04-08T10:00:00",
+            endDate: "2024-04-08T13:00:00",
             repeat: ["2024-07-20", "2024-08-05"],
             tags: [
               { id: 9, icon: "🛡️", name: "Cybersecurity" },
@@ -105,8 +105,8 @@ export const MOCK = [
           {
             id: 6,
             name: "Global Refugee Crisis Seminar",
-            startDate: "2024-04-15T16:30:00",
-            endDate: "2024-04-15T17:00:00",
+            startDate: "2024-04-08T16:30:00",
+            endDate: "2024-04-08T17:00:00",
             repeat: ["2024-05-01", "2024-05-15"],
             tags: [
               { id: 11, icon: "🚸", name: "Refugee Crisis" },
@@ -116,8 +116,8 @@ export const MOCK = [
           {
             id: 7,
             name: "Legal Rights of Indigenous Peoples",
-            startDate: "2024-05-05T13:00:00",
-            endDate: "2024-05-05T16:00:00",
+            startDate: "2024-04-08T13:00:00",
+            endDate: "2024-04-08T16:00:00",
             repeat: ["2024-05-20", "2024-06-05"],
             tags: [
               { id: 13, icon: "🏞️", name: "Indigenous Rights" },

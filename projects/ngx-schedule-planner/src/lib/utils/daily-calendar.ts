@@ -12,7 +12,7 @@ export class DailyCalendar {
     for (const { name, num } of days) {
       columns.push({
         title: `${name}, ${num}`,
-        subColumns: arrayOf(23, 1).map((hr, i) => ({
+        subColumns: arrayOf(23).map((hr, i) => ({
           label: `${hr}:00`,
           firstSection: {
             start: addToDate(date, { h: i }, { startOf: ['d'] }),

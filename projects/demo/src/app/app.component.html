@@ -1,6 +1,7 @@
 <ngx-schedule-planner
   [content]="mock"
   [mode]="'daily'"
+  [referencedDate]="referencedDate"
   [customization]="customization"
   (onAddActivityClick)="log($event)"
   (onSelectRange)="log($event)"

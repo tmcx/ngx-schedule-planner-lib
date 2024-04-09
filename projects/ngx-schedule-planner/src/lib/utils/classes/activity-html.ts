@@ -70,6 +70,20 @@ export class ActivityHTML {
           }
           htmlContent += '</section>';
           break;
+        case 'date':
+          htmlContent += '<section class="dates">';
+          const defaultFormat = customization.format ?? 'YYYY-MM-DD HH:mm';
+          if (isArray) {
+            const dates = getValueOfObjectByPath<string[]>(activity, valuePath);
+            for (const date of dates) {
+              htmlContent += `<p>${moment(date).format(defaultFormat)}</p>`;
+            }
+          } else {
+            const date = getValueOfObjectByPath<string>(activity, valuePath);
+            htmlContent += `<p>${moment(date).format(defaultFormat)}</p>`;
+          }
+          htmlContent += '</section>';
+          break;
       }
     }
 
@@ -92,8 +106,6 @@ export class ActivityHTML {
     switch (this.calendarService.config.mode) {
       case EMode.monthly:
         const daysOfMonth = moment(activity.startDate).daysInMonth();
-        leftMinutes -= 60;
-
         width = `calc((${widthFactor}/${daysOfMonth}) * ${minutes})`;
         left = `calc((${widthFactor}/${daysOfMonth}) * ${leftMinutes})`;
         break;
@@ -102,7 +114,6 @@ export class ActivityHTML {
         left = `calc((${widthFactor}) * ${leftMinutes})`;
         break;
       case EMode.daily:
-        leftMinutes -= 60;
         width = `calc((${widthFactor}) * ${minutes})`;
         left = `calc((${widthFactor}) * ${leftMinutes})`;
         break;

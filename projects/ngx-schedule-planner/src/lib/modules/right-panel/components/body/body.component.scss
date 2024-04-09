@@ -37,6 +37,7 @@ $border: solid 1px #b2b2b2;
 
 .row {
   position: relative;
+  overflow: hidden;
   width: 100%;
   height: 30px;
   padding: 4px 0 5px 0;
@@ -72,6 +73,10 @@ $border: solid 1px #b2b2b2;
   cursor: pointer;
   gap: 3px;
 
+  &:hover {
+    opacity: 0.8;
+  }
+
   * {
     user-select: none;
   }
@@ -84,12 +89,24 @@ $border: solid 1px #b2b2b2;
       text-overflow: ellipsis;
       overflow: hidden;
       cursor: pointer;
+      line-height: 14px;
     }
   }
 
   .tags {
     display: grid;
     grid-auto-flow: column;
+    line-height: 14px;
+    span {
+      cursor: pointer;
+    }
+  }
+
+  .dates {
+    display: grid;
+    grid-auto-flow: column;
+    text-wrap: nowrap;
+    line-height: 14px;
     span {
       cursor: pointer;
     }
@@ -98,6 +115,7 @@ $border: solid 1px #b2b2b2;
   .icon-texts {
     display: grid;
     grid-auto-flow: column;
+    line-height: 14px;
 
     p {
       text-wrap: nowrap;
