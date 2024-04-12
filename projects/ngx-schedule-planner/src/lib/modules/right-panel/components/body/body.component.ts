@@ -7,6 +7,8 @@ import {
 import { ICreatingActivity } from './body.interface';
 import { ActivityHTML } from '../../../../utils/classes/activity-html';
 import { isBetween } from '../../../../utils/moment';
+import moment from 'moment';
+import { clone } from '../../../../utils/functions';
 
 @Component({
   selector: 'app-body',
@@ -114,7 +116,37 @@ export class BodyComponent extends ActivityHTML implements OnInit {
           tempGroup.push(activity);
         }
       }
-      filtered.push(tempGroup);
+      if (tempGroup.length > 0) {
+        filtered.push(tempGroup);
+      }
+    }
+    return filtered;
+  }
+
+  getRepetitions(groupedActivities: IActivity[][]) {
+    const start = this.subColumns.at(0)!.firstSection.start;
+    const end = this.subColumns.at(-1)!.lastSection.end;
+    const filtered: IActivity[][] = [];
+    for (const group of groupedActivities) {
+      const tempGroup: IActivity[] = [];
+      for (const activity of group) {
+        for (const repeat of activity.repeat) {
+          if (isBetween(repeat, start, end)) {
+            const activityReplica = clone(activity);
+            const startDate = moment(activity.startDate);
+
+            activityReplica.startDate = moment(repeat)
+              .hour(startDate.hour())
+              .minute(startDate.minute())
+              .second(startDate.second())
+              .toDate();
+            tempGroup.push(activityReplica);
+          }
+        }
+      }
+      if (tempGroup.length > 0) {
+        filtered.push(tempGroup);
+      }
     }
     return filtered;
   }

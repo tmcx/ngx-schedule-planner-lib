@@ -37,5 +37,11 @@
         *ngTemplateOutlet="activitiesRow; context: { activities }"
       ></ng-container>
     </section>
+
+    <section class="row" *ngFor="let activities of getRepetitions(group.groupedActivities)">
+      <ng-container
+        *ngTemplateOutlet="activitiesRow; context: { activities }"
+      ></ng-container>
+    </section>
   </section>
 </section>
