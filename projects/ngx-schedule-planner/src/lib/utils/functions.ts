@@ -35,23 +35,19 @@ export async function querySelector(
 
 export async function querySelectorAll(
   selector: string,
-  wait = false
+  wait = true
 ): Promise<HTMLElement[]> {
   const getElements = () =>
     Array.from(document.querySelectorAll(selector)) as unknown as HTMLElement[];
-  if (wait) {
-    return new Promise<HTMLElement[]>((resolve) => {
-      const interval = setInterval(() => {
-        const elements = getElements();
-        if (elements.length) {
-          resolve(elements);
-          clearInterval(interval);
-        }
-      }, 100);
-    });
-  } else {
-    return getElements();
-  }
+  return new Promise<HTMLElement[]>((resolve) => {
+    const interval = setInterval(() => {
+      const elements = getElements();
+      if (elements.length || !wait) {
+        resolve(elements);
+        clearInterval(interval);
+      }
+    }, 100);
+  });
 }
 
 export function groupActivities(activities: IActivity[]): IActivity[][] {
@@ -98,4 +94,42 @@ export function getValueOfObjectByPath<T>(
   }
 
   return object as T;
+}
+
+export async function clientHeight(els: HTMLElement[] | HTMLElement | string) {
+  let values = [];
+  if (Array.isArray(els)) {
+    values = els;
+  } else if (typeof els == 'string') {
+    values = await querySelectorAll(els, false);
+  } else {
+    values = [els];
+  }
+  return values.reduce((prev, curr) => curr.clientHeight + prev, 0);
+}
+
+export async function setHeight(
+  els: HTMLElement[] | HTMLElement | string[] | string,
+  value: string
+) {
+  let values = [];
+  if (Array.isArray(els)) {
+    if (els.length == 0) {
+      return;
+    }
+    if (typeof els[0] == 'string') {
+      for (const selector of els) {
+        values.push(...(await querySelectorAll(selector as string, false)));
+      }
+    } else {
+      values = els as HTMLElement[];
+    }
+  } else if (typeof els == 'string') {
+    values = await querySelectorAll(els, false);
+  } else {
+    values = [els];
+  }
+  values.forEach((el) => {
+    el.style.height = value;
+  });
 }
