@@ -30,6 +30,7 @@ export class CalendarService {
     columns: IColumn[];
     activity: { factor: { width: string } };
     customization: IProcessedCustomization;
+    isLoading: boolean;
   };
   content: { all: IProcessedContent[]; filtered: IProcessedContent[] };
   onNavigationChange: Subject<TNavigationChange>;
@@ -56,6 +57,7 @@ export class CalendarService {
       referenceDate: new Date(),
       mode: EMode.monthly,
       customization: {},
+      isLoading: false,
       columns: [],
     };
   }
@@ -114,5 +116,9 @@ export class CalendarService {
 
   setCustomization(customization: IProcessedCustomization) {
     this.config.customization = customization;
+  }
+
+  setLoading(isLoading: boolean) {
+    this.config.isLoading = isLoading;
   }
 }

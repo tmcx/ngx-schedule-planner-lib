@@ -70,4 +70,8 @@ export class NgxSchedulePlannerComponent {
     });
     return parsedContent;
   }
+
+  get isLoading() {
+    return this.calendarService.config.isLoading;
+  }
 }

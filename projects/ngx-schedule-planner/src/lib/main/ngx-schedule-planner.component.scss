@@ -1,6 +1,7 @@
 $border: solid 1px #b2b2b2;
 
 ::ng-deep ngx-schedule-planner {
+  position: relative;
   * {
     font-family: "Roboto", "sans-serif";
     box-sizing: border-box;
@@ -40,4 +41,14 @@ $border: solid 1px #b2b2b2;
   display: grid;
   grid-auto-flow: column;
   grid-template-columns: 350px 1fr;
+}
+
+.loading {
+  position: absolute;
+  width: 100%;
+  height: calc(100% - 149px);
+  border: $border;
+  top: 149px;
+  background-color: rgb(94, 94, 94);
+  z-index: 1;
 }
