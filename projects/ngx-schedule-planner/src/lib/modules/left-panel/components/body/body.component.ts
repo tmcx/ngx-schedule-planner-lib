@@ -2,7 +2,7 @@ import { AfterViewInit, Component } from '@angular/core';
 import { IProcessedContent } from '../../../../main/ngx-schedule-planner.interface';
 import { CalendarService } from '../../../../services/calendar/calendar.service';
 import {
-  clientHeight,
+  getElementSize,
   querySelectorAll,
   setHeight,
 } from '../../../../utils/functions';
@@ -44,19 +44,22 @@ export class BodyComponent implements AfterViewInit {
       const activityGroup = activityGroups[i];
       const userGroup = userGroups[i];
 
-      const activityGroupHeight = await clientHeight(activityGroup);
-      const userGroupHeight = await clientHeight(userGroup);
+      const { clientHeight: activityGroupHeight } = await getElementSize(
+        activityGroup
+      );
+      const { clientHeight: userGroupHeight } = await getElementSize(userGroup);
       const container = (userGroup as any).parentElement;
-      const userGroupsHeight = await clientHeight(container);
+      const { clientHeight: userGroupsHeight } = await getElementSize(
+        container
+      );
       const isLast =
         userGroup == container.querySelector('.group:last-of-type');
 
       if (isLast) {
-        const remainingSpace =
-          userGroupsHeight -
-          (await clientHeight(
-            Array.from(container.querySelectorAll('.group:not(:last-of-type)'))
-          ));
+        const { clientHeight: restOfGroupHeight } = await getElementSize(
+          Array.from(container.querySelectorAll('.group:not(:last-of-type)'))
+        );
+        const remainingSpace = userGroupsHeight - restOfGroupHeight;
         const size =
           activityGroupHeight > remainingSpace
             ? activityGroupHeight

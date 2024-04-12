@@ -30,9 +30,7 @@ export class BodyComponent extends ActivityHTML implements OnInit {
   ngOnInit() {}
 
   get subColumns() {
-    return this.calendarService.config.columns.length
-      ? this.calendarService.config.columns[0].subColumns
-      : [];
+    return this.calendarService.subColumns();
   }
 
   addActivity(
@@ -106,8 +104,8 @@ export class BodyComponent extends ActivityHTML implements OnInit {
   }
 
   filterActivities(groupedActivities: IActivity[][]): IActivity[][] {
-    const start = this.subColumns[0]!.firstSection.start;
-    const end = this.subColumns[this.subColumns.length-1]!.lastSection.end;
+    const start = this.subColumns.startDate!;
+    const end = this.subColumns.endDate!;
     const filtered: IActivity[][] = [];
     for (const group of groupedActivities) {
       const tempGroup: IActivity[] = [];
@@ -124,8 +122,8 @@ export class BodyComponent extends ActivityHTML implements OnInit {
   }
 
   getRepetitions(groupedActivities: IActivity[][]) {
-    const start = this.subColumns[0]!.firstSection.start;
-    const end = this.subColumns[this.subColumns.length-1]!.lastSection.end;
+    const start = this.subColumns.startDate!;
+    const end = this.subColumns.endDate!;
     const filtered: IActivity[][] = [];
     for (const group of groupedActivities) {
       const tempGroup: IActivity[] = [];

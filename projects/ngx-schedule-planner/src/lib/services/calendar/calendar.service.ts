@@ -121,4 +121,21 @@ export class CalendarService {
   setLoading(isLoading: boolean) {
     this.config.isLoading = isLoading;
   }
+
+  subColumns() {
+    const subColumns = this.config.columns.length
+      ? this.config.columns[0].subColumns
+      : [];
+    const endDate =
+      subColumns.length > 0
+        ? subColumns[subColumns.length - 1].lastSection.end
+        : null;
+    const startDate =
+      subColumns.length > 0 ? subColumns[0].firstSection.start : null;
+    return {
+      subColumns,
+      startDate,
+      endDate,
+    };
+  }
 }

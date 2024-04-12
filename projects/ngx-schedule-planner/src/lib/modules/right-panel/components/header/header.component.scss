@@ -36,9 +36,7 @@ $row-height: 24px;
 
 .sub-column {
   @extend .center-column;
-  &:not(:last-of-type) {
-    border-right: $border;
-  }
+  box-shadow: 1px 0px #b9b9b9;
 }
 
 .center-column {
