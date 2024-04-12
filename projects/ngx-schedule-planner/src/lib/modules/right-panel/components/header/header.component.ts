@@ -86,6 +86,7 @@ export class HeaderComponent extends BaseVariables {
     }
     this.calendarService.changeReferenceDate(date);
     this.calendarService.changePeriod(EPeriod.next);
+    this.calendarService.changeNavigation(EPeriod.next);
   }
 
   onSelectDate($event: any) {
