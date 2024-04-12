@@ -1,7 +1,11 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { IProcessedContent } from '../../../../main/ngx-schedule-planner.interface';
 import { CalendarService } from '../../../../services/calendar/calendar.service';
-import { querySelectorAll } from '../../../../utils/functions';
+import {
+  clientHeight,
+  querySelectorAll,
+  setHeight,
+} from '../../../../utils/functions';
 
 @Component({
   selector: 'app-body',
@@ -15,6 +19,10 @@ export class BodyComponent implements AfterViewInit {
     this.calendarService.onContentChange.subscribe((content) => {
       this.content = content.filtered;
     });
+
+    this.calendarService.onNavigationChange.subscribe(() => {
+      this.resizeActivities();
+    });
   }
 
   ngAfterViewInit(): void {
@@ -26,62 +34,43 @@ export class BodyComponent implements AfterViewInit {
 
   async resizeActivities() {
     const { uuid } = this.calendarService;
-    const rightPanelGroupsSelector = (num: number) =>
-      `#${uuid} app-right-panel app-body .user-groups:nth-of-type(${num}) .group`;
-    const leftPanelGroupsSelector = (num: number) =>
-      `#${uuid} app-left-panel app-body .profile-group:nth-of-type(${num}) .group`;
-    const leftPanelProfilesSelector = `#${uuid} app-left-panel app-body .profile-group`;
+    const rightPanelGroupsSelector = `#${uuid} app-right-panel app-body .user-groups .group`;
+    const leftPanelGroupsSelector = `#${uuid} app-left-panel app-body .profile-group .group`;
 
-    const profiles = await querySelectorAll(leftPanelProfilesSelector, true);
+    const activityGroups = await querySelectorAll(rightPanelGroupsSelector);
+    const userGroups = await querySelectorAll(leftPanelGroupsSelector);
 
-    for (let index = 0; index < profiles.length; index++) {
-      const profile = profiles[index];
+    for (let i = 0; i < userGroups.length; i++) {
+      const activityGroup = activityGroups[i];
+      const userGroup = userGroups[i];
 
-      const userGroups = await querySelectorAll(
-        leftPanelGroupsSelector(index + 1),
-        true
-      );
-      const activityGroups = await querySelectorAll(
-        rightPanelGroupsSelector(index + 1),
-        true
-      );
+      const activityGroupHeight = await clientHeight(activityGroup);
+      const userGroupHeight = await clientHeight(userGroup);
+      const container = (userGroup as any).parentElement;
+      const userGroupsHeight = await clientHeight(container);
+      const isLast =
+        userGroup == container.querySelector('.group:last-of-type');
 
-      const userProfileHeight = profile.clientHeight;
-      const userProfileGroupsHeight = userGroups.reduce(
-        (prev, curr) => curr.clientHeight + prev,
-        0
-      );
-      const userActivitiesHeight = activityGroups.reduce(
-        (prev, curr) => curr.clientHeight + prev,
-        0
-      );
+      if (isLast) {
+        const remainingSpace =
+          userGroupsHeight -
+          (await clientHeight(
+            Array.from(container.querySelectorAll('.group:not(:last-of-type)'))
+          ));
+        const size =
+          activityGroupHeight > remainingSpace
+            ? activityGroupHeight
+            : remainingSpace;
 
-      userGroups.forEach((group, i) => {
-        const activitiesHeight = activityGroups[i].clientHeight;
-        const groupsHeight = group.clientHeight;
-
-        const isLast = i == userGroups.length - 1;
-        if (!isLast) {
-          if (groupsHeight < activitiesHeight) {
-            group.style.height = activitiesHeight + 'px';
-          } else {
-            activityGroups[i].style.height = groupsHeight + 1 + 'px';
-          }
+        await setHeight(userGroup, size);
+        await setHeight(activityGroup, size);
+      } else {
+        if (activityGroupHeight > userGroupHeight) {
+          await setHeight(userGroup, activityGroupHeight);
+        } else {
+          await setHeight(activityGroup, userGroupHeight + 1);
         }
-
-        if (isLast) {
-          const refHeight =
-            userProfileHeight < userActivitiesHeight
-              ? userActivitiesHeight
-              : userProfileHeight;
-          const lastGroupHeight =
-            userGroups.length == 1
-              ? refHeight
-              : refHeight - userProfileGroupsHeight + userGroups.length;
-          group.style.height = lastGroupHeight + 'px';
-          activityGroups[i].style.height = lastGroupHeight + 'px';
-        }
-      });
+      }
     }
   }
 }

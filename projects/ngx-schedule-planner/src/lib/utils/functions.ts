@@ -110,7 +110,8 @@ export async function clientHeight(els: HTMLElement[] | HTMLElement | string) {
 
 export async function setHeight(
   els: HTMLElement[] | HTMLElement | string[] | string,
-  value: string
+  value: number,
+  unit = 'px'
 ) {
   let values = [];
   if (Array.isArray(els)) {
@@ -130,6 +131,6 @@ export async function setHeight(
     values = [els];
   }
   values.forEach((el) => {
-    el.style.height = value;
+    el.style.height = value + unit;
   });
 }

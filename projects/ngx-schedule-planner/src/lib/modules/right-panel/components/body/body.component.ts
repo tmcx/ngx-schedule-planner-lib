@@ -106,8 +106,8 @@ export class BodyComponent extends ActivityHTML implements OnInit {
   }
 
   filterActivities(groupedActivities: IActivity[][]): IActivity[][] {
-    const start = this.subColumns.at(0)!.firstSection.start;
-    const end = this.subColumns.at(-1)!.lastSection.end;
+    const start = this.subColumns[0]!.firstSection.start;
+    const end = this.subColumns[this.subColumns.length-1]!.lastSection.end;
     const filtered: IActivity[][] = [];
     for (const group of groupedActivities) {
       const tempGroup: IActivity[] = [];
@@ -124,8 +124,8 @@ export class BodyComponent extends ActivityHTML implements OnInit {
   }
 
   getRepetitions(groupedActivities: IActivity[][]) {
-    const start = this.subColumns.at(0)!.firstSection.start;
-    const end = this.subColumns.at(-1)!.lastSection.end;
+    const start = this.subColumns[0]!.firstSection.start;
+    const end = this.subColumns[this.subColumns.length-1]!.lastSection.end;
     const filtered: IActivity[][] = [];
     for (const group of groupedActivities) {
       const tempGroup: IActivity[] = [];
