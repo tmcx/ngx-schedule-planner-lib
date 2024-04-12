@@ -6,4 +6,5 @@ $border: solid 1px $border-color;
   grid-template-rows: 149px 1fr;
   overflow: auto;
   border-right: $border;
+  position: relative;
 }
