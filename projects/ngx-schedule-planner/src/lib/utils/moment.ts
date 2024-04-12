@@ -55,7 +55,26 @@ export function addToDate(
   return momentDate.toDate();
 }
 
-export function isBetween(date: string | Date, from: Date, to: Date, inclusive = true) {
+export function setDate(
+  date: Date,
+  attrs: { [key in moment.unitOfTime.Base]?: number } | null = null
+) {
+  let momentDate = moment(date);
+  if (attrs != null) {
+    Object.keys(attrs).forEach((key: any) => {
+      const value = (attrs as any)[key];
+      momentDate = momentDate.set(key, value);
+    });
+  }
+  return momentDate.toDate();
+}
+
+export function isBetween(
+  date: string | Date,
+  from: Date,
+  to: Date,
+  inclusive = true
+) {
   return moment(date).isBetween(
     from,
     to,

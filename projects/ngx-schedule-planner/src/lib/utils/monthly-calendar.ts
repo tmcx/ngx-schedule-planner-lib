@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { IColumn } from '../modules/right-panel/components/header/header.interface';
 import { arrayOf } from './functions';
-import { addToDate } from './moment';
+import { setDate } from './moment';
 
 export class MonthlyCalendar {
   static getColumns(date: Date): IColumn[] {
@@ -13,12 +13,12 @@ export class MonthlyCalendar {
           (day, i) => ({
             label: day,
             firstSection: {
-              start: addToDate(date, { d: i, h: i * 12 }, { startOf: ['d'] }),
-              end: addToDate(date, { d: i, h: i + 12 }, { startOf: ['d'] }),
+              start: setDate(date, { d: i + 1, h: 0, m: 0 }),
+              end: setDate(date, { d: i + 1, h: 12, m: 0 }),
             },
             lastSection: {
-              start: addToDate(date, { d: i, h: i + 12, m: 1 }, { startOf: ['d'] }),
-              end: addToDate(date, { d: i, h: i + 23, m: 59 }, { startOf: ['d'] }),
+              start: setDate(date, { d: i + 1, h: 12, m: 1 }),
+              end: setDate(date, { d: i + 1, h: 23, m: 59 }),
             },
           })
         ),

@@ -96,8 +96,10 @@ export function getValueOfObjectByPath<T>(
   return object as T;
 }
 
-export async function clientHeight(els: HTMLElement[] | HTMLElement | string) {
-  let values = [];
+export async function getElementSize(
+  els: HTMLElement[] | HTMLElement | string
+) {
+  let values: HTMLElement[] = [];
   if (Array.isArray(els)) {
     values = els;
   } else if (typeof els == 'string') {
@@ -105,7 +107,25 @@ export async function clientHeight(els: HTMLElement[] | HTMLElement | string) {
   } else {
     values = [els];
   }
-  return values.reduce((prev, curr) => curr.clientHeight + prev, 0);
+
+  const summarize = (fieldName: string, subFieldName?: string): number => {
+    return values.reduce(
+      (prev: number, curr: any) =>
+        +(subFieldName ? curr[fieldName][subFieldName] : curr[fieldName])
+          .toString()
+          .replace(/^\D+/g, '') + prev,
+      0
+    );
+  };
+
+  return {
+    clientHeight: summarize('clientHeight'),
+    clientWidth: summarize('clientWidth'),
+    scrollHeight: summarize('scrollHeight'),
+    scrollWidth: summarize('scrollWidth'),
+    styleHeight: summarize('style', 'height'),
+    styleWidth: summarize('style', 'width'),
+  };
 }
 
 export async function setHeight(
