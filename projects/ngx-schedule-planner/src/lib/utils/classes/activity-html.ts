@@ -7,6 +7,7 @@ import {
 import { CalendarService } from '../../services/calendar/calendar.service';
 import { getValueOfObjectByPath } from '../functions';
 import { EMode } from '../../modules/right-panel/components/header/header.interface';
+import { format, startOf } from '../moment';
 import moment from 'moment';
 
 export class ActivityHTML {
@@ -76,11 +77,11 @@ export class ActivityHTML {
           if (isArray) {
             const dates = getValueOfObjectByPath<string[]>(activity, valuePath);
             for (const date of dates) {
-              htmlContent += `<p>${moment(date).format(defaultFormat)}</p>`;
+              htmlContent += `<p>${format(date, defaultFormat)}</p>`;
             }
           } else {
             const date = getValueOfObjectByPath<string>(activity, valuePath);
-            htmlContent += `<p>${moment(date).format(defaultFormat)}</p>`;
+            htmlContent += `<p>${format(date, defaultFormat)}</p>`;
           }
           htmlContent += '</section>';
           break;
@@ -100,7 +101,7 @@ export class ActivityHTML {
     let left = '';
     let width = '';
     let leftMinutes = moment(activity.startDate).diff(
-      moment(activity.startDate).startOf('d'),
+      startOf(activity.startDate, 'd'),
       'm'
     );
     switch (this.calendarService.config.mode) {

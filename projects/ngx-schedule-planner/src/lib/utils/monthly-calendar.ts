@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { IColumn } from '../modules/right-panel/components/header/header.interface';
+import { setDate, format } from './moment';
 import { arrayOf } from './functions';
-import { setDate } from './moment';
 
 export class MonthlyCalendar {
   static getColumns(date: Date): IColumn[] {
@@ -24,7 +24,7 @@ export class MonthlyCalendar {
         ),
       });
     }
-    const desiredMonth = moment(date).format('MMMM');
+    const desiredMonth = format(date, 'MMMM');
     return columns.filter((column) => column.title == desiredMonth);
   }
 }

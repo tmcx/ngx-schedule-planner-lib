@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { IColumn } from '../modules/right-panel/components/header/header.interface';
+import { addToDate, format, getDaysOfMonth } from './moment';
 import { arrayOf } from './functions';
-import { addToDate, getDaysOfMonth } from './moment';
 
 export class DailyCalendar {
   static getColumns(date: Date): IColumn[] {
@@ -25,7 +25,7 @@ export class DailyCalendar {
         })),
       });
     }
-    const desiredDay = ', ' + moment(date).format('D');
+    const desiredDay = ', ' + format(date, 'D');
     return columns.filter(({ title }) => title.endsWith(desiredDay));
   }
 }

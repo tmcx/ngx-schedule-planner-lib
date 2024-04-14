@@ -4,7 +4,7 @@ import {
   querySelector,
 } from '../../../../../lib/utils/functions';
 import { CalendarService } from '../../../../../lib/services/calendar/calendar.service';
-import { isBetween } from '../../../../../lib/utils/moment';
+import { format, isBetween } from '../../../../../lib/utils/moment';
 import moment from 'moment';
 
 @Component({
@@ -30,7 +30,7 @@ export class MarkerComponent implements OnInit {
         const leftTime = moment(currentDate).diff(startDate, 'seconds');
         marker.style.left = leftTime / oneSecondInSpace - 1 + 'px';
         marker.style.display = 'block';
-        marker.setAttribute('title', moment(currentDate).format('LLL'));
+        marker.setAttribute('title', format(currentDate,'LLL'));
       } else {
         marker.style.display = 'none';
       }

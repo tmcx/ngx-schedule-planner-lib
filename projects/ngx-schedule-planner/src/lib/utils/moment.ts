@@ -12,8 +12,8 @@ export function getDaysOfMonth(
 
   for (let day = 0; day < daysInMonth; day++) {
     days.push({
-      name: date.format('dddd'),
-      num: +date.format('D'),
+      name: format(date, 'dddd'),
+      num: +format(date, 'D'),
     });
     date.add(1, 'd');
   }
@@ -27,8 +27,8 @@ export function getWeekDays(year: number, week: number) {
   for (let i = 0; i < 7; i++) {
     const day = firstDayOfWeek.clone().add(i, 'days');
     days.push({
-      name: day.format('dddd'),
-      num: +day.format('D'),
+      name: format(day, 'dddd'),
+      num: +format(day, 'D'),
       date: day.toDate(),
     });
   }
@@ -81,4 +81,12 @@ export function isBetween(
     undefined,
     inclusive ? '[]' : undefined
   );
+}
+
+export function startOf(date: Date, unitOfTime: moment.unitOfTime.StartOf) {
+  return moment(date).startOf(unitOfTime).toDate();
+}
+
+export function format(date: Date | moment.Moment | string, format: string) {
+  return moment(date).format(format);
 }

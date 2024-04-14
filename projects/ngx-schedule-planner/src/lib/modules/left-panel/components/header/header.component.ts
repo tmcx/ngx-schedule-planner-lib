@@ -4,6 +4,7 @@ import { CalendarService } from '../../../../services/calendar/calendar.service'
 import { clone } from '../../../../utils/functions';
 import moment from 'moment';
 import { EMode } from '../../../right-panel/components/header/header.interface';
+import { format } from '../../../../utils/moment';
 
 @Component({
   selector: 'app-header',
@@ -21,10 +22,10 @@ export class HeaderComponent extends BaseVariables {
       userName: '',
     };
     this.title = '';
-    this.calendarService.onModeChange.subscribe(() => {
+    this.calendarService.on.modeChange.subscribe(() => {
       this.setName();
     });
-    this.calendarService.onPeriodChange.subscribe(() => {
+    this.calendarService.on.periodChange.subscribe(() => {
       this.setName();
     });
   }
@@ -33,18 +34,16 @@ export class HeaderComponent extends BaseVariables {
     const referenceDate = this.calendarService.config.referenceDate;
     switch (this.calendarService.config.mode) {
       case EMode.monthly:
-        this.title = moment(referenceDate).format('YYYY, MMMM');
+        this.title = format(referenceDate, 'YYYY, MMMM');
         break;
       case EMode.weekly:
         const week =
           moment(referenceDate).week() -
           moment(referenceDate).startOf('M').week();
-        this.title = `${moment(referenceDate).format('YYYY, MMMM')}, ${
-          week + 1
-        } week`;
+        this.title = `${format(referenceDate, 'YYYY, MMMM')}, ${week + 1} week`;
         break;
       case EMode.daily:
-        this.title = moment(referenceDate).format('YYYY, MMMM, dddd D');
+        this.title = format(referenceDate, 'YYYY, MMMM, dddd D');
         break;
     }
   }
