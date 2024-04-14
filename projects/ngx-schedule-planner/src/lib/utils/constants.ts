@@ -1,13 +1,22 @@
 import { IConstants } from '../main/ngx-schedule-planner.interface';
 
 export const CONFIG: IConstants = {
-  monthly: {
-    ACTIVITY: { FACTOR: { WIDTH: '(100% / (24 * 60))' } },
+  CALENDAR: {
+    monthly: {
+      ACTIVITY: { FACTOR: { WIDTH: '(100% / (24 * 60))' } },
+    },
+    weekly: {
+      ACTIVITY: { FACTOR: { WIDTH: '(100% / (7 * 24 * 60))' } },
+    },
+    daily: {
+      ACTIVITY: { FACTOR: { WIDTH: '(100% / (24 * 60))' } },
+    },
   },
-  weekly: {
-    ACTIVITY: { FACTOR: { WIDTH: '(100% / (7 * 24 * 60))' } },
-  },
-  daily: {
-    ACTIVITY: { FACTOR: { WIDTH: '(100% / (24 * 60))' } },
+  STYLE: {
+    '--ngx-sp-host-bg-color': '#222222',
+    '--ngx-sp-border-color': '#b2b2b2',
+    '--ngx-header-height': '149px',
+    '--ngx-header-width': '350px',
+    '--ngx-scroll-height': '17px',
   },
 };

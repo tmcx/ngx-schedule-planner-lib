@@ -1,9 +1,10 @@
-$border-color: #b2b2b2;
+$border-color: var(--ngx-sp-border-color);
+$header-width: var(--ngx-header-width);
 $border: solid 1px $border-color;
 
 :host {
   border: $border;
-  width: 350px;
+  width: $header-width;
   height: 100%;
   padding: 10px;
   display: grid;

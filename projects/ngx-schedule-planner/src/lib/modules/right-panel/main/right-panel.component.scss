@@ -1,10 +1,10 @@
-$border-color: #b9b9b9;
+$border-color: var(--ngx-sp-border-color);
 $border: solid 1px $border-color;
+$header-height: var(--ngx-header-height);
 
 :host {
   display: grid;
-  grid-template-rows: 149px 1fr;
-  overflow: auto;
+  grid-template-rows: $header-height 1fr;
   border-right: $border;
   position: relative;
 }

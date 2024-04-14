@@ -1,6 +1,15 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { CalendarService } from '../services/calendar/calendar.service';
-import { IProcessedContent } from './ngx-schedule-planner.interface';
+import {
+  IConstants,
+  IProcessedContent,
+} from './ngx-schedule-planner.interface';
 import {
   EMode,
   TMode,
@@ -8,7 +17,14 @@ import {
 import { ISelectedRange } from '../modules/right-panel/components/body/body.interface';
 import { IContent, ICustomization } from '../ngx-schedule-planner.interface';
 import moment from 'moment';
-import { clone, groupActivities } from '../utils/functions';
+import {
+  clone,
+  groupActivities,
+  hasScroll,
+  onResizeDo,
+  querySelector,
+} from '../utils/functions';
+import { CONFIG } from '../utils/constants';
 
 @Component({
   selector: 'ngx-schedule-planner',
@@ -16,7 +32,7 @@ import { clone, groupActivities } from '../utils/functions';
   styleUrls: ['./ngx-schedule-planner.component.scss'],
   host: { '[id]': 'uuid' },
 })
-export class NgxSchedulePlannerComponent {
+export class NgxSchedulePlannerComponent implements AfterViewInit {
   uuid: string;
   @Output() onSelectRange: EventEmitter<ISelectedRange>;
   @Output() onAddActivityClick: EventEmitter<void>;
@@ -54,6 +70,20 @@ export class NgxSchedulePlannerComponent {
     });
   }
 
+  async ngAfterViewInit(): Promise<void> {
+    this.setCssVariables();
+    onResizeDo(this.calendarService.selectors.HOST, () => {
+      hasScroll(this.calendarService.selectors.RIGHT_PANEL.HOST).then(
+        async ({ horizontal }) => {
+          var root = await querySelector(this.calendarService.selectors.HOST);
+          const key = '--ngx-scroll-height';
+          const value = horizontal ? CONFIG.STYLE[key] : '0px';
+          root.style.setProperty(key, value);
+        }
+      );
+    });
+  }
+
   processInputContent(content: IContent[]): IProcessedContent[] {
     const parsedContent = clone<any>(content);
     parsedContent.forEach((userContent: any) => {
@@ -73,5 +103,15 @@ export class NgxSchedulePlannerComponent {
 
   get isLoading() {
     return this.calendarService.config.isLoading;
+  }
+
+  async setCssVariables() {
+    var root = await querySelector(this.calendarService.selectors.HOST);
+    for (const varName in CONFIG.STYLE) {
+      if (Object.prototype.hasOwnProperty.call(CONFIG.STYLE, varName)) {
+        const value = CONFIG.STYLE[varName as keyof IConstants['STYLE']];
+        root.style.setProperty(varName, value);
+      }
+    }
   }
 }

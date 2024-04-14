@@ -16,21 +16,21 @@ export class MarkerComponent implements OnInit {
   constructor(private calendarService: CalendarService) {}
 
   async ngOnInit() {
-    const uuid = this.calendarService.uuid;
-    const marker = await querySelector(`#${uuid} app-right-panel app-marker`);
+    const {
+      RIGHT_PANEL: { HOST, APP_MARKER },
+    } = this.calendarService.selectors;
+    const marker = await querySelector(APP_MARKER);
     setInterval(async () => {
       const currentDate = new Date();
       const { startDate, endDate } = this.calendarService.subColumns();
       if (startDate && endDate && isBetween(currentDate, startDate, endDate)) {
-        const { scrollWidth: width } = await getElementSize(
-          `#${uuid} app-right-panel`
-        );
+        const { scrollWidth: width } = await getElementSize(HOST);
         const oneSecondInSpace =
           moment(endDate).diff(startDate, 'seconds') / width;
         const leftTime = moment(currentDate).diff(startDate, 'seconds');
         marker.style.left = leftTime / oneSecondInSpace - 1 + 'px';
         marker.style.display = 'block';
-        marker.setAttribute('title', format(currentDate,'LLL'));
+        marker.setAttribute('title', format(currentDate, 'LLL'));
       } else {
         marker.style.display = 'none';
       }

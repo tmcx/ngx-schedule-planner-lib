@@ -1,6 +1,6 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { CalendarService } from '../../../services/calendar/calendar.service';
-import { querySelector } from '../../../utils/functions';
+import { linkScroll, linkSize, querySelector } from '../../../utils/functions';
 
 @Component({
   selector: 'app-right-panel',
@@ -11,21 +11,14 @@ export class RightPanelComponent implements AfterViewInit {
   constructor(private calendarService: CalendarService) {}
 
   async ngAfterViewInit(): Promise<void> {
-    const { uuid } = this.calendarService;
-    const observer = new ResizeObserver((entries) => {
-      entries.forEach(async (entry) => {
-        const { width } = entry.contentRect;
-        const navigator = await querySelector(
-          `#${uuid} app-right-panel app-header .navigator`
-        );
-        const title = await querySelector(
-          `#${uuid} app-right-panel app-header .title`
-        );
-        navigator.style.width = width + 'px';
-        title.style.width = width + 'px';
-      });
-    });
+    const {
+      RIGHT_PANEL: { NAVIGATOR, TITLE, HOST: RIGHT_PANEL_HOST },
+      LEFT_PANEL: { HOST: LEFT_PANEL_HOST },
+    } = this.calendarService.selectors;
 
-    observer.observe(await querySelector(`#${uuid} app-right-panel`));
+    linkSize(RIGHT_PANEL_HOST, [TITLE, NAVIGATOR], { width: true });
+    linkScroll([LEFT_PANEL_HOST, RIGHT_PANEL_HOST], {
+      scrollTop: true,
+    });
   }
 }

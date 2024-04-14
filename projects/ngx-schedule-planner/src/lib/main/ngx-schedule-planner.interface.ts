@@ -81,11 +81,20 @@ export interface ICDate {
 }
 
 export type IConstants = {
-  [key in TMode]: {
-    ACTIVITY: {
-      FACTOR: {
-        WIDTH: string;
+  CALENDAR: {
+    [key in TMode]: {
+      ACTIVITY: {
+        FACTOR: {
+          WIDTH: string;
+        };
       };
     };
+  };
+  STYLE: {
+    '--ngx-sp-host-bg-color': string;
+    '--ngx-sp-border-color': string;
+    '--ngx-scroll-height': string;
+    '--ngx-header-height': string;
+    '--ngx-header-width': string;
   };
 };

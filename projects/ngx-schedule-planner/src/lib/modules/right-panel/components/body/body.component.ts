@@ -6,7 +6,7 @@ import {
 } from '../../../../main/ngx-schedule-planner.interface';
 import { ICreatingActivity } from './body.interface';
 import { ActivityHTML } from '../../../../utils/classes/activity-html';
-import { isBetween } from '../../../../utils/moment';
+import { isBetween, setDate } from '../../../../utils/moment';
 import moment from 'moment';
 import { clone } from '../../../../utils/functions';
 
@@ -133,11 +133,11 @@ export class BodyComponent extends ActivityHTML implements OnInit {
             const activityReplica = clone(activity);
             const startDate = moment(activity.startDate);
 
-            activityReplica.startDate = moment(repeat)
-              .hour(startDate.hour())
-              .minute(startDate.minute())
-              .second(startDate.second())
-              .toDate();
+            activityReplica.startDate = setDate(repeat, {
+              hour: startDate.hour(),
+              minute: startDate.minute(),
+              second: startDate.second(),
+            });
             tempGroup.push(activityReplica);
           }
         }

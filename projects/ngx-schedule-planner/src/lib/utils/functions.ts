@@ -154,3 +154,68 @@ export async function setHeight(
     el.style.height = value + unit;
   });
 }
+
+export async function linkScroll(
+  selectors: string[],
+  options?: { scrollLeft?: boolean; scrollTop?: boolean }
+) {
+  const scroll = ($event: any) => {
+    const { scrollTop, scrollLeft } = $event.srcElement;
+    selectors.forEach((selector) => {
+      querySelector(selector).then((element) => {
+        if (options?.scrollLeft && scrollLeft >= 0) {
+          element.scrollLeft = scrollLeft;
+        }
+        if (options?.scrollTop && scrollTop >= 0) {
+          element.scrollTop = scrollTop;
+        }
+      });
+    });
+  };
+  for (const selector of selectors) {
+    const element = await querySelector(selector);
+    if (element) {
+      element.addEventListener('scroll', scroll);
+    }
+  }
+}
+
+export async function linkSize(
+  mainSelector: string,
+  selectors: string[],
+  options?: { width?: boolean; height?: boolean }
+) {
+  const observer = new ResizeObserver((entries) => {
+    entries.forEach(async (entry) => {
+      const { width, height } = entry.contentRect;
+      selectors.forEach((selector) => {
+        querySelector(selector).then((element) => {
+          if (options?.width) {
+            element.style.width = width + 'px';
+          }
+          if (options?.height) {
+            element.style.height = height + 'px';
+          }
+        });
+      });
+    });
+  });
+
+  observer.observe(await querySelector(mainSelector));
+}
+
+export async function hasScroll(selector: string) {
+  var element = await querySelector(selector);
+  return {
+    horizontal: element.scrollWidth > element.clientWidth,
+    vertical: element.scrollHeight > element.clientHeight,
+  };
+}
+
+export async function onResizeDo(
+  selector: string,
+  process: ResizeObserverCallback
+) {
+  const observer = new ResizeObserver(process);
+  observer.observe(await querySelector(selector));
+}

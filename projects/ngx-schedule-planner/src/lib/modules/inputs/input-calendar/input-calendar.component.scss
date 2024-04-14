@@ -1,4 +1,4 @@
-$border-color: #b9b9b9;
+$border-color: var(--ngx-sp-border-color);
 $border: solid 1px $border-color;
 
 :host {

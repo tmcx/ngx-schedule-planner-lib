@@ -56,7 +56,7 @@ export function addToDate(
 }
 
 export function setDate(
-  date: Date,
+  date: Date | string,
   attrs: { [key in moment.unitOfTime.Base]?: number } | null = null
 ) {
   let momentDate = moment(date);

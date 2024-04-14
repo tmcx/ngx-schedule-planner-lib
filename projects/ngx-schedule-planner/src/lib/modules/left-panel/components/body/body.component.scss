@@ -1,12 +1,11 @@
 $image-width: 40px;
-$header-width: 350px;
-$border-color: #b2b2b2;
+$header-width: var(--ngx-header-width);
+$border-color: var(--ngx-sp-border-color);
 $border: solid 1px $border-color;
 
 :host {
   box-shadow: inset 1px 0px 0 0px $border-color;
   border-bottom: $border;
-  overflow: hidden;
 }
 
 .profile-group {
@@ -28,7 +27,7 @@ $border: solid 1px $border-color;
     &::after {
       content: "";
       position: absolute;
-      height: 1000vh;
+      height: 100%;
       width: 1px;
       background-color: $border-color;
       right: -1px;
@@ -86,7 +85,7 @@ $border: solid 1px $border-color;
     &::after {
       content: "";
       position: absolute;
-      height: 1000vh;
+      height: 100%;
       width: 1px;
       background-color: $border-color;
       right: -1px;

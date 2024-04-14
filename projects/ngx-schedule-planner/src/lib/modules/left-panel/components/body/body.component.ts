@@ -31,12 +31,13 @@ export class BodyComponent implements AfterViewInit {
   }
 
   async resizeActivities() {
-    const { uuid } = this.calendarService;
-    const rightPanelGroupsSelector = `#${uuid} app-right-panel app-body .user-groups .group`;
-    const leftPanelGroupsSelector = `#${uuid} app-left-panel app-body .profile-group .group`;
+    const {
+      LEFT_PANEL: { GROUPS: L_GROUPS },
+      RIGHT_PANEL: { GROUPS: R_GROUPS },
+    } = this.calendarService.selectors;
 
-    const activityGroups = await querySelectorAll(rightPanelGroupsSelector);
-    const userGroups = await querySelectorAll(leftPanelGroupsSelector);
+    const activityGroups = await querySelectorAll(R_GROUPS);
+    const userGroups = await querySelectorAll(L_GROUPS);
 
     for (let i = 0; i < userGroups.length; i++) {
       const activityGroup = activityGroups[i];

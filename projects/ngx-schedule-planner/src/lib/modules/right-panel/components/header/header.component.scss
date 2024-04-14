@@ -1,4 +1,4 @@
-$border-color: #b9b9b9;
+$border-color: var(--ngx-sp-border-color);
 $border: solid 1px $border-color;
 $column-width: min-content;
 $row-height: 24px;
@@ -36,7 +36,7 @@ $row-height: 24px;
 
 .sub-column {
   @extend .center-column;
-  box-shadow: 1px 0px #b9b9b9;
+  box-shadow: 1px 0px $border-color;
 }
 
 .center-column {

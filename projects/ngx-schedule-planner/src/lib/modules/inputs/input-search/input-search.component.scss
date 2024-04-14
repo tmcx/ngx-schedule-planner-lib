@@ -1,4 +1,5 @@
-$border: solid 1px #b2b2b2;
+$border-color: var(--ngx-sp-border-color);
+$border: solid 1px $border-color;
 
 :host {
   position: relative;

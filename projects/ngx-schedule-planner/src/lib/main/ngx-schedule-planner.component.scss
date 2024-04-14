@@ -1,7 +1,8 @@
-$border: solid 1px #b2b2b2;
+$background-color: var(--ngx-sp-host-bg-color);
+$border: solid 1px var(--ngx-sp-border-color);
+$header-height: var(--ngx-header-height);
 
 ::ng-deep ngx-schedule-planner {
-  position: relative;
   * {
     font-family: "Roboto", "sans-serif";
     box-sizing: border-box;
@@ -35,20 +36,33 @@ $border: solid 1px #b2b2b2;
   app-header {
     max-height: 150px;
   }
+
+  app-right-panel,
+  app-left-panel {
+    overflow: auto;
+
+    app-header {
+      background-color: $background-color;
+      position: sticky;
+      z-index: 1;
+      top: 0;
+    }
+  }
 }
 
 :host {
   display: grid;
   grid-auto-flow: column;
-  grid-template-columns: 350px 1fr;
+  background-color: $background-color;
+  position: relative;
 }
 
 .loading {
   position: absolute;
   width: 100%;
-  height: calc(100% - 149px);
+  height: calc(100% - $header-height);
   border: $border;
-  top: 149px;
+  top: $header-height;
   background-color: rgb(94, 94, 94);
   z-index: 1;
 }
