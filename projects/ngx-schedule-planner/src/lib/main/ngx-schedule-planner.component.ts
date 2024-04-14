@@ -46,10 +46,10 @@ export class NgxSchedulePlannerComponent {
     this.calendarService.changeReferenceDate(new Date());
     this.onSelectRange = new EventEmitter<ISelectedRange>();
     this.onAddActivityClick = new EventEmitter<void>();
-    this.calendarService.onSelectRange.subscribe((rangeActivity) => {
+    this.calendarService.on.selectRange.subscribe((rangeActivity) => {
       this.onSelectRange.emit(rangeActivity);
     });
-    this.calendarService.onAddActivityClick.subscribe(() => {
+    this.calendarService.on.addActivityClick.subscribe(() => {
       this.onAddActivityClick.emit();
     });
   }

@@ -5,7 +5,7 @@ import { BaseVariables } from '../../../../utils/base-variables';
 import { MonthlyCalendar } from '../../../../utils/monthly-calendar';
 import { WeeklyCalendar } from '../../../../utils/weekly-calendar';
 import { DailyCalendar } from '../../../../utils/daily-calendar';
-import { addToDate } from '../../../../utils/moment';
+import { addToDate, startOf } from '../../../../utils/moment';
 import moment from 'moment';
 
 @Component({
@@ -18,11 +18,11 @@ export class HeaderComponent extends BaseVariables {
     super();
     this.loadModes();
     this.onSelectMode(this.calendarService.config.mode);
-    this.calendarService.onModeChange.subscribe((mode) => {
+    this.calendarService.on.modeChange.subscribe((mode) => {
       this.onSelectMode(mode);
       this.setMode();
     });
-    this.calendarService.onPeriodChange.subscribe((period) => {
+    this.calendarService.on.periodChange.subscribe(() => {
       this.setMode();
     });
     this.calendarService.config.columns = [];
@@ -33,12 +33,12 @@ export class HeaderComponent extends BaseVariables {
     switch (mode) {
       case EMode.monthly:
         this.calendarService.config.columns = MonthlyCalendar.getColumns(
-          moment(referenceDate).startOf('month').toDate()
+          startOf(referenceDate, 'month')
         );
         break;
       case EMode.weekly:
         this.calendarService.config.columns = WeeklyCalendar.getColumns(
-          moment(referenceDate).startOf('week').toDate()
+          startOf(referenceDate, 'week')
         );
         break;
       case EMode.daily:

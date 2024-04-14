@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import {
-  EMode,
   ENavigationChange,
+  TNavigationChange,
   EPeriod,
   IColumn,
+  EMode,
   TMode,
-  TNavigationChange,
 } from '../../modules/right-panel/components/header/header.interface';
 import {
   IProcessedContent,
@@ -15,42 +15,34 @@ import {
 import { ISelectedRange } from '../../modules/right-panel/components/body/body.interface';
 import { uuid } from '../../utils/functions';
 import { CONFIG } from '../../utils/constants';
+import { ICalendarServiceEvents } from './calendar.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CalendarService {
-  onContentChange: Subject<{
-    all: IProcessedContent[];
-    filtered: IProcessedContent[];
-  }>;
   config: {
-    referenceDate: Date;
-    mode: TMode;
-    columns: IColumn[];
     activity: { factor: { width: string } };
     customization: IProcessedCustomization;
+    referenceDate: Date;
     isLoading: boolean;
+    columns: IColumn[];
+    mode: TMode;
   };
   content: { all: IProcessedContent[]; filtered: IProcessedContent[] };
-  onNavigationChange: Subject<TNavigationChange>;
-  onSelectRange: Subject<ISelectedRange>;
-  onAddActivityClick: Subject<void>;
-  onPeriodChange: Subject<EPeriod>;
-  onModeChange: Subject<TMode>;
+  on: ICalendarServiceEvents;
   uuid: string;
 
   constructor() {
     this.uuid = 'ngx-schedule-planner-' + uuid();
-    this.onNavigationChange = new Subject<TNavigationChange>();
-    this.onSelectRange = new Subject<ISelectedRange>();
-    this.onAddActivityClick = new Subject<void>();
-    this.onContentChange = new Subject<{
-      all: IProcessedContent[];
-      filtered: IProcessedContent[];
-    }>();
-    this.onPeriodChange = new Subject<EPeriod>();
-    this.onModeChange = new Subject<TMode>();
+    this.on = {
+      addActivityClick: new Subject(),
+      navigationChange: new Subject(),
+      contentChange: new Subject(),
+      periodChange: new Subject(),
+      selectRange: new Subject(),
+      modeChange: new Subject(),
+    };
     this.content = { all: [], filtered: [] };
     this.config = {
       activity: { factor: { width: '' } },
@@ -63,18 +55,18 @@ export class CalendarService {
   }
 
   changeNavigation(change: TNavigationChange) {
-    this.onNavigationChange.next(change);
+    this.on.navigationChange.next(change);
   }
 
   changePeriod(period: EPeriod) {
-    this.onPeriodChange.next(period);
+    this.on.periodChange.next(period);
   }
 
   changeMode(mode: TMode, force = false) {
     if (this.config.mode !== mode || force) {
       this.config.mode = mode;
-      this.onModeChange.next(mode);
-      this.onNavigationChange.next(ENavigationChange.mode);
+      this.on.modeChange.next(mode);
+      this.on.navigationChange.next(ENavigationChange.mode);
       this.refreshWidthFactor();
     }
   }
@@ -86,32 +78,20 @@ export class CalendarService {
 
   changeContent(content: IProcessedContent[], type: 'all' | 'filtered') {
     this.content[type] = content;
-    this.onContentChange.next(this.content);
+    this.on.contentChange.next(this.content);
   }
 
   addActivityClicked() {
-    this.onAddActivityClick.next();
+    this.on.addActivityClick.next();
   }
 
   onRangeSelection(selectedRange: ISelectedRange) {
-    this.onSelectRange.next(selectedRange);
+    this.on.selectRange.next(selectedRange);
   }
 
   private refreshWidthFactor() {
-    let WIDTH_FACTOR = '';
-
-    switch (this.config.mode) {
-      case EMode.monthly:
-        WIDTH_FACTOR = CONFIG.MONTHLY.ACTIVITY.FACTOR.WIDTH;
-        break;
-      case EMode.weekly:
-        WIDTH_FACTOR = CONFIG.WEEKLY.ACTIVITY.FACTOR.WIDTH;
-        break;
-      case EMode.daily:
-        WIDTH_FACTOR = CONFIG.DAILY.ACTIVITY.FACTOR.WIDTH;
-        break;
-    }
-    this.config.activity.factor.width = WIDTH_FACTOR;
+    this.config.activity.factor.width =
+      CONFIG[this.config.mode].ACTIVITY.FACTOR.WIDTH;
   }
 
   setCustomization(customization: IProcessedCustomization) {

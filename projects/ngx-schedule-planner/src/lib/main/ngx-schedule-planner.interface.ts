@@ -1,3 +1,5 @@
+import { TMode } from '../modules/right-panel/components/header/header.interface';
+
 export interface IProcessedContent {
   profile: IProfile;
   groups: IGroup[];
@@ -77,3 +79,13 @@ export interface ICDate {
   format?: string;
   type: 'date';
 }
+
+export type IConstants = {
+  [key in TMode]: {
+    ACTIVITY: {
+      FACTOR: {
+        WIDTH: string;
+      };
+    };
+  };
+};

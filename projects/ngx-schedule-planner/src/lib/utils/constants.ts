@@ -1,11 +1,13 @@
-export const CONFIG = {
-  MONTHLY: {
+import { IConstants } from '../main/ngx-schedule-planner.interface';
+
+export const CONFIG: IConstants = {
+  monthly: {
     ACTIVITY: { FACTOR: { WIDTH: '(100% / (24 * 60))' } },
   },
-  WEEKLY: {
+  weekly: {
     ACTIVITY: { FACTOR: { WIDTH: '(100% / (7 * 24 * 60))' } },
   },
-  DAILY: {
+  daily: {
     ACTIVITY: { FACTOR: { WIDTH: '(100% / (24 * 60))' } },
   },
 };

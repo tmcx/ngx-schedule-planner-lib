@@ -21,7 +21,7 @@ export class BodyComponent extends ActivityHTML implements OnInit {
 
   constructor() {
     super();
-    this.calendarService.onContentChange.subscribe((content) => {
+    this.calendarService.on.contentChange.subscribe((content) => {
       this.content = content.filtered;
     });
     this.resetCreatingActivity();

@@ -16,19 +16,17 @@ export class BodyComponent implements AfterViewInit {
   content!: IProcessedContent[];
 
   constructor(private calendarService: CalendarService) {
-    this.calendarService.onContentChange.subscribe((content) => {
+    this.calendarService.on.contentChange.subscribe((content) => {
       this.content = content.filtered;
+      this.resizeActivities();
     });
 
-    this.calendarService.onNavigationChange.subscribe(() => {
+    this.calendarService.on.navigationChange.subscribe(() => {
       this.resizeActivities();
     });
   }
 
   ngAfterViewInit(): void {
-    this.calendarService.onContentChange.subscribe(() => {
-      this.resizeActivities();
-    });
     this.resizeActivities();
   }
 
