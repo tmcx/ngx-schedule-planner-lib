@@ -24,6 +24,10 @@ export class BodyComponent implements AfterViewInit {
     this.calendarService.on.navigationChange.subscribe(() => {
       this.resizeActivities();
     });
+
+    this.calendarService.on.leftPanelCollapse.subscribe(() => {
+      this.resizeActivities();
+    });
   }
 
   ngAfterViewInit(): void {
@@ -64,8 +68,12 @@ export class BodyComponent implements AfterViewInit {
             ? activityGroupHeight
             : remainingSpace;
 
-        await setHeight(userGroup, size);
-        await setHeight(activityGroup, size);
+        if (size - 1 != userGroupHeight) {
+          await setHeight(userGroup, size);
+        }
+        if (size - 1 != activityGroupHeight) {
+          await setHeight(activityGroup, size);
+        }
       } else {
         if (activityGroupHeight > userGroupHeight) {
           await setHeight(userGroup, activityGroupHeight);
