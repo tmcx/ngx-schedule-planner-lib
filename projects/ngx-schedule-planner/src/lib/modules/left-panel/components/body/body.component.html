@@ -3,9 +3,10 @@
     <section class="profile">
       <img
         [src]="userSchedule.profile.imageUrl"
+        [title]="userSchedule.profile.name"
         [alt]="userSchedule.profile.name"
       />
-      <h1>{{ userSchedule.profile.name }}</h1>
+      <h1 [title]="userSchedule.profile.name">{{ isCollapsed ? (userSchedule.profile.name | shortName) : userSchedule.profile.name }}</h1>
       <p>{{ userSchedule.profile.description }}</p>
       <section class="tags">
         <span *ngFor="let tag of userSchedule.profile.tags">{{
@@ -16,8 +17,8 @@
 
     <section class="groups">
       <section class="group" *ngFor="let group of userSchedule.groups">
-        <h1>{{ group.icon }}</h1>
-        <h1>{{ group.name }}</h1>
+        <h1 [title]="group.name">{{ group.icon }}</h1>
+        <h1 [title]="group.name">{{ group.name }}</h1>
       </section>
     </section>
   </section>

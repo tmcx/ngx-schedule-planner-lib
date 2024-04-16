@@ -97,4 +97,12 @@ export class HeaderComponent extends BaseVariables {
   addActivity() {
     this.calendarService.addActivityClicked();
   }
+
+  get isCollapsed() {
+    return this.calendarService.config.leftPanel.isCollapsed;
+  }
+
+  set isCollapsed(isCollapsed: boolean) {
+    this.calendarService.setLeftPanelCollapse(isCollapsed);
+  }
 }

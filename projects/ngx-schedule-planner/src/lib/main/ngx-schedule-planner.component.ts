@@ -30,7 +30,7 @@ import { CONFIG } from '../utils/constants';
   selector: 'ngx-schedule-planner',
   templateUrl: './ngx-schedule-planner.component.html',
   styleUrls: ['./ngx-schedule-planner.component.scss'],
-  host: { '[id]': 'uuid' },
+  host: { '[id]': 'uuid', '[attr.collapsed]': 'isCollapsed' },
 })
 export class NgxSchedulePlannerComponent implements AfterViewInit {
   uuid: string;
@@ -103,6 +103,10 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
 
   get isLoading() {
     return this.calendarService.config.isLoading;
+  }
+
+  get isCollapsed() {
+    return this.calendarService.config.leftPanel.isCollapsed;
   }
 
   async setCssVariables() {

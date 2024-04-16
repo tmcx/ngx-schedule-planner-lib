@@ -13,6 +13,7 @@ export const CONFIG: IConstants = {
     },
   },
   STYLE: {
+    '--ngx-header-width-collapsed': '47px',
     '--ngx-sp-host-bg-color': '#222222',
     '--ngx-sp-border-color': '#b2b2b2',
     '--ngx-header-height': '149px',

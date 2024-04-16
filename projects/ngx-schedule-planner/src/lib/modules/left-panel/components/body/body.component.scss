@@ -75,6 +75,7 @@ $border: solid 1px $border-color;
       justify-content: start;
 
       h1 {
+        user-select: none;
         line-height: 14px;
       }
 

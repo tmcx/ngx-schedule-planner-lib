@@ -14,6 +14,7 @@ import {
 export interface ICalendarServiceEvents {
   navigationChange: Subject<TNavigationChange>;
   selectRange: Subject<ISelectedRange>;
+  leftPanelCollapse: Subject<boolean>;
   addActivityClick: Subject<void>;
   periodChange: Subject<EPeriod>;
   modeChange: Subject<TMode>;
@@ -28,6 +29,9 @@ export interface ICalendarConfig {
   customization: IProcessedCustomization;
   referenceDate: Date;
   isLoading: boolean;
+  leftPanel: {
+    isCollapsed: boolean;
+  };
   columns: IColumn[];
   mode: TMode;
 }

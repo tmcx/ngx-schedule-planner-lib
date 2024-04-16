@@ -1,6 +1,7 @@
 <section class="main">
   <h2>{{ title }}</h2>
   <button (click)="addActivity()">+ Activity</button>
+  <button (click)="isCollapsed=!isCollapsed" class="collapse-btn" [ngClass]="{'collapsed': isCollapsed}"></button>
 </section>
 <section class="filters">
   <app-input-search [placeholder]="'Username'" (onKeyUp)="filterByUserName($event)"></app-input-search>

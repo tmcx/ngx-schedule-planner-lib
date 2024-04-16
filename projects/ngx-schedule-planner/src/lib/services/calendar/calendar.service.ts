@@ -50,6 +50,7 @@ export class CalendarService {
       },
     };
     this.on = {
+      leftPanelCollapse: new Subject(),
       addActivityClick: new Subject(),
       navigationChange: new Subject(),
       contentChange: new Subject(),
@@ -60,6 +61,7 @@ export class CalendarService {
     this.content = { all: [], filtered: [] };
     this.config = {
       activity: { factor: { width: '' } },
+      leftPanel: { isCollapsed: false },
       referenceDate: new Date(),
       mode: EMode.monthly,
       customization: {},
@@ -131,5 +133,10 @@ export class CalendarService {
       startDate,
       endDate,
     };
+  }
+
+  setLeftPanelCollapse(isCollapsed: boolean) {
+    this.config.leftPanel.isCollapsed = isCollapsed;
+    this.on.leftPanelCollapse.next(isCollapsed);
   }
 }

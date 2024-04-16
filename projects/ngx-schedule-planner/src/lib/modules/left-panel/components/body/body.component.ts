@@ -75,4 +75,8 @@ export class BodyComponent implements AfterViewInit {
       }
     }
   }
+
+  get isCollapsed() {
+    return this.calendarService.config.leftPanel.isCollapsed;
+  }
 }

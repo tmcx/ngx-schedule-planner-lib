@@ -1,3 +1,4 @@
+$header-width-collapsed: var(--ngx-header-width-collapsed);
 $background-color: var(--ngx-sp-host-bg-color);
 $border: solid 1px var(--ngx-sp-border-color);
 $header-height: var(--ngx-header-height);
@@ -46,6 +47,60 @@ $header-height: var(--ngx-header-height);
       position: sticky;
       z-index: 1;
       top: 0;
+    }
+  }
+
+  &[collapsed="true"] {
+    app-left-panel {
+      grid-template-columns: $header-width-collapsed;
+      app-header {
+        width: $header-width-collapsed;
+
+        .main h2,
+        .main button:not(.collapse-btn),
+        .filters {
+          display: none;
+        }
+      }
+      app-body {
+        width: $header-width-collapsed;
+
+        .profile-group {
+          display: grid;
+          grid-template-columns:
+            calc($header-width-collapsed / 2) calc($header-width-collapsed / 2)
+            1fr;
+
+          .profile {
+            grid-template-rows: min-content 1fr !important;
+            grid-template-columns: min-content !important;
+            padding: 3px !important;
+
+            img {
+              height: 18px !important;
+              width: 18px !important;
+            }
+
+            h1 {
+              font-size: 15px;
+              text-align: center;
+            }
+          }
+
+          .group {
+            padding: 7px 3px !important;
+            h1:last-of-type {
+              display: none !important;
+            }
+          }
+        }
+
+        p,
+        .tags {
+          padding: 7px 3px !important;
+          display: none !important;
+        }
+      }
     }
   }
 }
