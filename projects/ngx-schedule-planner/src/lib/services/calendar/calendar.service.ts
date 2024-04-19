@@ -8,11 +8,12 @@ import {
   TMode,
 } from '../../modules/right-panel/components/header/header.interface';
 import {
+  IActivity,
   IProcessedContent,
   IProcessedCustomization,
 } from '../../main/ngx-schedule-planner.interface';
 import { ISelectedRange } from '../../modules/right-panel/components/body/body.interface';
-import { uuid } from '../../utils/functions';
+import { clone, uuid } from '../../utils/functions';
 import { CONFIG } from '../../utils/constants';
 import {
   ICalendarConfig,
@@ -20,6 +21,8 @@ import {
   ICalendarSelectors,
   ICalendarServiceEvents,
 } from './calendar.interface';
+import { isBetween, setDate } from '../../utils/moment';
+import moment from 'moment';
 
 @Injectable({
   providedIn: 'root',
@@ -36,11 +39,13 @@ export class CalendarService {
     this.selectors = {
       HOST: `#${this.uuid}`,
       LEFT_PANEL: {
+        PROFILE_GROUPS: `#${this.uuid} app-left-panel app-body .profile-group`,
         GROUPS: `#${this.uuid} app-left-panel app-body .profile-group .group`,
         APP_BODY: `#${this.uuid} app-left-panel app-body`,
         HOST: `#${this.uuid} app-left-panel`,
       },
       RIGHT_PANEL: {
+        USER_GROUPS: `#${this.uuid} app-right-panel app-body .user-groups`,
         GROUPS: `#${this.uuid} app-right-panel app-body .user-groups .group`,
         NAVIGATOR: `#${this.uuid} app-right-panel app-header .navigator`,
         TITLE: `#${this.uuid} app-right-panel app-header .title`,
@@ -58,7 +63,11 @@ export class CalendarService {
       selectRange: new Subject(),
       modeChange: new Subject(),
     };
-    this.content = { all: [], filtered: [] };
+    this.content = {
+      current: { activities: [], repetitions: [] },
+      filtered: [],
+      all: [],
+    };
     this.config = {
       activity: { factor: { width: '' } },
       leftPanel: { isCollapsed: false },
@@ -76,6 +85,8 @@ export class CalendarService {
 
   changePeriod(period: EPeriod) {
     this.on.periodChange.next(period);
+    this.setCurrentActivities();
+    this.setCurrentRepetitions();
   }
 
   changeMode(mode: TMode, force = false) {
@@ -92,7 +103,7 @@ export class CalendarService {
     this.changePeriod(EPeriod.referenceDate);
   }
 
-  changeContent(content: IProcessedContent[], type: keyof ICalendarContent) {
+  changeContent(content: IProcessedContent[], type: 'filtered' | 'all') {
     this.content[type] = content;
     this.on.contentChange.next(this.content);
   }
@@ -138,5 +149,59 @@ export class CalendarService {
   setLeftPanelCollapse(isCollapsed: boolean) {
     this.config.leftPanel.isCollapsed = isCollapsed;
     this.on.leftPanelCollapse.next(isCollapsed);
+  }
+
+  setCurrentActivities() {
+    const { startDate, endDate } = this.subColumns();
+    this.content.current.activities = this.content.filtered.map((content) =>
+      content.groups.map(({ groupedActivities }) => {
+        const filtered: IActivity[][] = [];
+        for (const group of groupedActivities) {
+          const tempGroup: IActivity[] = [];
+          for (const activity of group) {
+            if (isBetween(activity.startDate, startDate!, endDate!)) {
+              tempGroup.push(activity);
+            }
+          }
+          if (tempGroup.length > 0) {
+            filtered.push(tempGroup);
+          }
+        }
+        return filtered;
+      })
+    );
+  }
+
+  setCurrentRepetitions() {
+    const { startDate, endDate } = this.subColumns();
+    this.content.current.repetitions = this.content.filtered.map((content) =>
+      content.groups.map(({ groupedActivities }) => {
+        const filtered: IActivity[][] = [];
+
+        for (const group of groupedActivities) {
+          const tempGroup: IActivity[] = [];
+          for (const activity of group) {
+            for (const repeat of activity.repeat) {
+              if (isBetween(repeat, startDate!, endDate!)) {
+                const activityReplica = clone(activity);
+                const startDate = moment(activity.startDate);
+
+                activityReplica.startDate = setDate(repeat, {
+                  hour: startDate.hour(),
+                  minute: startDate.minute(),
+                  second: startDate.second(),
+                });
+                tempGroup.push(activityReplica);
+              }
+            }
+          }
+          if (tempGroup.length > 0) {
+            filtered.push(tempGroup);
+          }
+        }
+
+        return filtered;
+      })
+    );
   }
 }

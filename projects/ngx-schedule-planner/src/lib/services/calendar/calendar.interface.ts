@@ -7,6 +7,7 @@ import {
 import { ISelectedRange } from '../../modules/right-panel/components/body/body.interface';
 import { Subject } from 'rxjs';
 import {
+  IActivity,
   IProcessedContent,
   IProcessedCustomization,
 } from '../../main/ngx-schedule-planner.interface';
@@ -18,10 +19,7 @@ export interface ICalendarServiceEvents {
   addActivityClick: Subject<void>;
   periodChange: Subject<EPeriod>;
   modeChange: Subject<TMode>;
-  contentChange: Subject<{
-    filtered: IProcessedContent[];
-    all: IProcessedContent[];
-  }>;
+  contentChange: Subject<ICalendarContent>;
 }
 
 export interface ICalendarConfig {
@@ -37,6 +35,10 @@ export interface ICalendarConfig {
 }
 
 export interface ICalendarContent {
+  current: {
+    repetitions:IActivity[][][][];
+    activities:IActivity[][][][];
+  }
   filtered: IProcessedContent[];
   all: IProcessedContent[];
 }
@@ -47,9 +49,11 @@ export interface ICalendarSelectors {
     HOST: string;
     APP_BODY: string;
     GROUPS: string;
+    PROFILE_GROUPS: string;
   };
   RIGHT_PANEL: {
     HOST: string;
+    USER_GROUPS: string;
     GROUPS: string;
     NAVIGATOR: string;
     TITLE: string;

@@ -1,14 +1,12 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import {
-  IActivity,
   IProcessedContent,
   IGroup,
 } from '../../../../main/ngx-schedule-planner.interface';
 import { ICreatingActivity } from './body.interface';
 import { ActivityHTML } from '../../../../utils/classes/activity-html';
-import { isBetween, setDate } from '../../../../utils/moment';
-import moment from 'moment';
-import { clone } from '../../../../utils/functions';
+import { isBetween } from '../../../../utils/moment';
+import { ICalendarContent } from '../../../../services/calendar/calendar.interface';
 
 @Component({
   selector: 'app-body',
@@ -17,12 +15,12 @@ import { clone } from '../../../../utils/functions';
 })
 export class BodyComponent extends ActivityHTML implements OnInit {
   creatingActivity!: ICreatingActivity;
-  content!: IProcessedContent[];
+  content!: ICalendarContent;
 
   constructor() {
     super();
     this.calendarService.on.contentChange.subscribe((content) => {
-      this.content = content.filtered;
+      this.content = content;
     });
     this.resetCreatingActivity();
   }
@@ -101,51 +99,5 @@ export class BodyComponent extends ActivityHTML implements OnInit {
 
   @HostListener('mouseup') onClick() {
     this.finishSelection();
-  }
-
-  filterActivities(groupedActivities: IActivity[][]): IActivity[][] {
-    const start = this.subColumns.startDate!;
-    const end = this.subColumns.endDate!;
-    const filtered: IActivity[][] = [];
-    for (const group of groupedActivities) {
-      const tempGroup: IActivity[] = [];
-      for (const activity of group) {
-        if (isBetween(activity.startDate, start, end)) {
-          tempGroup.push(activity);
-        }
-      }
-      if (tempGroup.length > 0) {
-        filtered.push(tempGroup);
-      }
-    }
-    return filtered;
-  }
-
-  getRepetitions(groupedActivities: IActivity[][]) {
-    const start = this.subColumns.startDate!;
-    const end = this.subColumns.endDate!;
-    const filtered: IActivity[][] = [];
-    for (const group of groupedActivities) {
-      const tempGroup: IActivity[] = [];
-      for (const activity of group) {
-        for (const repeat of activity.repeat) {
-          if (isBetween(repeat, start, end)) {
-            const activityReplica = clone(activity);
-            const startDate = moment(activity.startDate);
-
-            activityReplica.startDate = setDate(repeat, {
-              hour: startDate.hour(),
-              minute: startDate.minute(),
-              second: startDate.second(),
-            });
-            tempGroup.push(activityReplica);
-          }
-        }
-      }
-      if (tempGroup.length > 0) {
-        filtered.push(tempGroup);
-      }
-    }
-    return filtered;
   }
 }

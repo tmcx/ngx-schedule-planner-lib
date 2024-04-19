@@ -15,7 +15,7 @@
       </section>
     </section>
 
-    <section class="groups">
+    <section class="groups" [ngStyle]="{'grid-template-rows':'repeat(' + (userSchedule.groups.length-1) + ', auto) 1fr'}">
       <section class="group" *ngFor="let group of userSchedule.groups">
         <h1 [title]="group.name">{{ group.icon }}</h1>
         <h1 [title]="group.name">{{ group.name }}</h1>

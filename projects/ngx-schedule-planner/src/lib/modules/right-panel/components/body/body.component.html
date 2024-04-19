@@ -24,21 +24,21 @@
       </section>
 </ng-template>
 
-<section class="user-groups" *ngFor="let userSchedule of content">
-  <section *ngFor="let group of userSchedule.groups" class="group">
+<section class="user-groups" *ngFor="let userSchedule of content['filtered'];let idxUserSchedule=index">
+  <section *ngFor="let group of userSchedule.groups; let idxGroup=index" class="group">
     <section class="row new-activity">
       <ng-container
         *ngTemplateOutlet="newActivityRow; context: { group, userSchedule }"
       ></ng-container>
     </section>
 
-    <section class="row" *ngFor="let activities of filterActivities(group.groupedActivities)">
+    <section class="row" *ngFor="let activities of content['current']['activities'][idxUserSchedule][idxGroup]">
       <ng-container
         *ngTemplateOutlet="activitiesRow; context: { activities }"
       ></ng-container>
     </section>
 
-    <section class="row" *ngFor="let activities of getRepetitions(group.groupedActivities)">
+    <section class="row" *ngFor="let activities of content['current']['repetitions'][idxUserSchedule][idxGroup]">
       <ng-container
         *ngTemplateOutlet="activitiesRow; context: { activities }"
       ></ng-container>

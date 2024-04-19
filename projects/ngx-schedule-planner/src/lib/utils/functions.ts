@@ -35,10 +35,13 @@ export async function querySelector(
 
 export async function querySelectorAll(
   selector: string,
-  wait = true
+  options: { wait?: boolean; parent?: HTMLElement } = { wait: true }
 ): Promise<HTMLElement[]> {
+  const { wait, parent } = options;
   const getElements = () =>
-    Array.from(document.querySelectorAll(selector)) as unknown as HTMLElement[];
+    Array.from(
+      (parent ?? document).querySelectorAll(selector)
+    ) as unknown as HTMLElement[];
   return new Promise<HTMLElement[]>((resolve) => {
     const interval = setInterval(() => {
       const elements = getElements();
@@ -103,7 +106,7 @@ export async function getElementSize(
   if (Array.isArray(els)) {
     values = els;
   } else if (typeof els == 'string') {
-    values = await querySelectorAll(els, false);
+    values = await querySelectorAll(els, { wait: false });
   } else {
     values = [els];
   }
@@ -130,7 +133,7 @@ export async function getElementSize(
 
 export async function setHeight(
   els: HTMLElement[] | HTMLElement | string[] | string,
-  value: number,
+  value: number | 'auto',
   unit = 'px'
 ) {
   let values = [];
@@ -140,18 +143,21 @@ export async function setHeight(
     }
     if (typeof els[0] == 'string') {
       for (const selector of els) {
-        values.push(...(await querySelectorAll(selector as string, false)));
+        values.push(
+          ...(await querySelectorAll(selector as string, { wait: false }))
+        );
       }
     } else {
       values = els as HTMLElement[];
     }
   } else if (typeof els == 'string') {
-    values = await querySelectorAll(els, false);
+    values = await querySelectorAll(els, { wait: false });
   } else {
     values = [els];
   }
   values.forEach((el) => {
     el.style.height = value + unit;
+    el.style.maxHeight = value + unit;
   });
 }
 

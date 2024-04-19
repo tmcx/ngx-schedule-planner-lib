@@ -35,53 +35,48 @@ export class BodyComponent implements AfterViewInit {
   }
 
   async resizeActivities() {
+    this.calendarService.setLoading(true);
     const {
-      LEFT_PANEL: { GROUPS: L_GROUPS },
-      RIGHT_PANEL: { GROUPS: R_GROUPS },
+      LEFT_PANEL: { PROFILE_GROUPS },
+      RIGHT_PANEL: { USER_GROUPS },
     } = this.calendarService.selectors;
 
-    const activityGroups = await querySelectorAll(R_GROUPS);
-    const userGroups = await querySelectorAll(L_GROUPS);
+    const profiles = await querySelectorAll(PROFILE_GROUPS);
+    const userGroups = await querySelectorAll(USER_GROUPS);
+    const groups = await Promise.all(
+      profiles
+        .map((profile, i) => [profile, userGroups[i]])
+        .map(async ([profile, userSchedule]) => {
+          const profileGroups = await querySelectorAll('.group', {
+            parent: profile,
+          });
 
-    for (let i = 0; i < userGroups.length; i++) {
-      const activityGroup = activityGroups[i];
-      const userGroup = userGroups[i];
+          const userGroups = await querySelectorAll('.group', {
+            parent: userSchedule,
+          });
+          profileGroups.forEach(async (profileGroup) => {await setHeight(profileGroup,'auto','')});
+          userGroups.forEach(async (profileGroup) => {await setHeight(profileGroup,'auto','')});
+          return profileGroups.map((profileGroup, i) => [
+            profileGroup,
+            userGroups[i],
+          ]);
+        })
+    );
 
-      const { clientHeight: activityGroupHeight } = await getElementSize(
-        activityGroup
+    for (const [leftPanelGroup, rightPanelGroup] of groups.flat()) {
+      const { clientHeight: leftGroupHeight } = await getElementSize(
+        leftPanelGroup
       );
-      const { clientHeight: userGroupHeight } = await getElementSize(userGroup);
-      const container = (userGroup as any).parentElement;
-      const { clientHeight: userGroupsHeight } = await getElementSize(
-        container
+      const { clientHeight: rightGroupHeight } = await getElementSize(
+        rightPanelGroup
       );
-      const isLast =
-        userGroup == container.querySelector('.group:last-of-type');
-
-      if (isLast) {
-        const { clientHeight: restOfGroupHeight } = await getElementSize(
-          Array.from(container.querySelectorAll('.group:not(:last-of-type)'))
-        );
-        const remainingSpace = userGroupsHeight - restOfGroupHeight;
-        const size =
-          activityGroupHeight > remainingSpace
-            ? activityGroupHeight
-            : remainingSpace;
-
-        if (size - 1 != userGroupHeight) {
-          await setHeight(userGroup, size);
-        }
-        if (size - 1 != activityGroupHeight) {
-          await setHeight(activityGroup, size);
-        }
-      } else {
-        if (activityGroupHeight > userGroupHeight) {
-          await setHeight(userGroup, activityGroupHeight);
-        } else {
-          await setHeight(activityGroup, userGroupHeight + 1);
-        }
+      if (leftGroupHeight > rightGroupHeight) {
+        setHeight(rightPanelGroup, leftGroupHeight);
+      } else if (leftGroupHeight < rightGroupHeight) {
+        setHeight(leftPanelGroup, rightGroupHeight);
       }
     }
+    this.calendarService.setLoading(false);
   }
 
   get isCollapsed() {
