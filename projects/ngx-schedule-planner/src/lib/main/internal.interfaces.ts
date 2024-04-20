@@ -33,6 +33,8 @@ export interface IActivity {
   endDate: Date;
   repeat: string[];
   tags: ITag[];
+  style?: { width: string; left: string };
+  htmlContent?: string;
   [key: string]: IIconText | string | number | any;
 }
 

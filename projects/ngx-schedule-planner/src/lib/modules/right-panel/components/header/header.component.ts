@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { EMode, EPeriod, TMode } from '../header/header.interface';
+import { EMode, EPeriod, IUnit, TMode } from './header.interface';
 import { CalendarService } from '../../../../services/calendar/calendar.service';
-import { BaseVariables } from '../../../../utils/base-variables';
 import { MonthlyCalendar } from '../../../../utils/monthly-calendar';
 import { WeeklyCalendar } from '../../../../utils/weekly-calendar';
 import { DailyCalendar } from '../../../../utils/daily-calendar';
@@ -13,9 +12,14 @@ import moment from 'moment';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent extends BaseVariables {
+export class HeaderComponent {
+  units: IUnit = {
+    [EMode.monthly]: 'month',
+    [EMode.weekly]: 'week',
+    [EMode.daily]: 'day',
+  };
+  period = EPeriod;
   constructor(private calendarService: CalendarService) {
-    super();
     this.loadModes();
     this.onSelectMode(this.calendarService.config.mode);
     this.calendarService.on.modeChange.subscribe((mode) => {

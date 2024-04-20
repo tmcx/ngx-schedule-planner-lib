@@ -1,3 +1,5 @@
+import { DurationConstructor } from '../../../../utils/moment';
+
 export type TMode = 'monthly' | 'weekly' | 'daily';
 
 export enum EMode {
@@ -31,4 +33,7 @@ export enum EPeriod {
   'previous' = 'previous',
   'today' = 'today',
   'next' = 'next',
+}
+export interface IUnit {
+  [key: string]: DurationConstructor;
 }

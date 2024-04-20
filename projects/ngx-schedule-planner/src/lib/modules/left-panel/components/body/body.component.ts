@@ -1,5 +1,5 @@
 import { AfterViewInit, Component } from '@angular/core';
-import { IProcessedContent } from '../../../../main/ngx-schedule-planner.interface';
+import { IProcessedContent } from '../../../../main/internal.interfaces';
 import { CalendarService } from '../../../../services/calendar/calendar.service';
 import {
   getElementSize,
@@ -54,8 +54,12 @@ export class BodyComponent implements AfterViewInit {
           const userGroups = await querySelectorAll('.group', {
             parent: userSchedule,
           });
-          profileGroups.forEach(async (profileGroup) => {await setHeight(profileGroup,'auto','')});
-          userGroups.forEach(async (profileGroup) => {await setHeight(profileGroup,'auto','')});
+          profileGroups.forEach(async (profileGroup) => {
+            await setHeight(profileGroup, 'auto', '');
+          });
+          userGroups.forEach(async (profileGroup) => {
+            await setHeight(profileGroup, 'auto', '');
+          });
           return profileGroups.map((profileGroup, i) => [
             profileGroup,
             userGroups[i],

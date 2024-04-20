@@ -1,4 +1,4 @@
-import { IConstants } from '../main/ngx-schedule-planner.interface';
+import { IConstants } from '../main/internal.interfaces';
 
 export const CONFIG: IConstants = {
   CALENDAR: {

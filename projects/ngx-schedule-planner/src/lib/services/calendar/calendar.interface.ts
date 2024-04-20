@@ -10,7 +10,7 @@ import {
   IActivity,
   IProcessedContent,
   IProcessedCustomization,
-} from '../../main/ngx-schedule-planner.interface';
+} from '../../main/internal.interfaces';
 
 export interface ICalendarServiceEvents {
   navigationChange: Subject<TNavigationChange>;
@@ -36,9 +36,9 @@ export interface ICalendarConfig {
 
 export interface ICalendarContent {
   current: {
-    repetitions:IActivity[][][][];
-    activities:IActivity[][][][];
-  }
+    repetitions: IActivity[][][][];
+    activities: IActivity[][][][];
+  };
   filtered: IProcessedContent[];
   all: IProcessedContent[];
 }

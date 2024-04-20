@@ -11,7 +11,7 @@ import {
   IActivity,
   IProcessedContent,
   IProcessedCustomization,
-} from '../../main/ngx-schedule-planner.interface';
+} from '../../main/internal.interfaces';
 import { ISelectedRange } from '../../modules/right-panel/components/body/body.interface';
 import { clone, uuid } from '../../utils/functions';
 import { CONFIG } from '../../utils/constants';
@@ -23,6 +23,7 @@ import {
 } from './calendar.interface';
 import { isBetween, setDate } from '../../utils/moment';
 import moment from 'moment';
+import { ActivityHTML } from '../../utils/classes/activity-html';
 
 @Injectable({
   providedIn: 'root',
@@ -95,6 +96,7 @@ export class CalendarService {
       this.on.modeChange.next(mode);
       this.on.navigationChange.next(ENavigationChange.mode);
       this.refreshWidthFactor();
+      this.refreshActivities();
     }
   }
 
@@ -106,6 +108,7 @@ export class CalendarService {
   changeContent(content: IProcessedContent[], type: 'filtered' | 'all') {
     this.content[type] = content;
     this.on.contentChange.next(this.content);
+    this.refreshActivities();
   }
 
   addActivityClicked() {
@@ -114,6 +117,7 @@ export class CalendarService {
 
   onRangeSelection(selectedRange: ISelectedRange) {
     this.on.selectRange.next(selectedRange);
+    this.refreshActivities();
   }
 
   private refreshWidthFactor() {
@@ -123,6 +127,7 @@ export class CalendarService {
 
   setCustomization(customization: IProcessedCustomization) {
     this.config.customization = customization;
+    this.refreshActivities();
   }
 
   setLoading(isLoading: boolean) {
@@ -151,7 +156,13 @@ export class CalendarService {
     this.on.leftPanelCollapse.next(isCollapsed);
   }
 
+  refreshActivities() {
+    this.setCurrentActivities();
+    this.setCurrentRepetitions();
+  }
+
   setCurrentActivities() {
+    const activityHTML = new ActivityHTML(this);
     const { startDate, endDate } = this.subColumns();
     this.content.current.activities = this.content.filtered.map((content) =>
       content.groups.map(({ groupedActivities }) => {
@@ -160,6 +171,8 @@ export class CalendarService {
           const tempGroup: IActivity[] = [];
           for (const activity of group) {
             if (isBetween(activity.startDate, startDate!, endDate!)) {
+              activity.style = activityHTML.style(activity);
+              activity.htmlContent = activityHTML.htmlContent(activity);
               tempGroup.push(activity);
             }
           }
@@ -173,6 +186,7 @@ export class CalendarService {
   }
 
   setCurrentRepetitions() {
+    const activityHTML = new ActivityHTML(this);
     const { startDate, endDate } = this.subColumns();
     this.content.current.repetitions = this.content.filtered.map((content) =>
       content.groups.map(({ groupedActivities }) => {
@@ -191,6 +205,9 @@ export class CalendarService {
                   minute: startDate.minute(),
                   second: startDate.second(),
                 });
+                activityReplica.style = activityHTML.style(activity);
+                activityReplica.htmlContent =
+                  activityHTML.htmlContent(activity);
                 tempGroup.push(activityReplica);
               }
             }

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { BaseVariables } from '../../../../utils/base-variables';
 import { CalendarService } from '../../../../services/calendar/calendar.service';
 import { clone } from '../../../../utils/functions';
 import moment from 'moment';
@@ -11,12 +10,11 @@ import { format } from '../../../../utils/moment';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent extends BaseVariables {
+export class HeaderComponent {
   title: string;
   filters: { groupName: string; userName: string };
 
   constructor(private calendarService: CalendarService) {
-    super();
     this.filters = {
       groupName: '',
       userName: '',

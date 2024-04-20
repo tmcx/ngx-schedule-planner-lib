@@ -1,9 +1,4 @@
-import { inject } from '@angular/core';
-import {
-  IActivity,
-  IIconText,
-  ITag,
-} from '../../main/ngx-schedule-planner.interface';
+import { IActivity, IIconText, ITag } from '../../main/internal.interfaces';
 import { CalendarService } from '../../services/calendar/calendar.service';
 import { getValueOfObjectByPath } from '../functions';
 import { EMode } from '../../modules/right-panel/components/header/header.interface';
@@ -11,20 +6,16 @@ import { format, startOf } from '../moment';
 import moment from 'moment';
 
 export class ActivityHTML {
-  calendarService: CalendarService;
+  constructor(public calendarService: CalendarService) {}
 
-  constructor() {
-    this.calendarService = inject(CalendarService);
-  }
-
-  activityHTMLContent(activity: IActivity) {
+  htmlContent(activity: IActivity) {
     const INLINE_SHOW =
       this.calendarService.config.customization?.CALENDAR?.ACTIVITY
         ?.INLINE_SHOW;
     if (!INLINE_SHOW) {
       return `<section class="text"><p title="${activity.name}">${activity.name}</p></section>`;
     }
-
+    
     let htmlContent = '';
     for (const customization of INLINE_SHOW) {
       const { type, valuePath, isArray } = customization;
@@ -91,7 +82,7 @@ export class ActivityHTML {
     return htmlContent;
   }
 
-  activityStyles(activity: IActivity) {
+  style(activity: IActivity) {
     const minutes = activity.durationInMin;
     const {
       activity: {

@@ -1,4 +1,4 @@
-import { IActivity } from '../main/ngx-schedule-planner.interface';
+import { IActivity } from '../main/internal.interfaces';
 
 export function arrayOf(length: number, plus: number = 0) {
   return Array.from(Array(length + 1).keys()).map((num) => num + plus);

@@ -6,16 +6,13 @@ import {
   Output,
 } from '@angular/core';
 import { CalendarService } from '../services/calendar/calendar.service';
-import {
-  IConstants,
-  IProcessedContent,
-} from './ngx-schedule-planner.interface';
+import { IConstants, IProcessedContent } from './internal.interfaces';
 import {
   EMode,
   TMode,
 } from '../modules/right-panel/components/header/header.interface';
 import { ISelectedRange } from '../modules/right-panel/components/body/body.interface';
-import { IContent, ICustomization } from '../ngx-schedule-planner.interface';
+import { IContent, ICustomization } from '../../public-interfaces';
 import moment from 'moment';
 import {
   clone,

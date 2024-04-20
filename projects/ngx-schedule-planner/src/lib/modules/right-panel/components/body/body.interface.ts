@@ -2,7 +2,7 @@ import {
   IProcessedContent,
   IGroup,
   IProfile,
-} from '../../../../main/ngx-schedule-planner.interface';
+} from '../../../../main/internal.interfaces';
 
 export interface ICreatingActivity {
   group: IProcessedContent['groups'][0] | null;

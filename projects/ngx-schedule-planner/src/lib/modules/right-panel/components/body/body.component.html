@@ -20,7 +20,7 @@
 </ng-template>
 
 <ng-template #activitiesRow let-activities="activities">
-      <section *ngFor="let activity of activities" class="activity" [ngStyle]="activityStyles(activity)" [innerHTML]="activityHTMLContent(activity)" >
+      <section *ngFor="let activity of activities" class="activity" [ngStyle]="activity.style" [innerHTML]="activity.htmlContent" >
       </section>
 </ng-template>
 

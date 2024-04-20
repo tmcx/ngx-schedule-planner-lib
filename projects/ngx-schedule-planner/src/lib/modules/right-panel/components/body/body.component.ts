@@ -1,31 +1,28 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import {
   IProcessedContent,
   IGroup,
-} from '../../../../main/ngx-schedule-planner.interface';
+} from '../../../../main/internal.interfaces';
 import { ICreatingActivity } from './body.interface';
-import { ActivityHTML } from '../../../../utils/classes/activity-html';
 import { isBetween } from '../../../../utils/moment';
 import { ICalendarContent } from '../../../../services/calendar/calendar.interface';
+import { CalendarService } from '../../../../services/calendar/calendar.service';
 
 @Component({
   selector: 'app-body',
   templateUrl: './body.component.html',
   styleUrls: ['./body.component.scss'],
 })
-export class BodyComponent extends ActivityHTML implements OnInit {
+export class BodyComponent {
   creatingActivity!: ICreatingActivity;
   content!: ICalendarContent;
 
-  constructor() {
-    super();
+  constructor(private calendarService: CalendarService) {
     this.calendarService.on.contentChange.subscribe((content) => {
       this.content = content;
     });
     this.resetCreatingActivity();
   }
-
-  ngOnInit() {}
 
   get subColumns() {
     return this.calendarService.subColumns();
