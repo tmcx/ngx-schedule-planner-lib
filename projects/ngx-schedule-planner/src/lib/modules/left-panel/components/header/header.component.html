@@ -1,5 +1,5 @@
 <section class="main">
-  <h2>{{ title }}</h2>
+  <h2>{{ calendarService.content.title }}</h2>
   <button (click)="addActivity()">+ Activity</button>
   <button (click)="isCollapsed=!isCollapsed" class="collapse-btn" [ngClass]="{'collapsed': isCollapsed}"></button>
 </section>

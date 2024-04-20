@@ -35,6 +35,7 @@ export interface ICalendarConfig {
 }
 
 export interface ICalendarContent {
+  title: string;
   current: {
     repetitions: IActivity[][][][];
     activities: IActivity[][][][];

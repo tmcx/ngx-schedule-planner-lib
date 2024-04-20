@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
 import { CalendarService } from '../../../../services/calendar/calendar.service';
 import { clone } from '../../../../utils/functions';
-import moment from 'moment';
-import { EMode } from '../../../right-panel/components/header/header.interface';
-import { format } from '../../../../utils/moment';
 
 @Component({
   selector: 'app-header',
@@ -11,39 +8,13 @@ import { format } from '../../../../utils/moment';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
-  title: string;
   filters: { groupName: string; userName: string };
 
-  constructor(private calendarService: CalendarService) {
+  constructor(public calendarService: CalendarService) {
     this.filters = {
       groupName: '',
       userName: '',
     };
-    this.title = '';
-    this.calendarService.on.modeChange.subscribe(() => {
-      this.setName();
-    });
-    this.calendarService.on.periodChange.subscribe(() => {
-      this.setName();
-    });
-  }
-
-  setName() {
-    const referenceDate = this.calendarService.config.referenceDate;
-    switch (this.calendarService.config.mode) {
-      case EMode.monthly:
-        this.title = format(referenceDate, 'YYYY, MMMM');
-        break;
-      case EMode.weekly:
-        const week =
-          moment(referenceDate).week() -
-          moment(referenceDate).startOf('M').week();
-        this.title = `${format(referenceDate, 'YYYY, MMMM')}, ${week + 1} week`;
-        break;
-      case EMode.daily:
-        this.title = format(referenceDate, 'YYYY, MMMM, dddd D');
-        break;
-    }
   }
 
   filterByUserName(name: string) {

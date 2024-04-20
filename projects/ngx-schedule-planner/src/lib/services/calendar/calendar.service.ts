@@ -65,6 +65,7 @@ export class CalendarService {
       modeChange: new Subject(),
     };
     this.content = {
+      title: '',
       current: { activities: [], repetitions: [] },
       filtered: [],
       all: [],
@@ -88,6 +89,7 @@ export class CalendarService {
     this.on.periodChange.next(period);
     this.setCurrentActivities();
     this.setCurrentRepetitions();
+    this.refreshTitle();
   }
 
   changeMode(mode: TMode, force = false) {
@@ -97,6 +99,7 @@ export class CalendarService {
       this.on.navigationChange.next(ENavigationChange.mode);
       this.refreshWidthFactor();
       this.refreshActivities();
+      this.refreshTitle();
     }
   }
 
@@ -171,8 +174,8 @@ export class CalendarService {
           const tempGroup: IActivity[] = [];
           for (const activity of group) {
             if (isBetween(activity.startDate, startDate!, endDate!)) {
-              activity.style = activityHTML.style(activity);
-              activity.htmlContent = activityHTML.htmlContent(activity);
+              activity.style = activityHTML.activityStyle(activity);
+              activity.htmlContent = activityHTML.activityHTMLContent(activity);
               tempGroup.push(activity);
             }
           }
@@ -205,9 +208,9 @@ export class CalendarService {
                   minute: startDate.minute(),
                   second: startDate.second(),
                 });
-                activityReplica.style = activityHTML.style(activity);
+                activityReplica.style = activityHTML.activityStyle(activity);
                 activityReplica.htmlContent =
-                  activityHTML.htmlContent(activity);
+                  activityHTML.activityHTMLContent(activity);
                 tempGroup.push(activityReplica);
               }
             }
@@ -220,5 +223,9 @@ export class CalendarService {
         return filtered;
       })
     );
+  }
+
+  refreshTitle() {
+    this.content.title = new ActivityHTML(this).calendarTitle();
   }
 }

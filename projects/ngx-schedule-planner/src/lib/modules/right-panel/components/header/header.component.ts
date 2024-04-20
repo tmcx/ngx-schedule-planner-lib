@@ -19,7 +19,7 @@ export class HeaderComponent {
     [EMode.daily]: 'day',
   };
   period = EPeriod;
-  constructor(private calendarService: CalendarService) {
+  constructor(public calendarService: CalendarService) {
     this.loadModes();
     this.onSelectMode(this.calendarService.config.mode);
     this.calendarService.on.modeChange.subscribe((mode) => {
