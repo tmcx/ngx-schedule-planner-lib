@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import moment from 'moment';
 
 @Component({
   selector: 'app-input-calendar',
@@ -11,7 +12,9 @@ export class InputCalendarComponent {
   constructor() {
     this.onChange = new EventEmitter<Date>();
   }
+
   onSelectDate($event: any) {
-    console.log($event);
+    const date = moment($event.target.value).toDate();
+    this.onChange.emit(date);
   }
 }
