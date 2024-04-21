@@ -5,7 +5,10 @@ import {
 } from '../../../../main/internal.interfaces';
 import { ICreatingActivity } from './body.interface';
 import { isBetween } from '../../../../utils/moment';
-import { ICalendarContent } from '../../../../services/calendar/calendar.interface';
+import {
+  EEvent,
+  ICalendarContent,
+} from '../../../../services/calendar/calendar.interface';
 import { CalendarService } from '../../../../services/calendar/calendar.service';
 
 @Component({
@@ -18,8 +21,10 @@ export class BodyComponent {
   content!: ICalendarContent;
 
   constructor(private calendarService: CalendarService) {
-    this.calendarService.on.contentChange.subscribe((content) => {
-      this.content = content;
+    this.calendarService.on.event.subscribe(({ event }) => {
+      if (event == EEvent.contentChange) {
+        this.content = this.calendarService.content;
+      }
     });
     this.resetCreatingActivity();
   }

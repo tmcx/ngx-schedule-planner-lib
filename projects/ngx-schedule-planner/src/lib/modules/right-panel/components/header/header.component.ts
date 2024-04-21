@@ -1,10 +1,7 @@
 import { Component } from '@angular/core';
 import { EMode, EPeriod, IUnit, TMode } from './header.interface';
 import { CalendarService } from '../../../../services/calendar/calendar.service';
-import { MonthlyCalendar } from '../../../../utils/monthly-calendar';
-import { WeeklyCalendar } from '../../../../utils/weekly-calendar';
-import { DailyCalendar } from '../../../../utils/daily-calendar';
-import { addToDate, startOf } from '../../../../utils/moment';
+import { addToDate } from '../../../../utils/moment';
 import moment from 'moment';
 
 @Component({
@@ -13,6 +10,7 @@ import moment from 'moment';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
+  modes!: { name: EMode; selected: boolean }[];
   units: IUnit = {
     [EMode.monthly]: 'month',
     [EMode.weekly]: 'week',
@@ -22,41 +20,12 @@ export class HeaderComponent {
   constructor(public calendarService: CalendarService) {
     this.loadModes();
     this.onSelectMode(this.calendarService.config.mode);
-    this.calendarService.on.modeChange.subscribe((mode) => {
-      this.onSelectMode(mode);
-      this.setMode();
-    });
-    this.calendarService.on.periodChange.subscribe(() => {
-      this.setMode();
-    });
     this.calendarService.config.columns = [];
-  }
-
-  setMode() {
-    const { referenceDate, mode } = this.calendarService.config;
-    switch (mode) {
-      case EMode.monthly:
-        this.calendarService.config.columns = MonthlyCalendar.getColumns(
-          startOf(referenceDate, 'month')
-        );
-        break;
-      case EMode.weekly:
-        this.calendarService.config.columns = WeeklyCalendar.getColumns(
-          startOf(referenceDate, 'week')
-        );
-        break;
-      case EMode.daily:
-        this.calendarService.config.columns =
-          DailyCalendar.getColumns(referenceDate);
-        break;
-    }
   }
 
   get columns() {
     return this.calendarService.config.columns;
   }
-
-  modes!: { name: EMode; selected: boolean }[];
 
   loadModes(selectedMode: TMode = this.calendarService.config.mode) {
     this.modes = [
@@ -80,21 +49,21 @@ export class HeaderComponent {
     switch (period) {
       case EPeriod.previous:
         date = moment(referenceDate).subtract(1, unit).toDate();
+        this.calendarService.changeNavigation(EPeriod.previous);
         break;
       case EPeriod.today:
         date = new Date();
         break;
       case EPeriod.next:
         date = addToDate(referenceDate, { [unit]: 1 });
+        this.calendarService.changeNavigation(EPeriod.next);
         break;
     }
     this.calendarService.changeReferenceDate(date);
     this.calendarService.changePeriod(period);
-    this.calendarService.changeNavigation(EPeriod.next);
   }
 
-  onSelectDate($event: any) {
-    const date = moment($event.target.value).toDate();
+  onSelectDate(date: Date) {
     this.calendarService.changeReferenceDate(date);
   }
 }

@@ -22,6 +22,7 @@ import {
   querySelector,
 } from '../utils/functions';
 import { CONFIG } from '../utils/constants';
+import { EEvent } from '../services/calendar/calendar.interface';
 
 @Component({
   selector: 'ngx-schedule-planner',
@@ -55,15 +56,15 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
 
   constructor(private calendarService: CalendarService) {
     this.uuid = this.calendarService.uuid;
-    this.calendarService.changeMode(EMode.monthly);
-    this.calendarService.changeReferenceDate(new Date());
     this.onSelectRange = new EventEmitter<ISelectedRange>();
     this.onAddActivityClick = new EventEmitter<void>();
-    this.calendarService.on.selectRange.subscribe((rangeActivity) => {
-      this.onSelectRange.emit(rangeActivity);
-    });
-    this.calendarService.on.addActivityClick.subscribe(() => {
-      this.onAddActivityClick.emit();
+    this.calendarService.on.event.subscribe(({ event, data }) => {
+      if (event == EEvent.addActivityClick) {
+        this.onAddActivityClick.emit();
+      }
+      if (event == EEvent.selectedRange) {
+        this.onSelectRange.emit(data);
+      }
     });
   }
 

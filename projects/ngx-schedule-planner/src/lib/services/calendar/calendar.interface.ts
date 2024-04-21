@@ -12,17 +12,31 @@ import {
   IProcessedCustomization,
 } from '../../main/internal.interfaces';
 
-export enum EEvent {}
+export enum EEvent {
+  afterRefreshCalendarContent = 'afterRefreshCalendarContent',
+  leftPanelCollapse = 'leftPanelCollapse',
+  addActivityClick = 'addActivityClick',
+  selectedRange = 'selectedRange',
+  referenceDate = 'referenceDate',
+  contentChange = 'contentChange',
+  navigation = 'navigation',
+  period = 'period',
+  mode = 'mode',
+}
+
+type EEvents =
+  | { event: EEvent.afterRefreshCalendarContent; data?: undefined }
+  | { event: EEvent.mode; data: { mode: TMode; force: boolean } }
+  | { event: EEvent.contentChange; data: 'filtered' | 'all' }
+  | { event: EEvent.selectedRange; data: ISelectedRange }
+  | { event: EEvent.navigation; data: TNavigationChange }
+  | { event: EEvent.addActivityClick; data?: undefined }
+  | { event: EEvent.leftPanelCollapse; data: boolean }
+  | { event: EEvent.referenceDate; data: Date }
+  | { event: EEvent.period; data: EPeriod };
 
 export interface ICalendarServiceEvents {
-  navigationChange: Subject<TNavigationChange>;
-  selectRange: Subject<ISelectedRange>;
-  leftPanelCollapse: Subject<boolean>;
-  addActivityClick: Subject<void>;
-  periodChange: Subject<EPeriod>;
-  modeChange: Subject<TMode>;
-  contentChange: Subject<ICalendarContent>;
-  event: Subject<EEvent>;
+  event: Subject<EEvents>;
 }
 
 export interface ICalendarConfig {

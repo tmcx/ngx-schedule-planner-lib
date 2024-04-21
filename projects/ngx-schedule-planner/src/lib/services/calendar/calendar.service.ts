@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import {
-  ENavigationChange,
   TNavigationChange,
   EPeriod,
   EMode,
@@ -16,14 +15,18 @@ import { ISelectedRange } from '../../modules/right-panel/components/body/body.i
 import { clone, uuid } from '../../utils/functions';
 import { CONFIG } from '../../utils/constants';
 import {
+  EEvent,
   ICalendarConfig,
   ICalendarContent,
   ICalendarSelectors,
   ICalendarServiceEvents,
 } from './calendar.interface';
-import { isBetween, setDate } from '../../utils/moment';
+import { isBetween, setDate, startOf } from '../../utils/moment';
 import moment from 'moment';
 import { ActivityHTML } from '../../utils/classes/activity-html';
+import { MonthlyCalendar } from '../../utils/monthly-calendar';
+import { WeeklyCalendar } from '../../utils/weekly-calendar';
+import { DailyCalendar } from '../../utils/daily-calendar';
 
 @Injectable({
   providedIn: 'root',
@@ -56,13 +59,6 @@ export class CalendarService {
       },
     };
     this.on = {
-      leftPanelCollapse: new Subject(),
-      addActivityClick: new Subject(),
-      navigationChange: new Subject(),
-      contentChange: new Subject(),
-      periodChange: new Subject(),
-      selectRange: new Subject(),
-      modeChange: new Subject(),
       event: new Subject(),
     };
     this.content = {
@@ -83,45 +79,41 @@ export class CalendarService {
   }
 
   changeNavigation(change: TNavigationChange) {
-    this.on.navigationChange.next(change);
+    this.on.event.next({ event: EEvent.navigation, data: change });
   }
 
   changePeriod(period: EPeriod) {
-    this.on.periodChange.next(period);
-    this.setCurrentActivities();
-    this.setCurrentRepetitions();
-    this.refreshTitle();
+    this.on.event.next({ event: EEvent.period, data: period });
+    this.refreshCalendarContent();
   }
 
   changeMode(mode: TMode, force = false) {
     if (this.config.mode !== mode || force) {
       this.config.mode = mode;
-      this.on.modeChange.next(mode);
-      this.on.navigationChange.next(ENavigationChange.mode);
-      this.refreshWidthFactor();
-      this.refreshActivities();
-      this.refreshTitle();
+      this.refreshCalendarContent();
+      this.on.event.next({ event: EEvent.mode, data: { mode, force } });
     }
   }
 
   changeReferenceDate(date: Date) {
     this.config.referenceDate = date;
-    this.changePeriod(EPeriod.referenceDate);
+    this.refreshCalendarContent();
+    this.on.event.next({ event: EEvent.referenceDate, data: date });
   }
 
   changeContent(content: IProcessedContent[], type: 'filtered' | 'all') {
     this.content[type] = content;
-    this.on.contentChange.next(this.content);
-    this.refreshActivities();
+    this.refreshCalendarContent();
+    this.on.event.next({ event: EEvent.contentChange, data: type });
   }
 
   addActivityClicked() {
-    this.on.addActivityClick.next();
+    this.on.event.next({ event: EEvent.addActivityClick });
   }
 
   onRangeSelection(selectedRange: ISelectedRange) {
-    this.on.selectRange.next(selectedRange);
-    this.refreshActivities();
+    this.refreshCalendarContent();
+    this.on.event.next({ event: EEvent.selectedRange, data: selectedRange });
   }
 
   private refreshWidthFactor() {
@@ -131,7 +123,7 @@ export class CalendarService {
 
   setCustomization(customization: IProcessedCustomization) {
     this.config.customization = customization;
-    this.refreshActivities();
+    this.refreshCalendarContent();
   }
 
   setLoading(isLoading: boolean) {
@@ -157,15 +149,18 @@ export class CalendarService {
 
   setLeftPanelCollapse(isCollapsed: boolean) {
     this.config.leftPanel.isCollapsed = isCollapsed;
-    this.on.leftPanelCollapse.next(isCollapsed);
+    this.on.event.next({ event: EEvent.leftPanelCollapse, data: isCollapsed });
   }
 
-  refreshActivities() {
+  refreshCalendarContent() {
+    this.setMode();
+    this.refreshWidthFactor();
     this.setCurrentActivities();
     this.setCurrentRepetitions();
+    this.on.event.next({ event: EEvent.afterRefreshCalendarContent });
   }
 
-  setCurrentActivities() {
+  private setCurrentActivities() {
     const activityHTML = new ActivityHTML(this);
     const { startDate, endDate } = this.subColumns();
     this.content.current.activities = this.content.filtered.map((content) =>
@@ -189,7 +184,7 @@ export class CalendarService {
     );
   }
 
-  setCurrentRepetitions() {
+  private setCurrentRepetitions() {
     const activityHTML = new ActivityHTML(this);
     const { startDate, endDate } = this.subColumns();
     this.content.current.repetitions = this.content.filtered.map((content) =>
@@ -228,5 +223,24 @@ export class CalendarService {
 
   refreshTitle() {
     this.content.title = new ActivityHTML(this).calendarTitle();
+  }
+
+  private setMode() {
+    const { referenceDate, mode } = this.config;
+    switch (mode) {
+      case EMode.monthly:
+        this.config.columns = MonthlyCalendar.getColumns(
+          startOf(referenceDate, 'month')
+        );
+        break;
+      case EMode.weekly:
+        this.config.columns = WeeklyCalendar.getColumns(
+          startOf(referenceDate, 'week')
+        );
+        break;
+      case EMode.daily:
+        this.config.columns = DailyCalendar.getColumns(referenceDate);
+        break;
+    }
   }
 }

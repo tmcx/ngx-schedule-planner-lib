@@ -6,6 +6,7 @@ import {
   querySelectorAll,
   setHeight,
 } from '../../../../utils/functions';
+import { EEvent } from '../../../../services/calendar/calendar.interface';
 
 @Component({
   selector: 'app-body',
@@ -16,25 +17,26 @@ export class BodyComponent implements AfterViewInit {
   content!: IProcessedContent[];
 
   constructor(private calendarService: CalendarService) {
-    this.calendarService.on.contentChange.subscribe((content) => {
-      this.content = content.filtered;
-      this.resizeActivities();
-    });
-
-    this.calendarService.on.navigationChange.subscribe(() => {
-      this.resizeActivities();
-    });
-
-    this.calendarService.on.leftPanelCollapse.subscribe(() => {
-      this.resizeActivities();
+    this.calendarService.on.event.subscribe(({ event }) => {
+      if (event == EEvent.contentChange) {
+        this.content = this.calendarService.content.filtered;
+      }
+      if (
+        [
+          EEvent.navigation,
+          EEvent.afterRefreshCalendarContent,
+          EEvent.leftPanelCollapse,
+        ].includes(event)
+      ) {
+        this.resizeActivities();
+      }
     });
   }
 
-  ngAfterViewInit(): void {
-    this.resizeActivities();
-  }
+  ngAfterViewInit(): void {}
 
   async resizeActivities() {
+    const start = new Date().getTime();
     this.calendarService.setLoading(true);
     const {
       LEFT_PANEL: { PROFILE_GROUPS },
@@ -42,29 +44,28 @@ export class BodyComponent implements AfterViewInit {
     } = this.calendarService.selectors;
 
     const profiles = await querySelectorAll(PROFILE_GROUPS);
-    const userGroups = await querySelectorAll(USER_GROUPS);
+    const userGroupsEls = await querySelectorAll(USER_GROUPS);
     const groups = await Promise.all(
-      profiles
-        .map((profile, i) => [profile, userGroups[i]])
-        .map(async ([profile, userSchedule]) => {
-          const profileGroups = await querySelectorAll('.group', {
-            parent: profile,
-          });
+      profiles.map(async (profile, i) => {
+        const userSchedule = userGroupsEls[i];
+        const profileGroups = await querySelectorAll('.group', {
+          parent: profile,
+        });
 
-          const userGroups = await querySelectorAll('.group', {
-            parent: userSchedule,
-          });
-          profileGroups.forEach(async (profileGroup) => {
-            await setHeight(profileGroup, 'auto', '');
-          });
-          userGroups.forEach(async (profileGroup) => {
-            await setHeight(profileGroup, 'auto', '');
-          });
-          return profileGroups.map((profileGroup, i) => [
-            profileGroup,
-            userGroups[i],
-          ]);
-        })
+        const userGroups = await querySelectorAll('.group', {
+          parent: userSchedule,
+        });
+        profileGroups.forEach(async (profileGroup) => {
+          await setHeight(profileGroup, 'auto', '');
+        });
+        userGroups.forEach(async (profileGroup) => {
+          await setHeight(profileGroup, 'auto', '');
+        });
+        return profileGroups.map((profileGroup, i) => [
+          profileGroup,
+          userGroups[i],
+        ]);
+      })
     );
 
     for (const [leftPanelGroup, rightPanelGroup] of groups.flat()) {
@@ -81,6 +82,8 @@ export class BodyComponent implements AfterViewInit {
       }
     }
     this.calendarService.setLoading(false);
+    const end = new Date().getTime();
+    console.log(end - start);
   }
 
   get isCollapsed() {
