@@ -89,7 +89,7 @@ export class HeaderComponent {
         break;
     }
     this.calendarService.changeReferenceDate(date);
-    this.calendarService.changePeriod(EPeriod.next);
+    this.calendarService.changePeriod(period);
     this.calendarService.changeNavigation(EPeriod.next);
   }
 

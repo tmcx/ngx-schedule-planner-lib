@@ -63,6 +63,7 @@ export class CalendarService {
       periodChange: new Subject(),
       selectRange: new Subject(),
       modeChange: new Subject(),
+      event: new Subject(),
     };
     this.content = {
       title: '',

@@ -113,10 +113,10 @@ export async function getElementSize(
 
   const summarize = (fieldName: string, subFieldName?: string): number => {
     return values.reduce(
-      (prev: number, curr: any) =>
+      (previous: number, curr: any) =>
         +(subFieldName ? curr[fieldName][subFieldName] : curr[fieldName])
           .toString()
-          .replace(/^\D+/g, '') + prev,
+          .replace(/^\D+/g, '') + previous,
       0
     );
   };

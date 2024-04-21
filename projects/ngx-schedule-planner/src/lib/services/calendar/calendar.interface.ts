@@ -12,6 +12,8 @@ import {
   IProcessedCustomization,
 } from '../../main/internal.interfaces';
 
+export enum EEvent {}
+
 export interface ICalendarServiceEvents {
   navigationChange: Subject<TNavigationChange>;
   selectRange: Subject<ISelectedRange>;
@@ -20,6 +22,7 @@ export interface ICalendarServiceEvents {
   periodChange: Subject<EPeriod>;
   modeChange: Subject<TMode>;
   contentChange: Subject<ICalendarContent>;
+  event: Subject<EEvent>;
 }
 
 export interface ICalendarConfig {

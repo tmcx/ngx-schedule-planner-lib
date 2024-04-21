@@ -19,11 +19,11 @@ export interface ISubColumn {
   lastSection: { start: Date; end: Date };
 }
 
-export type TNavigationChange = 'mode' | 'prev' | 'next';
+export type TNavigationChange = 'mode' | 'previous' | 'next';
 
 export enum ENavigationChange {
   'mode' = 'mode',
-  'prev' = 'prev',
+  'previous' = 'previous',
   'next' = 'next',
 }
 export type TPeriod = 'previous' | 'next' | 'today';
