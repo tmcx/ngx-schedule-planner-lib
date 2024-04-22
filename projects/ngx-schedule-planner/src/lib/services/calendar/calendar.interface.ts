@@ -3,8 +3,8 @@ import {
   EPeriod,
   TMode,
   IColumn,
-} from '../../modules/right-panel/components/header/header.interface';
-import { ISelectedRange } from '../../modules/right-panel/components/body/body.interface';
+} from '../../sections/right-panel/components/header/header.interface';
+import { ISelectedRange } from '../../sections/right-panel/components/body/body.interface';
 import { Subject } from 'rxjs';
 import {
   IActivity,

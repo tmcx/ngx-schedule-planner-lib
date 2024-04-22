@@ -7,11 +7,15 @@ import {
   setHeight,
 } from '../../../../utils/functions';
 import { EEvent } from '../../../../services/calendar/calendar.interface';
+import { ShortNamePipe } from '../../../../shared/pipes/short-name';
+import { CommonModule } from '@angular/common';
 
 @Component({
+  standalone: true,
   selector: 'app-body',
   templateUrl: './body.component.html',
   styleUrls: ['./body.component.scss'],
+  imports: [ShortNamePipe, CommonModule],
 })
 export class BodyComponent implements AfterViewInit {
   content!: IProcessedContent[];

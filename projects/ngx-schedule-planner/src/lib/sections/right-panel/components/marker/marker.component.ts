@@ -8,6 +8,7 @@ import { format, isBetween } from '../../../../../lib/utils/moment';
 import moment from 'moment';
 
 @Component({
+  standalone: true,
   selector: 'app-marker',
   templateUrl: './marker.component.html',
   styleUrls: ['./marker.component.scss'],

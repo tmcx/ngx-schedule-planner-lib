@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
 import { CalendarService } from '../../../../services/calendar/calendar.service';
 import { clone } from '../../../../utils/functions';
+import { InputSearchComponent } from '../../../../shared/inputs/input-search/input-search.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
+  standalone: true,
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
+  imports: [InputSearchComponent, CommonModule],
 })
 export class HeaderComponent {
   filters: { groupName: string; userName: string };

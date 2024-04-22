@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { IColumn } from '../modules/right-panel/components/header/header.interface';
+import { IColumn } from '../sections/right-panel/components/header/header.interface';
 import { addToDate, getWeekDays } from './moment';
 
 export class WeeklyCalendar {

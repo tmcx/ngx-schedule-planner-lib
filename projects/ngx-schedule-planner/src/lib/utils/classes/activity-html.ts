@@ -1,7 +1,7 @@
 import { IActivity, IIconText, ITag } from '../../main/internal.interfaces';
 import { CalendarService } from '../../services/calendar/calendar.service';
 import { getValueOfObjectByPath } from '../functions';
-import { EMode } from '../../modules/right-panel/components/header/header.interface';
+import { EMode } from '../../sections/right-panel/components/header/header.interface';
 import { format, startOf } from '../moment';
 import moment from 'moment';
 

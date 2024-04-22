@@ -1,11 +1,16 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { CalendarService } from '../../../services/calendar/calendar.service';
-import { linkScroll, linkSize, querySelector } from '../../../utils/functions';
+import { linkScroll, linkSize } from '../../../utils/functions';
+import { BodyComponent } from '../components/body/body.component';
+import { HeaderComponent } from '../components/header/header.component';
+import { MarkerComponent } from '../components/marker/marker.component';
 
 @Component({
+  standalone: true,
   selector: 'app-right-panel',
   templateUrl: './right-panel.component.html',
   styleUrls: ['./right-panel.component.scss'],
+  imports: [BodyComponent, HeaderComponent, MarkerComponent],
 })
 export class RightPanelComponent implements AfterViewInit {
   constructor(private calendarService: CalendarService) {}

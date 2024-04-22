@@ -5,15 +5,15 @@ import {
   EPeriod,
   EMode,
   TMode,
-} from '../../modules/right-panel/components/header/header.interface';
+} from '../../sections/right-panel/components/header/header.interface';
 import {
   IActivity,
   IProcessedContent,
   IProcessedCustomization,
 } from '../../main/internal.interfaces';
-import { ISelectedRange } from '../../modules/right-panel/components/body/body.interface';
+import { ISelectedRange } from '../../sections/right-panel/components/body/body.interface';
 import { clone, uuid } from '../../utils/functions';
-import { CONFIG } from '../../utils/constants';
+import { CONFIG } from '../../config/constants';
 import {
   EEvent,
   ICalendarConfig,

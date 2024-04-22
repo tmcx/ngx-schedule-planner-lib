@@ -3,11 +3,15 @@ import { EMode, EPeriod, IUnit, TMode } from './header.interface';
 import { CalendarService } from '../../../../services/calendar/calendar.service';
 import { addToDate } from '../../../../utils/moment';
 import moment from 'moment';
+import { CommonModule } from '@angular/common';
+import { InputCalendarComponent } from '../../../../shared/inputs/input-calendar/input-calendar.component';
 
 @Component({
+  standalone: true,
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
+  imports: [InputCalendarComponent, CommonModule],
 })
 export class HeaderComponent {
   modes!: { name: EMode; selected: boolean }[];

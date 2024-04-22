@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
+  standalone: true,
   selector: 'app-input-search',
   templateUrl: './input-search.component.html',
   styleUrls: ['./input-search.component.scss'],

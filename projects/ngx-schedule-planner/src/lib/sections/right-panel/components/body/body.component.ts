@@ -10,11 +10,14 @@ import {
   ICalendarContent,
 } from '../../../../services/calendar/calendar.interface';
 import { CalendarService } from '../../../../services/calendar/calendar.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
+  standalone: true,
   selector: 'app-body',
   templateUrl: './body.component.html',
   styleUrls: ['./body.component.scss'],
+  imports: [CommonModule],
 })
 export class BodyComponent {
   creatingActivity!: ICreatingActivity;

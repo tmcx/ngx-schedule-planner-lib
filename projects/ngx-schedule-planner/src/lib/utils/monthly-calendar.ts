@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { IColumn } from '../modules/right-panel/components/header/header.interface';
+import { IColumn } from '../sections/right-panel/components/header/header.interface';
 import { setDate, format } from './moment';
 import { arrayOf } from './functions';
 

@@ -11,7 +11,7 @@ import { IContent, ICustomization } from 'ngx-schedule-planner';
 export class AppComponent {
   mock = this.format();
   customization: ICustomization;
-  referencedDate = moment(new Date()).date(11).toDate();
+  referencedDate = moment(new Date()).date(8).toDate();
 
   constructor() {
     this.customization = {

@@ -1,4 +1,4 @@
-import { TMode } from '../modules/right-panel/components/header/header.interface';
+import { TMode } from '../sections/right-panel/components/header/header.interface';
 
 export interface IProcessedContent {
   profile: IProfile;

@@ -7,11 +7,6 @@ import {
 } from '@angular/core';
 import { CalendarService } from '../services/calendar/calendar.service';
 import { IConstants, IProcessedContent } from './internal.interfaces';
-import {
-  EMode,
-  TMode,
-} from '../modules/right-panel/components/header/header.interface';
-import { ISelectedRange } from '../modules/right-panel/components/body/body.interface';
 import { IContent, ICustomization } from '../../public-interfaces';
 import moment from 'moment';
 import {
@@ -21,14 +16,21 @@ import {
   onResizeDo,
   querySelector,
 } from '../utils/functions';
-import { CONFIG } from '../utils/constants';
+import { CONFIG } from '../config/constants';
 import { EEvent } from '../services/calendar/calendar.interface';
+import { RightPanelComponent } from '../sections/right-panel/main/right-panel.component';
+import { LeftPanelComponent } from '../sections/left-panel/main/left-panel.component';
+import { CommonModule } from '@angular/common';
+import { ISelectedRange } from '../sections/right-panel/components/body/body.interface';
+import { TMode } from '../sections/right-panel/components/header/header.interface';
 
 @Component({
+  standalone: true,
   selector: 'ngx-schedule-planner',
   templateUrl: './ngx-schedule-planner.component.html',
   styleUrls: ['./ngx-schedule-planner.component.scss'],
   host: { '[id]': 'uuid', '[attr.collapsed]': 'isCollapsed' },
+  imports: [LeftPanelComponent, RightPanelComponent, CommonModule],
 })
 export class NgxSchedulePlannerComponent implements AfterViewInit {
   uuid: string;
