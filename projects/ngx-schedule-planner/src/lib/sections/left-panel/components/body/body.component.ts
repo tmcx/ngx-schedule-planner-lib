@@ -40,7 +40,6 @@ export class BodyComponent implements AfterViewInit {
   ngAfterViewInit(): void {}
 
   async resizeActivities() {
-    const start = new Date().getTime();
     this.calendarService.setLoading(true);
     const {
       LEFT_PANEL: { PROFILE_GROUPS },
@@ -86,8 +85,6 @@ export class BodyComponent implements AfterViewInit {
       }
     }
     this.calendarService.setLoading(false);
-    const end = new Date().getTime();
-    console.log(end - start);
   }
 
   get isCollapsed() {

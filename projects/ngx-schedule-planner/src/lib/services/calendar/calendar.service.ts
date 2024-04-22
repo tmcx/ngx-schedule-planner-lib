@@ -155,70 +155,83 @@ export class CalendarService {
   refreshCalendarContent() {
     this.setMode();
     this.refreshWidthFactor();
-    this.setCurrentActivities();
-    this.setCurrentRepetitions();
+    this.setCurrent();
     this.on.event.next({ event: EEvent.afterRefreshCalendarContent });
   }
 
-  private setCurrentActivities() {
+  private setCurrent() {
     const activityHTML = new ActivityHTML(this);
     const { startDate, endDate } = this.subColumns();
-    this.content.current.activities = this.content.filtered.map((content) =>
-      content.groups.map(({ groupedActivities }) => {
-        const filtered: IActivity[][] = [];
+    this.content.current.repetitions = [];
+    this.content.current.activities = [];
+
+    const getActivities = (tempGroup: IActivity[], activity: IActivity) => {
+      if (isBetween(activity.startDate, startDate!, endDate!)) {
+        activity.style = activityHTML.activityStyle(activity);
+        activity.htmlContent = activityHTML.activityHTMLContent(activity);
+        tempGroup.push(activity);
+      }
+    };
+    const getRepetitions = (tempGroup: IActivity[], activity: IActivity) => {
+      for (const repeat of activity.repeat) {
+        if (isBetween(repeat, startDate!, endDate!)) {
+          const activityReplica = clone(activity);
+          const startDate = moment(activity.startDate);
+
+          activityReplica.startDate = setDate(repeat, {
+            hour: startDate.hour(),
+            minute: startDate.minute(),
+            second: startDate.second(),
+          });
+          activityReplica.style = activityHTML.activityStyle(activity);
+          activityReplica.htmlContent =
+            activityHTML.activityHTMLContent(activity);
+          tempGroup.push(activityReplica);
+        }
+      }
+    };
+
+    const mainRepetitions: IActivity[][][][] = [];
+    const mainActivities: IActivity[][][][] = [];
+    for (const content of this.content.all) {
+      let allFilteredRepetitions: IActivity[][][] = [];
+      let allFilteredActivities: IActivity[][][] = [];
+
+      for (const { groupedActivities } of content.groups) {
+        const filteredRepetitions: IActivity[][] = [];
+        const filteredActivities: IActivity[][] = [];
+
         for (const group of groupedActivities) {
-          const tempGroup: IActivity[] = [];
+          const repetitions: IActivity[] = [];
+          const activities: IActivity[] = [];
+
           for (const activity of group) {
-            if (isBetween(activity.startDate, startDate!, endDate!)) {
-              activity.style = activityHTML.activityStyle(activity);
-              activity.htmlContent = activityHTML.activityHTMLContent(activity);
-              tempGroup.push(activity);
-            }
+            getRepetitions(repetitions, activity);
+            getActivities(activities, activity);
           }
-          if (tempGroup.length > 0) {
-            filtered.push(tempGroup);
+
+          if (repetitions.length > 0) {
+            filteredRepetitions.push(repetitions);
+          }
+
+          if (activities.length > 0) {
+            filteredActivities.push(activities);
           }
         }
-        return filtered;
-      })
-    );
-  }
 
-  private setCurrentRepetitions() {
-    const activityHTML = new ActivityHTML(this);
-    const { startDate, endDate } = this.subColumns();
-    this.content.current.repetitions = this.content.filtered.map((content) =>
-      content.groups.map(({ groupedActivities }) => {
-        const filtered: IActivity[][] = [];
+        allFilteredRepetitions = [
+          ...allFilteredRepetitions,
+          filteredRepetitions,
+        ];
+        allFilteredActivities = [...allFilteredActivities, filteredActivities];
+      }
 
-        for (const group of groupedActivities) {
-          const tempGroup: IActivity[] = [];
-          for (const activity of group) {
-            for (const repeat of activity.repeat) {
-              if (isBetween(repeat, startDate!, endDate!)) {
-                const activityReplica = clone(activity);
-                const startDate = moment(activity.startDate);
+      mainRepetitions.push(allFilteredRepetitions);
+      mainActivities.push(allFilteredActivities);
+    }
 
-                activityReplica.startDate = setDate(repeat, {
-                  hour: startDate.hour(),
-                  minute: startDate.minute(),
-                  second: startDate.second(),
-                });
-                activityReplica.style = activityHTML.activityStyle(activity);
-                activityReplica.htmlContent =
-                  activityHTML.activityHTMLContent(activity);
-                tempGroup.push(activityReplica);
-              }
-            }
-          }
-          if (tempGroup.length > 0) {
-            filtered.push(tempGroup);
-          }
-        }
-
-        return filtered;
-      })
-    );
+    this.content.current.repetitions = mainRepetitions;
+    this.content.current.activities = mainActivities;
   }
 
   refreshTitle() {
