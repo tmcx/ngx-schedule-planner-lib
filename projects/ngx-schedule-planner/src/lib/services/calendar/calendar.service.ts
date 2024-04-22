@@ -156,7 +156,10 @@ export class CalendarService {
     this.setMode();
     this.refreshWidthFactor();
     this.setCurrent();
-    this.on.event.next({ event: EEvent.afterRefreshCalendarContent });
+    this.on.event.next({
+      event: EEvent.contentChange,
+      data: 'filtered',
+    });
   }
 
   private setCurrent() {

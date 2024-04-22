@@ -25,8 +25,11 @@ export class BodyComponent {
 
   constructor(private calendarService: CalendarService) {
     this.calendarService.on.event.subscribe(({ event }) => {
-      if (event == EEvent.contentChange) {
+      if (EEvent.contentChange == event) {
         this.content = this.calendarService.content;
+        this.calendarService.on.event.next({
+          event: EEvent.afterRefreshCalendarContent,
+        });
       }
     });
     this.resetCreatingActivity();

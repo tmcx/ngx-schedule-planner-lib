@@ -9,6 +9,7 @@ import {
 import { EEvent } from '../../../../services/calendar/calendar.interface';
 import { ShortNamePipe } from '../../../../shared/pipes/short-name';
 import { CommonModule } from '@angular/common';
+import { delay } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -21,16 +22,14 @@ export class BodyComponent implements AfterViewInit {
   content!: IProcessedContent[];
 
   constructor(private calendarService: CalendarService) {
-    this.calendarService.on.event.subscribe(({ event }) => {
+    this.calendarService.on.event.pipe(delay(500)).subscribe(({ event }) => {
       if (event == EEvent.contentChange) {
         this.content = this.calendarService.content.filtered;
       }
       if (
-        [
-          EEvent.navigation,
-          EEvent.afterRefreshCalendarContent,
-          EEvent.leftPanelCollapse,
-        ].includes(event)
+        [EEvent.afterRefreshCalendarContent, EEvent.leftPanelCollapse].includes(
+          event
+        )
       ) {
         this.resizeActivities();
       }
@@ -42,36 +41,18 @@ export class BodyComponent implements AfterViewInit {
   async resizeActivities() {
     this.calendarService.setLoading(true);
     const {
-      LEFT_PANEL: { PROFILE_GROUPS },
-      RIGHT_PANEL: { USER_GROUPS },
+      LEFT_PANEL: { GROUPS: L_GROUPS },
+      RIGHT_PANEL: { GROUPS: R_GROUPS },
     } = this.calendarService.selectors;
 
-    const profiles = await querySelectorAll(PROFILE_GROUPS);
-    const userGroupsEls = await querySelectorAll(USER_GROUPS);
-    const groups = await Promise.all(
-      profiles.map(async (profile, i) => {
-        const userSchedule = userGroupsEls[i];
-        const profileGroups = await querySelectorAll('.group', {
-          parent: profile,
-        });
+    const lGroups = await querySelectorAll(L_GROUPS);
+    const rGroups = await querySelectorAll(R_GROUPS);
+    await setHeight(rGroups, 'auto');
+    await setHeight(lGroups, 'auto');
 
-        const userGroups = await querySelectorAll('.group', {
-          parent: userSchedule,
-        });
-        profileGroups.forEach(async (profileGroup) => {
-          await setHeight(profileGroup, 'auto', '');
-        });
-        userGroups.forEach(async (profileGroup) => {
-          await setHeight(profileGroup, 'auto', '');
-        });
-        return profileGroups.map((profileGroup, i) => [
-          profileGroup,
-          userGroups[i],
-        ]);
-      })
-    );
-
-    for (const [leftPanelGroup, rightPanelGroup] of groups.flat()) {
+    for (let i = 0; i < lGroups.length; i++) {
+      const leftPanelGroup = lGroups[i];
+      const rightPanelGroup = rGroups[i];
       const { clientHeight: leftGroupHeight } = await getElementSize(
         leftPanelGroup
       );

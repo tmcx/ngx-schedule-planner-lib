@@ -14,42 +14,67 @@ export function uuid() {
 
 export async function querySelector(
   selector: string,
-  wait = false
+  parent?: HTMLElement
 ): Promise<HTMLElement> {
   const getElement = () =>
-    document.querySelector(selector) as unknown as HTMLElement;
-  if (wait) {
-    return new Promise<HTMLElement>((resolve) => {
-      const interval = setInterval(() => {
-        const elements = getElement();
-        if (elements) {
-          resolve(elements);
-          clearInterval(interval);
-        }
-      }, 100);
+    (parent ?? document).querySelector(selector) as unknown as HTMLElement;
+  return new Promise<HTMLElement>((resolve) => {
+    const element = getElement();
+    if (element) {
+      resolve(element);
+      return;
+    }
+
+    const observer = new MutationObserver(() => {
+      const element = getElement();
+      if (element) {
+        observer.disconnect();
+        resolve(element);
+        return;
+      }
     });
-  } else {
-    return getElement();
-  }
+    observer.observe(document.querySelector('ngx-schedule-planner')!, {
+      characterDataOldValue: true,
+      attributeOldValue: true,
+      characterData: true,
+      attributes: true,
+      childList: true,
+      subtree: true,
+    });
+  });
 }
 
 export async function querySelectorAll(
   selector: string,
-  options: { wait?: boolean; parent?: HTMLElement } = { wait: true }
+  parent?: HTMLElement
 ): Promise<HTMLElement[]> {
-  const { wait, parent } = options;
   const getElements = () =>
     Array.from(
       (parent ?? document).querySelectorAll(selector)
     ) as unknown as HTMLElement[];
   return new Promise<HTMLElement[]>((resolve) => {
-    const interval = setInterval(() => {
+    const elements = getElements();
+    if (elements.length > 0) {
+      resolve(elements);
+      return;
+    }
+
+    const observer = new MutationObserver(() => {
       const elements = getElements();
-      if (elements.length || !wait) {
+      if (elements.length > 0) {
+        observer.disconnect();
         resolve(elements);
-        clearInterval(interval);
+        return;
       }
-    }, 100);
+    });
+    observer.observe(document.querySelector('ngx-schedule-planner')!, {
+      characterDataOldValue: true,
+      attributeOldValue: true,
+      characterData: true,
+      attributes: true,
+      childList: true,
+      subtree: true,
+    });
   });
 }
 
@@ -106,7 +131,7 @@ export async function getElementSize(
   if (Array.isArray(els)) {
     values = els;
   } else if (typeof els == 'string') {
-    values = await querySelectorAll(els, { wait: false });
+    values = await querySelectorAll(els);
   } else {
     values = [els];
   }
@@ -143,21 +168,19 @@ export async function setHeight(
     }
     if (typeof els[0] == 'string') {
       for (const selector of els) {
-        values.push(
-          ...(await querySelectorAll(selector as string, { wait: false }))
-        );
+        values.push(...(await querySelectorAll(selector as string)));
       }
     } else {
       values = els as HTMLElement[];
     }
   } else if (typeof els == 'string') {
-    values = await querySelectorAll(els, { wait: false });
+    values = await querySelectorAll(els);
   } else {
     values = [els];
   }
   values.forEach((el) => {
-    el.style.height = value + unit;
-    el.style.maxHeight = value + unit;
+    el.style.height = value == 'auto' ? value : value + unit;
+    el.style.maxHeight = value == 'auto' ? value : value + unit;
   });
 }
 

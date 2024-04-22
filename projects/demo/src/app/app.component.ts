@@ -68,6 +68,6 @@ export class AppComponent {
         });
       });
     });
-    return content;
+    return [...content,...content,...content,...content];
   }
 }
