@@ -83,8 +83,8 @@ export class CalendarService {
   }
 
   changePeriod(period: EPeriod) {
-    this.on.event.next({ event: EEvent.period, data: period });
     this.refreshCalendarContent();
+    this.on.event.next({ event: EEvent.period, data: period });
   }
 
   changeMode(mode: TMode, force = false) {
@@ -154,6 +154,7 @@ export class CalendarService {
 
   refreshCalendarContent() {
     this.setMode();
+    this.refreshTitle();
     this.refreshWidthFactor();
     this.setCurrent();
     this.on.event.next({

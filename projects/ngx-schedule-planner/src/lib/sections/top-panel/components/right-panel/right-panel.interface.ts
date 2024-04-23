@@ -1,4 +1,6 @@
-import { DurationConstructor } from '../../../../utils/moment';
+import { DurationConstructor } from '../../../../../lib/utils/moment';
+
+export type TModes = { [key in TMode]: DurationConstructor };
 
 export type TMode = 'monthly' | 'weekly' | 'daily';
 
@@ -33,7 +35,4 @@ export enum EPeriod {
   'previous' = 'previous',
   'today' = 'today',
   'next' = 'next',
-}
-export interface IUnit {
-  [key: string]: DurationConstructor;
 }

@@ -2,11 +2,11 @@
   <section class="mode">
     <select (change)="onSelectMode($event)">
       <option
-        [value]="mode.name"
-        *ngFor="let mode of modes"
-        [selected]="mode.selected"
+        *ngFor="let mode of modes | keyvalue"
+        [value]="mode.key"
+        [selected]="mode.key == calendarService.config.mode"
       >
-        {{ mode.name }}
+        {{ mode.value }}
       </option>
     </select>
   </section>

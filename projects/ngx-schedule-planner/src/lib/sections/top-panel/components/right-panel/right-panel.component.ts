@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { InputCalendarComponent } from '../../../../shared/inputs/input-calendar/input-calendar.component';
-import { EMode, EPeriod, IUnit, TMode } from './right-panel.interface';
 import { CalendarService } from '../../../../services/calendar/calendar.service';
-import moment from 'moment';
+import { EMode, EPeriod, IColumn, TModes } from './right-panel.interface';
+import { EEvent } from '../../../../services/calendar/calendar.interface';
 import { addToDate } from '../../../../utils/moment';
+import moment from 'moment';
 
 @Component({
   standalone: true,
@@ -14,41 +15,34 @@ import { addToDate } from '../../../../utils/moment';
   imports: [InputCalendarComponent, CommonModule],
 })
 export class RightPanelComponent {
-  modes!: { name: EMode; selected: boolean }[];
-  units: IUnit = {
-    [EMode.monthly]: 'month',
-    [EMode.weekly]: 'week',
-    [EMode.daily]: 'day',
-  };
+  columns: IColumn[];
   period = EPeriod;
+  modes: TModes;
+
   constructor(public calendarService: CalendarService) {
-    this.loadModes();
-    this.onSelectMode(this.calendarService.config.mode);
-    this.calendarService.config.columns = [];
-  }
+    this.columns = [];
+    this.modes = {
+      [EMode.monthly]: 'month',
+      [EMode.weekly]: 'week',
+      [EMode.daily]: 'day',
+    };
 
-  get columns() {
-    return this.calendarService.config.columns;
-  }
-
-  loadModes(selectedMode: TMode = this.calendarService.config.mode) {
-    this.modes = [
-      { name: EMode.daily, selected: selectedMode == EMode.daily },
-      { name: EMode.weekly, selected: selectedMode == EMode.weekly },
-      { name: EMode.monthly, selected: selectedMode == EMode.monthly },
-    ];
+    this.calendarService.on.event.subscribe(({ event }) => {
+      if ([EEvent.mode, EEvent.period, EEvent.referenceDate].includes(event)) {
+        this.columns = this.calendarService.config.columns;
+      }
+    });
   }
 
   onSelectMode($event: any) {
     const mode: EMode =
       $event?.target?.value ?? $event ?? this.calendarService.config.mode;
-    this.loadModes(mode);
     this.calendarService.changeMode(mode);
   }
 
   setPeriod(period: EPeriod) {
     const { referenceDate, mode } = this.calendarService.config;
-    const unit = this.units[mode];
+    const unit = this.modes[mode];
     let date = referenceDate;
     switch (period) {
       case EPeriod.previous:
@@ -70,5 +64,4 @@ export class RightPanelComponent {
   onSelectDate(date: Date) {
     this.calendarService.changeReferenceDate(date);
   }
-
 }
