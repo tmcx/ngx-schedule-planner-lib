@@ -1,0 +1,97 @@
+<app-marker></app-marker>
+<ng-template #profileGroup let-userSchedule="userSchedule">
+  <section class="profile-group">
+    <section class="profile">
+      <img
+        [src]="userSchedule.profile.imageUrl"
+        [title]="userSchedule.profile.name"
+        [alt]="userSchedule.profile.name"
+      />
+      <h1 [title]="userSchedule.profile.name">{{ isCollapsed ? (userSchedule.profile.name | shortName) : userSchedule.profile.name }}</h1>
+      <p>{{ userSchedule.profile.description }}</p>
+      <section class="tags">
+        <span *ngFor="let tag of userSchedule.profile.tags">{{
+          tag.name
+        }}</span>
+      </section>
+    </section>
+  </section>
+</ng-template>
+
+<ng-template #spanColumn let-refDate="refDate" let-group="group" let-userSchedule="userSchedule">
+  <span
+    (mousedown)="addActivity('start', userSchedule, group, refDate)"
+    (mouseup)="addActivity('end',  userSchedule, group, refDate)"
+    (mouseenter)="addActivity('enter', userSchedule, group, refDate)"
+    [ngClass]="{ creating: creatingActivity.isCreating ? isInTheCreation(group, refDate) : false }"
+  ></span>
+
+</ng-template>
+
+<ng-template #newActivityRow let-group="group" let-userSchedule="userSchedule">
+  <ng-container *ngFor="let subColumn of subColumns.subColumns">
+    <ng-container
+      *ngTemplateOutlet="spanColumn; context: { group, userSchedule, refDate:subColumn.lastSection.start }"
+    ></ng-container>
+    <ng-container
+      *ngTemplateOutlet="spanColumn; context: { group, userSchedule, refDate:subColumn.lastSection.end }"
+    ></ng-container>
+  </ng-container>
+</ng-template>
+
+<ng-template #activitiesRow let-activities="activities">
+    <section *ngFor="let activity of activities" class="activity" [ngStyle]="activity.style" [innerHTML]="activity.htmlContent" >
+    </section>
+</ng-template>
+
+
+
+
+
+
+
+
+
+
+
+<ng-container *ngIf="content">
+  <ng-container  *ngFor="let userSchedule of content['filtered'];let idxUserSchedule=index">
+    <ng-container
+      *ngTemplateOutlet="profileGroup; context: { userSchedule }"
+    ></ng-container>
+
+    <section class="user-groups">
+      <span></span>
+      <section *ngFor="let group of userSchedule.groups; let idxGroup=index" class="group">
+
+        <section class="group-header"
+          [ngStyle]="{'grid-row': 'span ' + (
+            1 +
+            content['current']['activities'][idxUserSchedule][idxGroup].length +
+            content['current']['repetitions'][idxUserSchedule][idxGroup].length
+          ) }">
+          <h1 [title]="group.name">{{ group.icon }}</h1>
+          <h1 [title]="group.name">{{ group.name }}</h1>
+        </section>
+        <section class="row new-activity">
+          <ng-container
+            *ngTemplateOutlet="newActivityRow; context: { group, userSchedule }"
+          ></ng-container>
+        </section>
+
+        <section class="row" *ngFor="let activities of content['current']['activities'][idxUserSchedule][idxGroup]">
+          <ng-container
+            *ngTemplateOutlet="activitiesRow; context: { activities }"
+          ></ng-container>
+        </section>
+
+        <section class="row" *ngFor="let activities of content['current']['repetitions'][idxUserSchedule][idxGroup]">
+          <ng-container
+            *ngTemplateOutlet="activitiesRow; context: { activities }"
+          ></ng-container>
+        </section>
+      </section>
+    </section>
+  </ng-container>
+
+</ng-container>

@@ -1,7 +1,7 @@
 import moment from 'moment';
-import { IColumn } from '../sections/right-panel/components/header/header.interface';
 import { addToDate, format, getDaysOfMonth } from './moment';
 import { arrayOf } from './functions';
+import { IColumn } from '../sections/top-panel/components/right-panel/right-panel.interface';
 
 export class DailyCalendar {
   static getColumns(date: Date): IColumn[] {

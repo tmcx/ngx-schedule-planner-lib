@@ -1,4 +1,4 @@
-$header-width-collapsed: var(--ngx-header-width-collapsed);
+$header-width: var(--ngx-header-width);
 $background-color: var(--ngx-sp-host-bg-color);
 $border: solid 1px var(--ngx-sp-border-color);
 $header-height: var(--ngx-header-height);
@@ -34,71 +34,58 @@ $header-height: var(--ngx-header-height);
     }
   }
 
-  app-header {
-    max-height: 150px;
-  }
-
-  app-right-panel,
-  app-left-panel {
-    overflow: auto;
-
-    app-header {
-      background-color: $background-color;
-      position: sticky;
-      z-index: 1;
-      top: 0;
-    }
-  }
-
   &[collapsed="true"] {
-    app-left-panel {
-      grid-template-columns: $header-width-collapsed;
-      app-header {
-        width: $header-width-collapsed;
-
+    app-top-panel {
+      grid-template-columns: $header-width 1fr;
+      app-left-panel {
         .main h2,
         .main button:not(.collapse-btn),
         .filters {
           display: none;
         }
       }
-      app-body {
-        width: $header-width-collapsed;
+    }
+    app-bottom-panel {
+      grid-template-columns: calc($header-width / 2 - 1px) 1fr;
 
-        .profile-group {
-          display: grid;
-          grid-template-columns:
-            calc($header-width-collapsed / 2) calc($header-width-collapsed / 2)
-            1fr;
+      .profile-group {
+        display: grid;
+        grid-template-columns: calc($header-width / 2) 1fr;
 
-          .profile {
-            grid-template-rows: min-content 1fr !important;
-            grid-template-columns: min-content !important;
-            padding: 3px !important;
+        .profile {
+          grid-template-rows: min-content 1fr !important;
+          grid-template-columns: min-content !important;
+          padding: 3px !important;
 
-            img {
-              height: 18px !important;
-              width: 18px !important;
-            }
-
-            h1 {
-              font-size: 15px;
-              text-align: center;
-            }
+          img {
+            height: 18px !important;
+            width: 18px !important;
           }
 
-          .group {
-            padding: 7px 3px !important;
-            h1:last-of-type {
-              display: none !important;
-            }
+          h1 {
+            font-size: 15px;
+            text-align: center;
           }
         }
-
         p,
         .tags {
           padding: 7px 3px !important;
           display: none !important;
+        }
+      }
+    }
+
+    .user-groups {
+      & > span {
+        left: calc($header-width / 2) !important;
+      }
+      .group {
+        grid-template-columns: calc($header-width / 2) 1fr !important;
+        .group-header {
+          padding: 7px 3px !important;
+          h1:last-of-type {
+            display: none !important;
+          }
         }
       }
     }
@@ -107,7 +94,8 @@ $header-height: var(--ngx-header-height);
 
 :host {
   display: grid;
-  grid-auto-flow: column;
+  grid-auto-flow: row;
+  grid-template-rows: $header-height 1fr;
   background-color: $background-color;
   position: relative;
 }

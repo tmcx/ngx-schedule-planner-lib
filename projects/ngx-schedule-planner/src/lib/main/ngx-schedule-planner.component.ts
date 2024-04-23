@@ -18,11 +18,11 @@ import {
 } from '../utils/functions';
 import { CONFIG } from '../config/constants';
 import { EEvent } from '../services/calendar/calendar.interface';
-import { RightPanelComponent } from '../sections/right-panel/main/right-panel.component';
-import { LeftPanelComponent } from '../sections/left-panel/main/left-panel.component';
 import { CommonModule } from '@angular/common';
-import { ISelectedRange } from '../sections/right-panel/components/body/body.interface';
-import { TMode } from '../sections/right-panel/components/header/header.interface';
+import { TopPanelComponent } from '../sections/top-panel/main/top-panel.component';
+import { BottomPanelComponent } from '../sections/bottom-panel/main/bottom-panel.component';
+import { ISelectedRange } from '../sections/bottom-panel/main/bottom-panel.interface';
+import { TMode } from '../sections/top-panel/components/right-panel/right-panel.interface';
 
 @Component({
   standalone: true,
@@ -30,9 +30,10 @@ import { TMode } from '../sections/right-panel/components/header/header.interfac
   templateUrl: './ngx-schedule-planner.component.html',
   styleUrls: ['./ngx-schedule-planner.component.scss'],
   host: { '[id]': 'uuid', '[attr.collapsed]': 'isCollapsed' },
-  imports: [LeftPanelComponent, RightPanelComponent, CommonModule],
+  imports: [TopPanelComponent, BottomPanelComponent, CommonModule],
 })
 export class NgxSchedulePlannerComponent implements AfterViewInit {
+  isCollapsed: boolean;
   uuid: string;
   @Output() onSelectRange: EventEmitter<ISelectedRange>;
   @Output() onAddActivityClick: EventEmitter<void>;
@@ -57,6 +58,8 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
   }
 
   constructor(private calendarService: CalendarService) {
+    this.isCollapsed = this.calendarService.config.isLoading;
+    this.toggleCollapse(this.isCollapsed);
     this.uuid = this.calendarService.uuid;
     this.onSelectRange = new EventEmitter<ISelectedRange>();
     this.onAddActivityClick = new EventEmitter<void>();
@@ -66,6 +69,10 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
       }
       if (event == EEvent.selectedRange) {
         this.onSelectRange.emit(data);
+      }
+      if (event == EEvent.leftPanelCollapse) {
+        this.isCollapsed = data;
+        this.toggleCollapse(this.isCollapsed);
       }
     });
   }
@@ -105,10 +112,6 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
     return this.calendarService.config.isLoading;
   }
 
-  get isCollapsed() {
-    return this.calendarService.config.leftPanel.isCollapsed;
-  }
-
   async setCssVariables() {
     var root = await querySelector(this.calendarService.selectors.HOST);
     for (const varName in CONFIG.STYLE) {
@@ -116,6 +119,22 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
         const value = CONFIG.STYLE[varName as keyof IConstants['STYLE']];
         root.style.setProperty(varName, value);
       }
+    }
+  }
+
+  async toggleCollapse(collapsed: boolean) {
+    var root = await querySelector(this.calendarService.selectors.HOST);
+
+    if (collapsed) {
+      root.style.setProperty(
+        '--ngx-header-width',
+        CONFIG.STYLE['--ngx-header-width-collapsed']
+      );
+    } else {
+      root.style.setProperty(
+        '--ngx-header-width',
+        CONFIG.STYLE['--ngx-header-width']
+      );
     }
   }
 }

@@ -1,16 +1,16 @@
-import {
-  TNavigationChange,
-  EPeriod,
-  TMode,
-  IColumn,
-} from '../../sections/right-panel/components/header/header.interface';
-import { ISelectedRange } from '../../sections/right-panel/components/body/body.interface';
 import { Subject } from 'rxjs';
 import {
   IActivity,
   IProcessedContent,
   IProcessedCustomization,
 } from '../../main/internal.interfaces';
+import { ISelectedRange } from '../../sections/bottom-panel/main/bottom-panel.interface';
+import {
+  TNavigationChange,
+  EPeriod,
+  TMode,
+  IColumn,
+} from '../../sections/top-panel/components/right-panel/right-panel.interface';
 
 export enum EEvent {
   afterRefreshCalendarContent = 'afterRefreshCalendarContent',

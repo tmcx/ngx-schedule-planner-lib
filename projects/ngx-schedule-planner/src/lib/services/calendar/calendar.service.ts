@@ -1,17 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import {
-  TNavigationChange,
-  EPeriod,
-  EMode,
-  TMode,
-} from '../../sections/right-panel/components/header/header.interface';
-import {
   IActivity,
   IProcessedContent,
   IProcessedCustomization,
 } from '../../main/internal.interfaces';
-import { ISelectedRange } from '../../sections/right-panel/components/body/body.interface';
 import { clone, uuid } from '../../utils/functions';
 import { CONFIG } from '../../config/constants';
 import {
@@ -27,6 +20,13 @@ import { ActivityHTML } from '../../utils/classes/activity-html';
 import { MonthlyCalendar } from '../../utils/monthly-calendar';
 import { WeeklyCalendar } from '../../utils/weekly-calendar';
 import { DailyCalendar } from '../../utils/daily-calendar';
+import { ISelectedRange } from '../../sections/bottom-panel/main/bottom-panel.interface';
+import {
+  TNavigationChange,
+  EPeriod,
+  EMode,
+  TMode,
+} from '../../sections/top-panel/components/right-panel/right-panel.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -53,9 +53,9 @@ export class CalendarService {
         GROUPS: `#${this.uuid} app-right-panel app-body .user-groups .group`,
         NAVIGATOR: `#${this.uuid} app-right-panel app-header .navigator`,
         TITLE: `#${this.uuid} app-right-panel app-header .title`,
-        APP_MARKER: `#${this.uuid} app-right-panel app-marker`,
+        APP_MARKER: `#${this.uuid} app-bottom-panel app-marker`,
         APP_BODY: `#${this.uuid} app-right-panel app-body`,
-        HOST: `#${this.uuid} app-right-panel`,
+        HOST: `#${this.uuid} app-bottom-panel`,
       },
     };
     this.on = {

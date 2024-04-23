@@ -1,6 +1,6 @@
 import moment from 'moment';
-import { IColumn } from '../sections/right-panel/components/header/header.interface';
 import { addToDate, getWeekDays } from './moment';
+import { IColumn } from '../sections/top-panel/components/right-panel/right-panel.interface';
 
 export class WeeklyCalendar {
   static getColumns(date: Date): IColumn[] {
