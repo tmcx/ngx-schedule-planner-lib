@@ -95,9 +95,10 @@ $header-height: var(--ngx-header-height);
 :host {
   display: grid;
   grid-auto-flow: row;
-  grid-template-rows: $header-height 1fr;
+  grid-template-rows: $header-height calc(100% - $header-height);
   background-color: $background-color;
   position: relative;
+  padding: 10px;
 }
 
 .loading {
@@ -109,3 +110,24 @@ $header-height: var(--ngx-header-height);
   background-color: rgb(94, 94, 94);
   z-index: 1;
 }
+
+// ::ng-deep .floating-scroll {
+//   overflow: hidden;
+//   &::after{
+//     content: '';
+//   overflow: auto;
+//   scrollbar-gutter: stable;
+//   scrollbar-color: transparent transparent;
+//   scrollbar-width: thin;
+
+//   &:hover::-webkit-scrollbar-thumb {
+//     background: rgba(220, 220, 220, 0.678);
+//   }
+
+//   &:hover {
+//     overflow: auto;
+//     scrollbar-color: rgba(220, 220, 220, 0.678) rgba(220, 220, 220, 0.678);
+//   }
+
+//   }
+// }

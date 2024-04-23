@@ -4,14 +4,14 @@ $header-width: var(--ngx-header-width);
 $image-width: 40px;
 
 :host {
-  overflow: auto;
   display: grid;
   border-right: $border;
+  border-left: $border;
   position: relative;
   display: grid;
   grid-auto-flow: row;
   border-bottom: $border;
-  grid-template-columns: calc($header-width / 2 - 1px) 1fr;
+  grid-template-columns: calc($header-width / 2 - 2px) 1fr;
 }
 
 .profile-group {

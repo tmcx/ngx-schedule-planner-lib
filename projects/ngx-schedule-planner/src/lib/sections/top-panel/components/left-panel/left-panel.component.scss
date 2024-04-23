@@ -19,9 +19,16 @@ button {
 .filters {
   display: grid;
   gap: 10px;
-  grid-template-columns: 1fr repeat(2, auto);
   align-items: center;
   justify-items: end;
+}
+
+.main {
+  grid-template-columns: 1fr repeat(2, auto);
+}
+
+.filters {
+  grid-template-columns: 1fr 1fr;
 }
 
 h2 {

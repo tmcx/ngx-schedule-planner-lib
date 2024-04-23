@@ -1,13 +1,15 @@
-import { AfterViewInit, Component, HostListener } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { CalendarService } from '../../../services/calendar/calendar.service';
-import { linkScroll, linkSize } from '../../../utils/functions';
 import { MarkerComponent } from '../components/marker/marker.component';
 import { RightPanelComponent } from '../components/right-panel/right-panel.component';
 import { LeftPanelComponent } from '../components/left-panel/left-panel.component';
 import { ShortNamePipe } from '../../../shared/pipes/short-name';
 import { CommonModule } from '@angular/common';
 import { IGroup, IProcessedContent } from '../../../main/internal.interfaces';
-import { EEvent, ICalendarContent } from '../../../services/calendar/calendar.interface';
+import {
+  EEvent,
+  ICalendarContent,
+} from '../../../services/calendar/calendar.interface';
 import { delay } from 'rxjs';
 import { ICreatingActivity } from './bottom-panel.interface';
 import { isBetween } from '../../../utils/moment';
@@ -17,9 +19,16 @@ import { isBetween } from '../../../utils/moment';
   selector: 'app-bottom-panel',
   templateUrl: './bottom-panel.component.html',
   styleUrls: ['./bottom-panel.component.scss'],
-  imports: [ShortNamePipe, LeftPanelComponent, RightPanelComponent, MarkerComponent,CommonModule],
+  imports: [
+    ShortNamePipe,
+    LeftPanelComponent,
+    RightPanelComponent,
+    MarkerComponent,
+    CommonModule,
+  ],
 })
-export class BottomPanelComponent implements AfterViewInit {
+export class BottomPanelComponent {
+  creatingActivity!: ICreatingActivity;
   content!: ICalendarContent;
 
   constructor(private calendarService: CalendarService) {
@@ -37,26 +46,6 @@ export class BottomPanelComponent implements AfterViewInit {
   get isCollapsed() {
     return this.calendarService.config.leftPanel.isCollapsed;
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  creatingActivity!: ICreatingActivity;
-
-
 
   get subColumns() {
     return this.calendarService.subColumns();
@@ -130,32 +119,5 @@ export class BottomPanelComponent implements AfterViewInit {
 
   @HostListener('mouseup') onClick() {
     this.finishSelection();
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  async ngAfterViewInit(): Promise<void> {
-    // const {
-    //   RIGHT_PANEL: { NAVIGATOR, TITLE, HOST: RIGHT_PANEL_HOST },
-    //   LEFT_PANEL: { HOST: LEFT_PANEL_HOST },
-    // } = this.calendarService.selectors;
-
-    // linkSize(RIGHT_PANEL_HOST, [TITLE, NAVIGATOR], { width: true });
-    // linkScroll([LEFT_PANEL_HOST, RIGHT_PANEL_HOST], {
-    //   scrollTop: true,
-    // });
   }
 }

@@ -1,3 +1,4 @@
+import { CONFIG } from '../config/constants';
 import { IActivity } from '../main/internal.interfaces';
 
 export function arrayOf(length: number, plus: number = 0) {
@@ -247,4 +248,67 @@ export async function onResizeDo(
 ) {
   const observer = new ResizeObserver(process);
   observer.observe(await querySelector(selector));
+}
+
+export async function floatingScroll(
+  selector: string,
+  dir = { vertical: false }
+) {
+  const id = unique(selector);
+  const el = await querySelector(selector);
+  if (!el.parentElement?.querySelector(`.${id}`)) {
+    (el.style as any).scrollbarWidth = 'none';
+    el.style.overflow = 'auto';
+
+    if (dir.vertical) {
+      const vScroll = document.createElement('span');
+      vScroll.classList.add(id);
+      vScroll.innerText = '.';
+
+      vScroll.onscroll = (e) => (el.scrollTop = (e as any).target.scrollTop);
+      el.onscroll = (e) => (vScroll.scrollTop = (e as any).target.scrollTop);
+
+      vScroll.onmouseleave = () => (vScroll.style.opacity = '.4');
+      el.onmouseleave = () => (vScroll.style.opacity = '.4');
+
+      vScroll.onmouseenter = () => (vScroll.style.opacity = '1');
+      el.onmouseenter = () => (vScroll.style.opacity = '1');
+
+      (vScroll.style as any).scrollbarColor = 'white transparent';
+      vScroll.style.lineHeight = el.scrollHeight + 'px';
+
+      vScroll.style.height = `calc(100% - 10px - ${CONFIG.STYLE['--ngx-header-height']})`;
+      vScroll.style.transition = 'opacity 0.5s ease 0s';
+      (vScroll.style as any).scrollbarWidth = 'thin';
+      vScroll.style.right = 11 + 'px';
+      vScroll.style.top = el.offsetTop + 'px';
+      vScroll.style.position = 'absolute';
+      vScroll.style.overflow = 'auto';
+      vScroll.style.width = '11px';
+      vScroll.style.opacity = '.4';
+      vScroll.style.zIndex = '1';
+
+      el.parentElement?.append(vScroll);
+
+      setInterval(() => {
+        if (el.scrollTop > vScroll.scrollTop) {
+          el.scrollTop = vScroll.scrollTop;
+        } else {
+          vScroll.scrollTop = el.scrollTop;
+          vScroll.style.lineHeight = el.scrollHeight + 'px';
+        }
+      }, 1000);
+    }
+  }
+}
+
+function unique(str: string) {
+  let uniq = '';
+
+  for (let i = 0; i < str.length; i++) {
+    if (uniq.includes(str[i]) === false) {
+      uniq += str[i];
+    }
+  }
+  return uniq;
 }

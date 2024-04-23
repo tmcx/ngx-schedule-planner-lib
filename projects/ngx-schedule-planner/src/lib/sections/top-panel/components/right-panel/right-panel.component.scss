@@ -9,6 +9,7 @@ $row-height: 24px;
   grid-auto-flow: row;
   grid-template-rows: 1fr 1fr 1fr;
   border-bottom: $border;
+  border-right: $border;
   border-top: $border;
 }
 

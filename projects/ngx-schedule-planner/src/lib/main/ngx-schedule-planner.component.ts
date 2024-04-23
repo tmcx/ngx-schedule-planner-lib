@@ -11,8 +11,10 @@ import { IContent, ICustomization } from '../../public-interfaces';
 import moment from 'moment';
 import {
   clone,
+  floatingScroll,
   groupActivities,
   hasScroll,
+  linkSize,
   onResizeDo,
   querySelector,
 } from '../utils/functions';
@@ -89,6 +91,12 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
         }
       );
     });
+    floatingScroll('app-bottom-panel', { vertical: true });
+    linkSize(
+      'ngx-schedule-planner app-top-panel app-right-panel',
+      ['ngx-schedule-planner app-bottom-panel .group .row'],
+      { width: true }
+    );
   }
 
   processInputContent(content: IContent[]): IProcessedContent[] {
