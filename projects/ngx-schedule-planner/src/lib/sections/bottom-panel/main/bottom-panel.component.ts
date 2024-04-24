@@ -8,9 +8,10 @@ import {
   EEvent,
   ICalendarContent,
 } from '../../../services/calendar/calendar.interface';
-import { delay } from 'rxjs';
 import { ICreatingActivity } from './bottom-panel.interface';
 import { isBetween } from '../../../utils/moment';
+import { CONFIG } from '../../../config/constants';
+import { ISubColumn } from '../../top-panel/components/right-panel/right-panel.interface';
 
 @Component({
   standalone: true,
@@ -22,22 +23,25 @@ import { isBetween } from '../../../utils/moment';
 export class BottomPanelComponent {
   creatingActivity!: ICreatingActivity;
   calendarContent!: ICalendarContent[];
+  subColumns: ISubColumn[];
+  isCollapsed: boolean;
 
   constructor(private calendarService: CalendarService) {
-    this.calendarService.on.event.subscribe(({ event }) => {
+    this.isCollapsed = this.calendarService.config.leftPanel.isCollapsed;
+    this.subColumns = [];
+    this.calendarService.on.event.subscribe(async ({ event, data }) => {
       if (EEvent.contentChange == event) {
         this.calendarContent = this.calendarService.content;
       }
+      if (CONFIG.eventGroups.SUB_COLUMNS.includes(event)) {
+        const { subColumns } = await this.calendarService.subColumns();
+        this.subColumns = subColumns;
+      }
+      if (event == EEvent.leftPanelCollapse) {
+        this.isCollapsed = data;
+      }
     });
     this.resetCreatingActivity();
-  }
-
-  get isCollapsed() {
-    return this.calendarService.config.leftPanel.isCollapsed;
-  }
-
-  get subColumns() {
-    return this.calendarService.subColumns();
   }
 
   addActivity(

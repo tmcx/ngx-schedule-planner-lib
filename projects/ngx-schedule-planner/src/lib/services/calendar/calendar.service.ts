@@ -12,6 +12,7 @@ import {
   ICalendarContent,
   ICalendarSelectors,
   ICalendarServiceEvents,
+  ISubColumnComplemented,
 } from './calendar.interface';
 import { startOf } from '../../utils/moment';
 import { ActivityHTML } from '../../utils/classes/activity-html';
@@ -86,16 +87,11 @@ export class CalendarService {
     this.on.event.next({ event: EEvent.referenceDate, data: date });
   }
 
-  changeCurrentContent(originalContent?: IContent[]) {
+  async changeCurrentContent(originalContent?: IContent[]) {
     this.originalContent = originalContent ?? this.originalContent;
-    const interval = setInterval(() => {
-      const { startDate, endDate } = this.subColumns();
-      if (startDate && endDate) {
-        clearInterval(interval);
-        this.content = convertToCalendarContent(this);
-        this.on.event.next({ event: EEvent.contentChange, data: 'all' });
-      }
-    }, 10);
+    const { startDate, endDate } = await this.subColumns();
+    this.content = convertToCalendarContent(this, startDate, endDate);
+    this.on.event.next({ event: EEvent.contentChange, data: 'all' });
   }
 
   addActivityClicked() {
@@ -113,8 +109,17 @@ export class CalendarService {
   }
 
   setCustomization(customization: IProcessedCustomization) {
+    const activityHTML = new ActivityHTML(this);
     this.config.customization = customization;
-    this.refreshCalendarContent();
+    this.content.forEach((userRow) => {
+      userRow.current.forEach((activityGroups) => {
+        activityGroups.activities.forEach((activities) => {
+          activities.forEach((activity) => {
+            activity.htmlContent = activityHTML.activityHTMLContent(activity);
+          });
+        });
+      });
+    });
   }
 
   setLoading(isLoading: boolean) {
@@ -122,21 +127,34 @@ export class CalendarService {
     this.on.event.next({ event: EEvent.loading, data: isLoading });
   }
 
-  subColumns() {
-    const subColumns = this.config.columns.length
-      ? this.config.columns[0].subColumns
-      : [];
-    const endDate =
-      subColumns.length > 0
-        ? subColumns[subColumns.length - 1].lastSection.end
-        : null;
-    const startDate =
-      subColumns.length > 0 ? subColumns[0].firstSection.start : null;
-    return {
-      subColumns,
-      startDate,
-      endDate,
+  subColumns(): Promise<ISubColumnComplemented> {
+    const getContent = () => {
+      const subColumns = this.config.columns.length
+        ? this.config.columns[0].subColumns
+        : [];
+      const endDate = subColumns[subColumns.length - 1]?.lastSection.end;
+      const startDate = subColumns[0]?.firstSection.start;
+      return {
+        subColumns,
+        startDate,
+        endDate,
+      };
     };
+
+    return new Promise((resolve) => {
+      const content = getContent();
+      if (content.startDate && content.endDate) {
+        resolve(content);
+        return;
+      }
+      const interval = setInterval(() => {
+        const content = getContent();
+        if (content.startDate && content.endDate) {
+          clearInterval(interval);
+          resolve(content);
+        }
+      }, 100);
+    });
   }
 
   setLeftPanelCollapse(isCollapsed: boolean) {
@@ -144,15 +162,17 @@ export class CalendarService {
     this.on.event.next({ event: EEvent.leftPanelCollapse, data: isCollapsed });
   }
 
-  refreshCalendarContent() {
+  async refreshCalendarContent() {
+    this.setLoading(true);
     this.setMode();
     this.refreshTitle();
     this.refreshWidthFactor();
-    this.changeCurrentContent();
+    await this.changeCurrentContent();
     this.on.event.next({
       event: EEvent.contentChange,
       data: 'filtered',
     });
+    this.setLoading(false);
   }
 
   refreshTitle() {

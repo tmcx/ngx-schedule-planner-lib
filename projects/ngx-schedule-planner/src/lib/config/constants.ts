@@ -1,4 +1,5 @@
 import { IConstants } from '../main/internal.interfaces';
+import { EEvent } from '../services/calendar/calendar.interface';
 
 export const CONFIG: IConstants = {
   CALENDAR: {
@@ -20,5 +21,13 @@ export const CONFIG: IConstants = {
     '--ngx-header-height': '149px',
     '--ngx-header-width': '350px',
     '--ngx-scroll-height': '17px',
+  },
+  eventGroups: {
+    SUB_COLUMNS: [
+      EEvent.referenceDate,
+      EEvent.navigation,
+      EEvent.period,
+      EEvent.mode,
+    ],
   },
 };

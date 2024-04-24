@@ -1,4 +1,5 @@
 import { TMode } from '../sections/top-panel/components/right-panel/right-panel.interface';
+import { EEvent } from '../services/calendar/calendar.interface';
 
 export interface IProfile {
   id: number;
@@ -93,5 +94,8 @@ export type IConstants = {
     '--ngx-scroll-height': string;
     '--ngx-header-height': string;
     '--ngx-header-width': string;
+  };
+  eventGroups: {
+    SUB_COLUMNS: EEvent[];
   };
 };

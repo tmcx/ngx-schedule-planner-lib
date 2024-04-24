@@ -7,6 +7,7 @@ import { CalendarService } from '../../../../../lib/services/calendar/calendar.s
 import { format, isBetween } from '../../../../../lib/utils/moment';
 import moment from 'moment';
 import { interval } from 'rxjs';
+import { CONFIG } from '../../../../config/constants';
 
 @Component({
   standalone: true,
@@ -15,7 +16,18 @@ import { interval } from 'rxjs';
   styleUrls: ['./marker.component.scss'],
 })
 export class MarkerComponent implements OnInit {
-  constructor(private calendarService: CalendarService) {}
+  startDate!: Date;
+  endDate!: Date;
+
+  constructor(private calendarService: CalendarService) {
+    this.calendarService.on.event.subscribe(async ({ event }) => {
+      if (CONFIG.eventGroups.SUB_COLUMNS.includes(event)) {
+        const { startDate, endDate } = await this.calendarService.subColumns();
+        this.startDate = startDate;
+        this.endDate = endDate;
+      }
+    });
+  }
 
   async ngOnInit() {
     const { BOTTOM_PANEL, APP_MARKER } = this.calendarService.selectors;
@@ -24,8 +36,11 @@ export class MarkerComponent implements OnInit {
 
     interval(1000).subscribe(() => {
       const currentDate = new Date();
-      const { startDate, endDate } = this.calendarService.subColumns();
-      if (startDate && endDate && isBetween(currentDate, startDate, endDate)) {
+      if (
+        this.startDate &&
+        this.endDate &&
+        isBetween(currentDate, this.startDate, this.endDate)
+      ) {
         getElementSize(BOTTOM_PANEL).then(
           ({ scrollWidth: width, scrollHeight }) => {
             const leftPanelWidth = +root.style
@@ -33,9 +48,12 @@ export class MarkerComponent implements OnInit {
               .split('px')[1];
             marker.style.height = scrollHeight + 'px';
             const oneSecondInSpace =
-              moment(endDate).diff(startDate, 'seconds') /
+              moment(this.endDate).diff(this.startDate, 'seconds') /
               (width - leftPanelWidth);
-            const leftTime = moment(currentDate).diff(startDate, 'seconds');
+            const leftTime = moment(currentDate).diff(
+              this.startDate,
+              'seconds'
+            );
             marker.style.left =
               leftPanelWidth + (leftTime / oneSecondInSpace - 1) + 'px';
             marker.style.display = 'block';

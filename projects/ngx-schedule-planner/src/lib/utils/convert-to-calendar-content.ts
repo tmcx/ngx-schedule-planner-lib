@@ -6,9 +6,10 @@ import { clone } from './functions';
 import moment from 'moment';
 
 export function convertToCalendarContent(
-  calendarService: CalendarService
+  calendarService: CalendarService,
+  startDate: Date,
+  endDate: Date
 ): ICalendarContent[] {
-  const { startDate, endDate } = calendarService.subColumns();
   const activityHTML = new ActivityHTML(calendarService);
   const contents = clone(calendarService.originalContent);
 

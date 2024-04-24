@@ -3,9 +3,9 @@ import { Component } from '@angular/core';
 import { InputCalendarComponent } from '../../../../shared/inputs/input-calendar/input-calendar.component';
 import { CalendarService } from '../../../../services/calendar/calendar.service';
 import { EMode, EPeriod, IColumn, TModes } from './right-panel.interface';
-import { EEvent } from '../../../../services/calendar/calendar.interface';
 import { addToDate } from '../../../../utils/moment';
 import moment from 'moment';
+import { CONFIG } from '../../../../config/constants';
 
 @Component({
   standalone: true,
@@ -27,7 +27,7 @@ export class RightPanelComponent {
       [EMode.monthly, 'month'],
     ];
     this.calendarService.on.event.subscribe(({ event }) => {
-      if ([EEvent.mode, EEvent.period, EEvent.referenceDate].includes(event)) {
+      if (CONFIG.eventGroups.SUB_COLUMNS.includes(event)) {
         this.columns = this.calendarService.config.columns;
       }
     });

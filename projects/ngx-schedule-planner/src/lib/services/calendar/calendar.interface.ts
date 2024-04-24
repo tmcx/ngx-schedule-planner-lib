@@ -11,6 +11,7 @@ import {
   EPeriod,
   TMode,
   IColumn,
+  ISubColumn,
 } from '../../sections/top-panel/components/right-panel/right-panel.interface';
 
 export enum EEvent {
@@ -69,4 +70,10 @@ export interface ICalendarSelectors {
   HOST: string;
   BOTTOM_PANEL: string;
   APP_MARKER: string;
+}
+
+export interface ISubColumnComplemented {
+  subColumns: ISubColumn[];
+  startDate: Date;
+  endDate: Date;
 }

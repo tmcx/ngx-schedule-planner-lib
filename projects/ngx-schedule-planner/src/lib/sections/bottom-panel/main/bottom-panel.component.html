@@ -29,7 +29,7 @@
 </ng-template>
 
 <ng-template #newActivityRow let-group="group" let-profile="profile">
-  <ng-container *ngFor="let subColumn of subColumns.subColumns">
+  <ng-container *ngFor="let subColumn of subColumns">
     <ng-container
       *ngTemplateOutlet="spanColumn; context: { group, profile, refDate:subColumn.lastSection.start }"
     ></ng-container>
