@@ -39,6 +39,10 @@ export function convertToCalendarContent(
         )
       );
 
+      activity.durationInMin = moment(activity.endDate).diff(
+        activity.startDate,
+        'minutes'
+      );
       activity.htmlContent = activityHTML.activityHTMLContent(activity);
       activity.style = activityHTML.activityStyle(activity);
       if (groupIndex !== -1) {
