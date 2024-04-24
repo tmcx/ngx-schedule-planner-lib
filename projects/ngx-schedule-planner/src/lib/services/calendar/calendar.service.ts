@@ -42,21 +42,8 @@ export class CalendarService {
     this.uuid = 'ngx-schedule-planner-' + uuid();
     this.selectors = {
       HOST: `#${this.uuid}`,
-      LEFT_PANEL: {
-        PROFILE_GROUPS: `#${this.uuid} app-left-panel app-body .profile-group`,
-        GROUPS: `#${this.uuid} app-left-panel app-body .profile-group .group`,
-        APP_BODY: `#${this.uuid} app-left-panel app-body`,
-        HOST: `#${this.uuid} app-left-panel`,
-      },
-      RIGHT_PANEL: {
-        USER_GROUPS: `#${this.uuid} app-right-panel app-body .user-groups`,
-        GROUPS: `#${this.uuid} app-right-panel app-body .user-groups .group`,
-        NAVIGATOR: `#${this.uuid} app-right-panel app-header .navigator`,
-        TITLE: `#${this.uuid} app-right-panel app-header .title`,
-        APP_MARKER: `#${this.uuid} app-bottom-panel app-marker`,
-        APP_BODY: `#${this.uuid} app-right-panel app-body`,
-        HOST: `#${this.uuid} app-bottom-panel`,
-      },
+      APP_MARKER: `#${this.uuid} app-bottom-panel app-marker`,
+      BOTTOM_PANEL: `#${this.uuid} app-bottom-panel`,
     };
     this.on = {
       event: new Subject(),

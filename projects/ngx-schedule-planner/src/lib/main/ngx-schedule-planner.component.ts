@@ -82,7 +82,7 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
   async ngAfterViewInit(): Promise<void> {
     this.setCssVariables();
     onResizeDo(this.calendarService.selectors.HOST, () => {
-      hasScroll(this.calendarService.selectors.RIGHT_PANEL.HOST).then(
+      hasScroll(this.calendarService.selectors.BOTTOM_PANEL).then(
         async ({ horizontal }) => {
           var root = await querySelector(this.calendarService.selectors.HOST);
           const key = '--ngx-scroll-height';

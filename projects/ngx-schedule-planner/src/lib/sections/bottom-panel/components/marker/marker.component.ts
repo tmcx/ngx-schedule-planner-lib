@@ -18,9 +18,7 @@ export class MarkerComponent implements OnInit {
   constructor(private calendarService: CalendarService) {}
 
   async ngOnInit() {
-    const {
-      RIGHT_PANEL: { HOST, APP_MARKER },
-    } = this.calendarService.selectors;
+    const { BOTTOM_PANEL, APP_MARKER } = this.calendarService.selectors;
     const marker = await querySelector(APP_MARKER);
     var root = await querySelector(this.calendarService.selectors.HOST);
 
@@ -28,20 +26,22 @@ export class MarkerComponent implements OnInit {
       const currentDate = new Date();
       const { startDate, endDate } = this.calendarService.subColumns();
       if (startDate && endDate && isBetween(currentDate, startDate, endDate)) {
-        getElementSize(HOST).then(({ scrollWidth: width, scrollHeight }) => {
-          const leftPanelWidth = +root.style
-            .getPropertyValue('--ngx-header-width')
-            .split('px')[1];
-          marker.style.height = scrollHeight + 'px';
-          const oneSecondInSpace =
-            moment(endDate).diff(startDate, 'seconds') /
-            (width - leftPanelWidth);
-          const leftTime = moment(currentDate).diff(startDate, 'seconds');
-          marker.style.left =
-            leftPanelWidth + (leftTime / oneSecondInSpace - 1) + 'px';
-          marker.style.display = 'block';
-          marker.setAttribute('title', format(currentDate, 'LLL'));
-        });
+        getElementSize(BOTTOM_PANEL).then(
+          ({ scrollWidth: width, scrollHeight }) => {
+            const leftPanelWidth = +root.style
+              .getPropertyValue('--ngx-header-width')
+              .split('px')[1];
+            marker.style.height = scrollHeight + 'px';
+            const oneSecondInSpace =
+              moment(endDate).diff(startDate, 'seconds') /
+              (width - leftPanelWidth);
+            const leftTime = moment(currentDate).diff(startDate, 'seconds');
+            marker.style.left =
+              leftPanelWidth + (leftTime / oneSecondInSpace - 1) + 'px';
+            marker.style.display = 'block';
+            marker.setAttribute('title', format(currentDate, 'LLL'));
+          }
+        );
       } else {
         marker.style.display = 'none';
       }

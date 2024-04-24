@@ -63,19 +63,6 @@ export interface ICalendarContent {
 
 export interface ICalendarSelectors {
   HOST: string;
-  LEFT_PANEL: {
-    HOST: string;
-    APP_BODY: string;
-    GROUPS: string;
-    PROFILE_GROUPS: string;
-  };
-  RIGHT_PANEL: {
-    HOST: string;
-    USER_GROUPS: string;
-    GROUPS: string;
-    NAVIGATOR: string;
-    TITLE: string;
-    APP_MARKER: string;
-    APP_BODY: string;
-  };
+  BOTTOM_PANEL: string;
+  APP_MARKER: string;
 }
