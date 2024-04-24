@@ -87,6 +87,6 @@ export function startOf(date: Date, unitOfTime: moment.unitOfTime.StartOf) {
   return moment(date).startOf(unitOfTime).toDate();
 }
 
-export function format(date: Date | moment.Moment | string, format: string) {
-  return moment(date).format(format);
+export function format(date: Date | moment.Moment | string, format?: string) {
+  return format ? moment(date).format(format) : moment(date).format();
 }

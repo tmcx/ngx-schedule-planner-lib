@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import {
-  IActivity,
-  IProcessedContent,
-  IProcessedCustomization,
-} from '../../main/internal.interfaces';
+import { IProcessedCustomization } from '../../main/internal.interfaces';
 import { clone, uuid } from '../../utils/functions';
 import { CONFIG } from '../../config/constants';
 import {
@@ -14,8 +10,7 @@ import {
   ICalendarSelectors,
   ICalendarServiceEvents,
 } from './calendar.interface';
-import { isBetween, setDate, startOf } from '../../utils/moment';
-import moment from 'moment';
+import { startOf } from '../../utils/moment';
 import { ActivityHTML } from '../../utils/classes/activity-html';
 import { MonthlyCalendar } from '../../utils/monthly-calendar';
 import { WeeklyCalendar } from '../../utils/weekly-calendar';
@@ -27,18 +22,22 @@ import {
   EMode,
   TMode,
 } from '../../sections/top-panel/components/right-panel/right-panel.interface';
+import { IContent } from '../../../public-interfaces';
+import { convertToCalendarContent } from '../../utils/convert-to-calendar-content';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CalendarService {
   selectors: ICalendarSelectors;
+  originalContent: IContent[];
   on: ICalendarServiceEvents;
-  content: ICalendarContent;
+  content: ICalendarContent[];
   config: ICalendarConfig;
   uuid: string;
 
   constructor() {
+    this.originalContent = [];
     this.uuid = 'ngx-schedule-planner-' + uuid();
     this.selectors = {
       HOST: `#${this.uuid}`,
@@ -48,12 +47,7 @@ export class CalendarService {
     this.on = {
       event: new Subject(),
     };
-    this.content = {
-      title: '',
-      current: { activities: [], repetitions: [] },
-      filtered: [],
-      all: [],
-    };
+    this.content = [];
     this.config = {
       activity: { factor: { width: '' } },
       leftPanel: { isCollapsed: false },
@@ -62,6 +56,7 @@ export class CalendarService {
       customization: {},
       isLoading: false,
       columns: [],
+      title: '',
     };
   }
 
@@ -88,10 +83,16 @@ export class CalendarService {
     this.on.event.next({ event: EEvent.referenceDate, data: date });
   }
 
-  changeContent(content: IProcessedContent[], type: 'filtered' | 'all') {
-    this.content[type] = content;
-    this.refreshCalendarContent();
-    this.on.event.next({ event: EEvent.contentChange, data: type });
+  changeCurrentContent(originalContent?: IContent[]) {
+    this.originalContent = originalContent ?? this.originalContent;
+    const interval = setInterval(() => {
+      const { startDate, endDate } = this.subColumns();
+      if (startDate && endDate) {
+        clearInterval(interval);
+        this.content = convertToCalendarContent(this);
+        this.on.event.next({ event: EEvent.contentChange, data: 'all' });
+      }
+    }, 10);
   }
 
   addActivityClicked() {
@@ -144,90 +145,15 @@ export class CalendarService {
     this.setMode();
     this.refreshTitle();
     this.refreshWidthFactor();
-    this.setCurrent();
+    this.changeCurrentContent();
     this.on.event.next({
       event: EEvent.contentChange,
       data: 'filtered',
     });
   }
 
-  private setCurrent() {
-    const activityHTML = new ActivityHTML(this);
-    const { startDate, endDate } = this.subColumns();
-    this.content.current.repetitions = [];
-    this.content.current.activities = [];
-
-    const getActivities = (tempGroup: IActivity[], activity: IActivity) => {
-      if (isBetween(activity.startDate, startDate!, endDate!)) {
-        activity.style = activityHTML.activityStyle(activity);
-        activity.htmlContent = activityHTML.activityHTMLContent(activity);
-        tempGroup.push(activity);
-      }
-    };
-    const getRepetitions = (tempGroup: IActivity[], activity: IActivity) => {
-      for (const repeat of activity.repeat) {
-        if (isBetween(repeat, startDate!, endDate!)) {
-          const activityReplica = clone(activity);
-          const startDate = moment(activity.startDate);
-
-          activityReplica.startDate = setDate(repeat, {
-            hour: startDate.hour(),
-            minute: startDate.minute(),
-            second: startDate.second(),
-          });
-          activityReplica.style = activityHTML.activityStyle(activity);
-          activityReplica.htmlContent =
-            activityHTML.activityHTMLContent(activity);
-          tempGroup.push(activityReplica);
-        }
-      }
-    };
-
-    const mainRepetitions: IActivity[][][][] = [];
-    const mainActivities: IActivity[][][][] = [];
-    for (const content of this.content.all) {
-      let allFilteredRepetitions: IActivity[][][] = [];
-      let allFilteredActivities: IActivity[][][] = [];
-
-      for (const { groupedActivities } of content.groups) {
-        const filteredRepetitions: IActivity[][] = [];
-        const filteredActivities: IActivity[][] = [];
-
-        for (const group of groupedActivities) {
-          const repetitions: IActivity[] = [];
-          const activities: IActivity[] = [];
-
-          for (const activity of group) {
-            getRepetitions(repetitions, activity);
-            getActivities(activities, activity);
-          }
-
-          if (repetitions.length > 0) {
-            filteredRepetitions.push(repetitions);
-          }
-
-          if (activities.length > 0) {
-            filteredActivities.push(activities);
-          }
-        }
-
-        allFilteredRepetitions = [
-          ...allFilteredRepetitions,
-          filteredRepetitions,
-        ];
-        allFilteredActivities = [...allFilteredActivities, filteredActivities];
-      }
-
-      mainRepetitions.push(allFilteredRepetitions);
-      mainActivities.push(allFilteredActivities);
-    }
-
-    this.content.current.repetitions = mainRepetitions;
-    this.content.current.activities = mainActivities;
-  }
-
   refreshTitle() {
-    this.content.title = new ActivityHTML(this).calendarTitle();
+    this.config.title = new ActivityHTML(this).calendarTitle();
   }
 
   private setMode() {

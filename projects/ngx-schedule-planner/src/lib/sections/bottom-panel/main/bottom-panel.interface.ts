@@ -1,11 +1,7 @@
-import {
-  IProcessedContent,
-  IGroup,
-  IProfile,
-} from '../../../main/internal.interfaces';
+import { IGroup, IProfile } from '../../../main/internal.interfaces';
 
 export interface ICreatingActivity {
-  group: IProcessedContent['groups'][0] | null;
+  group: IGroup | null;
   fromRefDate: Date | null;
   toRefDate: Date | null;
   profile: IProfile | null;

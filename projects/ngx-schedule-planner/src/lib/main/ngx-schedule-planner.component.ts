@@ -6,13 +6,10 @@ import {
   Output,
 } from '@angular/core';
 import { CalendarService } from '../services/calendar/calendar.service';
-import { IConstants, IProcessedContent } from './internal.interfaces';
+import { IConstants } from './internal.interfaces';
 import { IContent, ICustomization } from '../../public-interfaces';
-import moment from 'moment';
 import {
-  clone,
   floatingScroll,
-  groupActivities,
   hasScroll,
   linkSize,
   onResizeDo,
@@ -42,10 +39,7 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
   @Output() onAddActivityClick: EventEmitter<void>;
 
   @Input() set content(content: IContent[]) {
-    const processedContent = this.processInputContent(content);
-
-    this.calendarService.changeContent(processedContent, 'all');
-    this.calendarService.changeContent(processedContent, 'filtered');
+    this.calendarService.changeCurrentContent(content);
   }
 
   @Input() set referencedDate(referencedDate: Date) {
@@ -102,23 +96,6 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
       ['ngx-schedule-planner app-bottom-panel .group .row'],
       { width: true }
     );
-  }
-
-  processInputContent(content: IContent[]): IProcessedContent[] {
-    const parsedContent = clone<any>(content);
-    parsedContent.forEach((userContent: any) => {
-      userContent.groups.forEach((group: any) => {
-        group.activities.forEach((activity: any) => {
-          activity['durationInMin'] = moment(activity.endDate).diff(
-            activity.startDate,
-            'm'
-          );
-        });
-        const activities = groupActivities(group.activities);
-        group['groupedActivities'] = activities;
-      });
-    });
-    return parsedContent;
   }
 
   async setCssVariables() {

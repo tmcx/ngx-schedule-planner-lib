@@ -32,39 +32,39 @@ export class LeftPanelComponent {
   }
 
   private filter() {
-    const { all } = this.calendarService.content;
-    let content = clone(all);
-    if (this.filters.groupName) {
-      content = !this.filters.groupName
-        ? content
-        : content
-            .filter((userSchedule) =>
-              userSchedule.groups
-                .map(({ name }) => name)
-                .join('[]')
-                .toLowerCase()
-                .includes(this.filters.groupName.toLowerCase())
-            )
-            .map((userSchedule) => {
-              if (this.filters.groupName) {
-                userSchedule.groups = userSchedule.groups.filter(({ name }) =>
-                  name
-                    .toLowerCase()
-                    .includes(this.filters.groupName.toLowerCase())
-                );
-              }
-              return userSchedule;
-            });
-    }
+    // const { all } = this.calendarService.content;
+    // let content = clone(all);
+    // if (this.filters.groupName) {
+    //   content = !this.filters.groupName
+    //     ? content
+    //     : content
+    //         .filter((userSchedule) =>
+    //           userSchedule.groups
+    //             .map(({ name }) => name)
+    //             .join('[]')
+    //             .toLowerCase()
+    //             .includes(this.filters.groupName.toLowerCase())
+    //         )
+    //         .map((userSchedule) => {
+    //           if (this.filters.groupName) {
+    //             userSchedule.groups = userSchedule.groups.filter(({ name }) =>
+    //               name
+    //                 .toLowerCase()
+    //                 .includes(this.filters.groupName.toLowerCase())
+    //             );
+    //           }
+    //           return userSchedule;
+    //         });
+    // }
 
-    content = !this.filters.userName
-      ? content
-      : content.filter((userSchedule) =>
-          userSchedule.profile.name
-            .toLowerCase()
-            .includes(this.filters.userName.toLowerCase())
-        );
-    this.calendarService.changeContent(content, 'filtered');
+    // content = !this.filters.userName
+    //   ? content
+    //   : content.filter((userSchedule) =>
+    //       userSchedule.profile.name
+    //         .toLowerCase()
+    //         .includes(this.filters.userName.toLowerCase())
+    //     );
+    // this.calendarService.changeCurrentContent(content, 'filtered');
   }
 
   addActivity() {

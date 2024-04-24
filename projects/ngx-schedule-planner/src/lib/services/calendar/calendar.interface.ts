@@ -1,8 +1,9 @@
 import { Subject } from 'rxjs';
 import {
   IActivity,
-  IProcessedContent,
+  IGroup,
   IProcessedCustomization,
+  IProfile,
 } from '../../main/internal.interfaces';
 import { ISelectedRange } from '../../sections/bottom-panel/main/bottom-panel.interface';
 import {
@@ -50,17 +51,16 @@ export interface ICalendarConfig {
     isCollapsed: boolean;
   };
   columns: IColumn[];
+  title: string;
   mode: TMode;
 }
 
 export interface ICalendarContent {
-  title: string;
+  profile: IProfile;
   current: {
-    repetitions: IActivity[][][][];
-    activities: IActivity[][][][];
-  };
-  filtered: IProcessedContent[];
-  all: IProcessedContent[];
+    group: IGroup;
+    activities: IActivity[][];
+  }[];
 }
 
 export interface ICalendarSelectors {

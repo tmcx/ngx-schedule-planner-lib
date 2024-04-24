@@ -1,16 +1,16 @@
 <app-marker></app-marker>
-<ng-template #profileGroup let-userSchedule="userSchedule">
+<ng-template #profileGroup let-profile="profile">
   <section class="profile-group">
     <section class="profile">
       <img
-        [src]="userSchedule.profile.imageUrl"
-        [title]="userSchedule.profile.name"
-        [alt]="userSchedule.profile.name"
+        [src]="profile.imageUrl"
+        [title]="profile.name"
+        [alt]="profile.name"
       />
-      <h1 [title]="userSchedule.profile.name">{{ isCollapsed ? (userSchedule.profile.name | shortName) : userSchedule.profile.name }}</h1>
-      <p>{{ userSchedule.profile.description }}</p>
+      <h1 [title]="profile.name">{{ isCollapsed ? (profile.name | shortName) : profile.name }}</h1>
+      <p>{{ profile.description }}</p>
       <section class="tags">
-        <span *ngFor="let tag of userSchedule.profile.tags">{{
+        <span *ngFor="let tag of profile.tags">{{
           tag.name
         }}</span>
       </section>
@@ -28,13 +28,13 @@
 
 </ng-template>
 
-<ng-template #newActivityRow let-group="group" let-userSchedule="userSchedule">
+<ng-template #newActivityRow let-group="group" let-profile="profile">
   <ng-container *ngFor="let subColumn of subColumns.subColumns">
     <ng-container
-      *ngTemplateOutlet="spanColumn; context: { group, userSchedule, refDate:subColumn.lastSection.start }"
+      *ngTemplateOutlet="spanColumn; context: { group, profile, refDate:subColumn.lastSection.start }"
     ></ng-container>
     <ng-container
-      *ngTemplateOutlet="spanColumn; context: { group, userSchedule, refDate:subColumn.lastSection.end }"
+      *ngTemplateOutlet="spanColumn; context: { group, profile, refDate:subColumn.lastSection.end }"
     ></ng-container>
   </ng-container>
 </ng-template>
@@ -54,42 +54,35 @@
 
 
 
-<ng-container *ngIf="content">
-  <ng-container  *ngFor="let userSchedule of content['filtered'];let idxUserSchedule=index">
+<ng-container *ngIf="calendarContent">
+  <ng-container  *ngFor="let rowContent of calendarContent;let idxUserSchedule=index">
+
     <ng-container
-      *ngTemplateOutlet="profileGroup; context: { userSchedule }"
+      *ngTemplateOutlet="profileGroup; context: { profile: rowContent.profile }"
     ></ng-container>
 
     <section class="user-groups">
       <span></span>
-      <section *ngFor="let group of userSchedule.groups; let idxGroup=index" class="group">
+      <section *ngFor="let groupContent of rowContent.current; let idxGroup=index" class="group">
 
-        <section class="group-header"
-          [ngStyle]="{'grid-row': 'span ' + (
-            1 +
-            content['current']['activities'][idxUserSchedule][idxGroup].length +
-            content['current']['repetitions'][idxUserSchedule][idxGroup].length
-          ) }">
-          <h1 [title]="group.name">{{ group.icon }}</h1>
-          <h1 [title]="group.name">{{ group.name }}</h1>
+       <section class="group-header"
+          [ngStyle]="{'grid-row': 'span ' + ( 1 + groupContent.activities.length ) }">
+          <h1 [title]="groupContent.group.name">{{ groupContent.group.icon }}</h1>
+          <h1 [title]="groupContent.group.name">{{ groupContent.group.name }}</h1>
         </section>
-        <section class="row new-activity">
+
+       <section class="row new-activity">
           <ng-container
-            *ngTemplateOutlet="newActivityRow; context: { group, userSchedule }"
+            *ngTemplateOutlet="newActivityRow; context: { group: groupContent.group, profile: rowContent.profile }"
           ></ng-container>
         </section>
 
-        <section class="row" *ngFor="let activities of content['current']['activities'][idxUserSchedule][idxGroup]">
+        <section class="row" *ngFor="let activities of groupContent.activities">
           <ng-container
             *ngTemplateOutlet="activitiesRow; context: { activities }"
           ></ng-container>
         </section>
 
-        <section class="row" *ngFor="let activities of content['current']['repetitions'][idxUserSchedule][idxGroup]">
-          <ng-container
-            *ngTemplateOutlet="activitiesRow; context: { activities }"
-          ></ng-container>
-        </section>
       </section>
     </section>
   </ng-container>

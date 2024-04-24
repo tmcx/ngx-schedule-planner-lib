@@ -1,11 +1,5 @@
 import { TMode } from '../sections/top-panel/components/right-panel/right-panel.interface';
 
-
-export interface IProcessedContent {
-  profile: IProfile;
-  groups: IGroup[];
-}
-
 export interface IProfile {
   id: number;
   name: string;
@@ -21,8 +15,6 @@ export interface IGroup {
   name: string;
   id: number;
   icon: string;
-  groupedActivities: IActivity[][];
-  activities: IActivity[];
   style?: { height: number };
 }
 

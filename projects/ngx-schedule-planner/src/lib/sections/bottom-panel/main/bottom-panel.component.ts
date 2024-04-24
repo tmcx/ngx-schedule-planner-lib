@@ -3,7 +3,7 @@ import { CalendarService } from '../../../services/calendar/calendar.service';
 import { MarkerComponent } from '../components/marker/marker.component';
 import { ShortNamePipe } from '../../../shared/pipes/short-name';
 import { CommonModule } from '@angular/common';
-import { IGroup, IProcessedContent } from '../../../main/internal.interfaces';
+import { IGroup, IProfile } from '../../../main/internal.interfaces';
 import {
   EEvent,
   ICalendarContent,
@@ -25,15 +25,12 @@ import { isBetween } from '../../../utils/moment';
 })
 export class BottomPanelComponent {
   creatingActivity!: ICreatingActivity;
-  content!: ICalendarContent;
+  calendarContent!: ICalendarContent[];
 
   constructor(private calendarService: CalendarService) {
-    this.calendarService.on.event.pipe(delay(500)).subscribe(({ event }) => {
+    this.calendarService.on.event.subscribe(({ event }) => {
       if (EEvent.contentChange == event) {
-        this.content = this.calendarService.content;
-        this.calendarService.on.event.next({
-          event: EEvent.afterRefreshCalendarContent,
-        });
+        this.calendarContent = this.calendarService.content;
       }
     });
     this.resetCreatingActivity();
@@ -49,18 +46,18 @@ export class BottomPanelComponent {
 
   addActivity(
     type: 'start' | 'end' | 'enter' | 'leave',
-    userSchedule: IProcessedContent,
+    profile: IProfile,
     group: IGroup,
     refDate: Date
   ) {
     switch (type) {
       case 'start':
         this.creatingActivity = {
-          profile: userSchedule.profile,
           fromRefDate: refDate,
           toRefDate: refDate,
           isCreating: true,
-          group: group,
+          profile,
+          group,
         };
         break;
       case 'enter':
