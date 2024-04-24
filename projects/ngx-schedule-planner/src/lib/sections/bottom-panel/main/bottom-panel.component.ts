@@ -111,7 +111,9 @@ export class BottomPanelComponent {
   }
 
   @HostListener('mouseup') onClick() {
-    this.finishSelection();
+    if (this.creatingActivity.isCreating) {
+      this.finishSelection();
+    }
   }
 
   clickOnActivity(activity: IActivity) {

@@ -18,11 +18,11 @@
   </section>
 </ng-template>
 
-<ng-template #spanColumn let-refDate="refDate" let-group="group" let-userSchedule="userSchedule">
+<ng-template #spanColumn let-refDate="refDate" let-group="group" let-profile="profile">
   <span
-    (mousedown)="addActivity('start', userSchedule, group, refDate)"
-    (mouseup)="addActivity('end',  userSchedule, group, refDate)"
-    (mouseenter)="addActivity('enter', userSchedule, group, refDate)"
+    (mousedown)="addActivity('start', profile, group, refDate)"
+    (mouseup)="addActivity('end',  profile, group, refDate)"
+    (mouseenter)="addActivity('enter', profile, group, refDate)"
     [ngClass]="{ creating: creatingActivity.isCreating ? isInTheCreation(group, refDate) : false }"
   ></span>
 
