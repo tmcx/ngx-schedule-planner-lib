@@ -1,8 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { CalendarService } from '../../../services/calendar/calendar.service';
 import { MarkerComponent } from '../components/marker/marker.component';
-import { RightPanelComponent } from '../components/right-panel/right-panel.component';
-import { LeftPanelComponent } from '../components/left-panel/left-panel.component';
 import { ShortNamePipe } from '../../../shared/pipes/short-name';
 import { CommonModule } from '@angular/common';
 import { IGroup, IProcessedContent } from '../../../main/internal.interfaces';
@@ -21,8 +19,6 @@ import { isBetween } from '../../../utils/moment';
   styleUrls: ['./bottom-panel.component.scss'],
   imports: [
     ShortNamePipe,
-    LeftPanelComponent,
-    RightPanelComponent,
     MarkerComponent,
     CommonModule,
   ],
