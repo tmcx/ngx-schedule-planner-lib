@@ -154,10 +154,11 @@ $image-width: 40px;
 .user-groups {
   position: relative;
 
-  & > span {
+  &::before {
+    content: "";
     position: absolute;
     height: 100%;
-    background: #b2b2b2;
+    background: $border-color;
     width: 1px;
     left: calc($header-width / 2);
     z-index: 1;
