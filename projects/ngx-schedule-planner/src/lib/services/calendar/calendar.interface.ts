@@ -17,6 +17,7 @@ export enum EEvent {
   afterRefreshCalendarContent = 'afterRefreshCalendarContent',
   leftPanelCollapse = 'leftPanelCollapse',
   addActivityClick = 'addActivityClick',
+  clickOnActivity = 'clickOnActivity',
   selectedRange = 'selectedRange',
   referenceDate = 'referenceDate',
   contentChange = 'contentChange',
@@ -34,6 +35,7 @@ type EEvents =
   | { event: EEvent.navigation; data: TNavigationChange }
   | { event: EEvent.addActivityClick; data?: undefined }
   | { event: EEvent.leftPanelCollapse; data: boolean }
+  | { event: EEvent.clickOnActivity; data: IActivity }
   | { event: EEvent.referenceDate; data: Date }
   | { event: EEvent.loading; data: boolean }
   | { event: EEvent.period; data: EPeriod };

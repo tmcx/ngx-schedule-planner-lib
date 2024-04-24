@@ -3,7 +3,7 @@ import { CalendarService } from '../../../services/calendar/calendar.service';
 import { MarkerComponent } from '../components/marker/marker.component';
 import { ShortNamePipe } from '../../../shared/pipes/short-name';
 import { CommonModule } from '@angular/common';
-import { IGroup, IProfile } from '../../../main/internal.interfaces';
+import { IActivity, IGroup, IProfile } from '../../../main/internal.interfaces';
 import {
   EEvent,
   ICalendarContent,
@@ -17,11 +17,7 @@ import { isBetween } from '../../../utils/moment';
   selector: 'app-bottom-panel',
   templateUrl: './bottom-panel.component.html',
   styleUrls: ['./bottom-panel.component.scss'],
-  imports: [
-    ShortNamePipe,
-    MarkerComponent,
-    CommonModule,
-  ],
+  imports: [ShortNamePipe, MarkerComponent, CommonModule],
 })
 export class BottomPanelComponent {
   creatingActivity!: ICreatingActivity;
@@ -112,5 +108,9 @@ export class BottomPanelComponent {
 
   @HostListener('mouseup') onClick() {
     this.finishSelection();
+  }
+
+  clickOnActivity(activity: IActivity) {
+    this.calendarService.clickOnActivity(activity);
   }
 }

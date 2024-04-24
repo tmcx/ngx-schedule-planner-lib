@@ -6,7 +6,7 @@ import {
   Output,
 } from '@angular/core';
 import { CalendarService } from '../services/calendar/calendar.service';
-import { IConstants } from './internal.interfaces';
+import { IActivity, IConstants } from './internal.interfaces';
 import { IContent, ICustomization } from '../../public-interfaces';
 import {
   floatingScroll,
@@ -36,6 +36,7 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
   isLoading: boolean;
   uuid: string;
   @Output() onSelectRange: EventEmitter<ISelectedRange>;
+  @Output() onActivityClick: EventEmitter<IActivity>;
   @Output() onAddActivityClick: EventEmitter<void>;
 
   @Input() set content(content: IContent[]) {
@@ -59,9 +60,13 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
     this.isLoading = this.calendarService.config.isLoading;
     this.toggleCollapse(this.isCollapsed);
     this.uuid = this.calendarService.uuid;
-    this.onSelectRange = new EventEmitter<ISelectedRange>();
-    this.onAddActivityClick = new EventEmitter<void>();
+    this.onAddActivityClick = new EventEmitter();
+    this.onActivityClick = new EventEmitter();
+    this.onSelectRange = new EventEmitter();
     this.calendarService.on.event.subscribe(({ event, data }) => {
+      if (event == EEvent.clickOnActivity) {
+        this.onActivityClick.emit(data);
+      }
       if (event == EEvent.addActivityClick) {
         this.onAddActivityClick.emit();
       }

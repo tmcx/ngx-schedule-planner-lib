@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { IProcessedCustomization } from '../../main/internal.interfaces';
+import {
+  IActivity,
+  IProcessedCustomization,
+} from '../../main/internal.interfaces';
 import { clone, uuid } from '../../utils/functions';
 import { CONFIG } from '../../config/constants';
 import {
@@ -173,5 +176,15 @@ export class CalendarService {
         this.config.columns = DailyCalendar.getColumns(referenceDate);
         break;
     }
+  }
+
+  clickOnActivity(activity: IActivity) {
+    const clonedActivity = clone(activity);
+    delete clonedActivity.htmlContent;
+    delete clonedActivity.style;
+    this.on.event.next({
+      event: EEvent.clickOnActivity,
+      data: clonedActivity,
+    });
   }
 }
