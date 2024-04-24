@@ -66,6 +66,12 @@ button {
   max-width: 15vw;
 }
 
+select,
+option {
+  text-align: left;
+  padding: 1px 5px;
+}
+
 .navigation {
   display: grid;
   gap: 5px;

@@ -21,12 +21,11 @@ export class RightPanelComponent {
 
   constructor(public calendarService: CalendarService) {
     this.columns = [];
-    this.modes = {
-      [EMode.monthly]: 'month',
-      [EMode.weekly]: 'week',
-      [EMode.daily]: 'day',
-    };
-
+    this.modes = [
+      [EMode.daily, 'day'],
+      [EMode.weekly, 'week'],
+      [EMode.monthly, 'month'],
+    ];
     this.calendarService.on.event.subscribe(({ event }) => {
       if ([EEvent.mode, EEvent.period, EEvent.referenceDate].includes(event)) {
         this.columns = this.calendarService.config.columns;
@@ -42,7 +41,7 @@ export class RightPanelComponent {
 
   setPeriod(period: EPeriod) {
     const { referenceDate, mode } = this.calendarService.config;
-    const unit = this.modes[mode];
+    const unit = this.modes.find(({ '0': m }) => m === mode)![1];
     let date = referenceDate;
     switch (period) {
       case EPeriod.previous:

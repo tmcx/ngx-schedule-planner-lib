@@ -1,6 +1,6 @@
 import { DurationConstructor } from '../../../../../lib/utils/moment';
 
-export type TModes = { [key in TMode]: DurationConstructor };
+export type TModes = [TMode, DurationConstructor][];
 
 export type TMode = 'monthly' | 'weekly' | 'daily';
 
