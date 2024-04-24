@@ -36,6 +36,7 @@ import { TMode } from '../sections/top-panel/components/right-panel/right-panel.
 })
 export class NgxSchedulePlannerComponent implements AfterViewInit {
   isCollapsed: boolean;
+  isLoading: boolean;
   uuid: string;
   @Output() onSelectRange: EventEmitter<ISelectedRange>;
   @Output() onAddActivityClick: EventEmitter<void>;
@@ -60,7 +61,8 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
   }
 
   constructor(private calendarService: CalendarService) {
-    this.isCollapsed = this.calendarService.config.isLoading;
+    this.isCollapsed = this.calendarService.config.leftPanel.isCollapsed;
+    this.isLoading = this.calendarService.config.isLoading;
     this.toggleCollapse(this.isCollapsed);
     this.uuid = this.calendarService.uuid;
     this.onSelectRange = new EventEmitter<ISelectedRange>();
@@ -75,6 +77,9 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
       if (event == EEvent.leftPanelCollapse) {
         this.isCollapsed = data;
         this.toggleCollapse(this.isCollapsed);
+      }
+      if (event == EEvent.loading) {
+        this.isLoading = data;
       }
     });
   }
@@ -114,10 +119,6 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
       });
     });
     return parsedContent;
-  }
-
-  get isLoading() {
-    return this.calendarService.config.isLoading;
   }
 
   async setCssVariables() {

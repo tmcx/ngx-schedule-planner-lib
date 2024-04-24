@@ -115,6 +115,7 @@ export class CalendarService {
 
   setLoading(isLoading: boolean) {
     this.config.isLoading = isLoading;
+    this.on.event.next({ event: EEvent.loading, data: isLoading });
   }
 
   subColumns() {

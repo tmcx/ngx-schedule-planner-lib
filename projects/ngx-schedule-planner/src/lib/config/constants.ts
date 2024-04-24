@@ -16,6 +16,7 @@ export const CONFIG: IConstants = {
     '--ngx-header-width-collapsed': '47px',
     '--ngx-sp-host-bg-color': '#222222',
     '--ngx-sp-border-color': '#b2b2b2',
+    '--ngx-loader-bg-color': '#5e5e5e',
     '--ngx-header-height': '149px',
     '--ngx-header-width': '350px',
     '--ngx-scroll-height': '17px',

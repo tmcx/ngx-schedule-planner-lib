@@ -96,6 +96,7 @@ export type IConstants = {
   STYLE: {
     '--ngx-header-width-collapsed': string;
     '--ngx-sp-host-bg-color': string;
+    '--ngx-loader-bg-color': string;
     '--ngx-sp-border-color': string;
     '--ngx-scroll-height': string;
     '--ngx-header-height': string;

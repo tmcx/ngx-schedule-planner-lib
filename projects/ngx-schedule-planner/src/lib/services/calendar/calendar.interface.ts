@@ -20,6 +20,7 @@ export enum EEvent {
   referenceDate = 'referenceDate',
   contentChange = 'contentChange',
   navigation = 'navigation',
+  loading = 'loading',
   period = 'period',
   mode = 'mode',
 }
@@ -33,6 +34,7 @@ type EEvents =
   | { event: EEvent.addActivityClick; data?: undefined }
   | { event: EEvent.leftPanelCollapse; data: boolean }
   | { event: EEvent.referenceDate; data: Date }
+  | { event: EEvent.loading; data: boolean }
   | { event: EEvent.period; data: EPeriod };
 
 export interface ICalendarServiceEvents {

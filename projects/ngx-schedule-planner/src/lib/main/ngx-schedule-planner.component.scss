@@ -1,6 +1,8 @@
 $header-width: var(--ngx-header-width);
+$loader-bg-color: var(--ngx-loader-bg-color);
 $background-color: var(--ngx-sp-host-bg-color);
-$border: solid 1px var(--ngx-sp-border-color);
+$border-color: var(--ngx-sp-border-color);
+$border: solid 1px $border-color;
 $header-height: var(--ngx-header-height);
 
 ::ng-deep ngx-schedule-planner {
@@ -103,31 +105,43 @@ $header-height: var(--ngx-header-height);
 
 .loading {
   position: absolute;
-  width: 100%;
-  height: calc(100% - $header-height);
+  width: calc(100% - 20px);
+  height: calc(100% - $header-height - 10px);
   border: $border;
   top: $header-height;
-  background-color: rgb(94, 94, 94);
-  z-index: 1;
+  background-color: $loader-bg-color;
+  z-index: 2;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  span {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    background: transparent;
+    border: $border;
+    animation: spin 1.5s linear infinite;
+
+    &::after {
+      content: "";
+      box-shadow: 2px 2px 0px 0px $loader-bg-color;
+      width: 4px;
+      height: 4px;
+      display: block;
+      background: $border-color;
+      border-radius: 50%;
+      translate: 20px;
+    }
+  }
 }
-
-// ::ng-deep .floating-scroll {
-//   overflow: hidden;
-//   &::after{
-//     content: '';
-//   overflow: auto;
-//   scrollbar-gutter: stable;
-//   scrollbar-color: transparent transparent;
-//   scrollbar-width: thin;
-
-//   &:hover::-webkit-scrollbar-thumb {
-//     background: rgba(220, 220, 220, 0.678);
-//   }
-
-//   &:hover {
-//     overflow: auto;
-//     scrollbar-color: rgba(220, 220, 220, 0.678) rgba(220, 220, 220, 0.678);
-//   }
-
-//   }
-// }
