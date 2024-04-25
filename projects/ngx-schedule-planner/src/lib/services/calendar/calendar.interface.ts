@@ -23,6 +23,7 @@ export enum EEvent {
   referenceDate = 'referenceDate',
   contentChange = 'contentChange',
   navigation = 'navigation',
+  filtering = 'filtering',
   loading = 'loading',
   period = 'period',
   mode = 'mode',
@@ -37,6 +38,7 @@ type EEvents =
   | { event: EEvent.addActivityClick; data?: undefined }
   | { event: EEvent.leftPanelCollapse; data: boolean }
   | { event: EEvent.clickOnActivity; data: IActivity }
+  | { event: EEvent.filtering; data?: undefined }
   | { event: EEvent.referenceDate; data: Date }
   | { event: EEvent.loading; data: boolean }
   | { event: EEvent.period; data: EPeriod };
@@ -45,7 +47,17 @@ export interface ICalendarServiceEvents {
   event: Subject<EEvents>;
 }
 
+export interface ICalendarFilters {
+  groupName: string;
+  userName: string;
+}
+
 export interface ICalendarConfig {
+  summary: {
+    totalUsers: number;
+    showingUsers: number;
+  };
+  filters: ICalendarFilters;
   activity: { factor: { width: string } };
   customization: IProcessedCustomization;
   referenceDate: Date;
@@ -59,11 +71,19 @@ export interface ICalendarConfig {
 }
 
 export interface ICalendarContent {
-  profile: IProfile;
+  profile: IProfileWithFilters;
   current: {
-    group: IGroup;
+    group: IGroupWithFilters;
     activities: IActivity[][];
   }[];
+}
+
+interface IProfileWithFilters extends IProfile {
+  hidden?: { byUserName: boolean; byGroupName: boolean };
+}
+
+interface IGroupWithFilters extends IGroup {
+  hidden?: { byGroupName: boolean };
 }
 
 export interface ICalendarSelectors {

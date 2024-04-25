@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { CalendarService } from '../../../../services/calendar/calendar.service';
-import { clone } from '../../../../utils/functions';
 import { InputSearchComponent } from '../../../../shared/inputs/input-search/input-search.component';
 import { CommonModule } from '@angular/common';
+import {
+  ICalendarFilters,
+} from '../../../../services/calendar/calendar.interface';
 
 @Component({
   standalone: true,
@@ -12,7 +14,7 @@ import { CommonModule } from '@angular/common';
   imports: [InputSearchComponent, CommonModule],
 })
 export class LeftPanelComponent {
-  filters: { groupName: string; userName: string };
+  filters: ICalendarFilters;
 
   constructor(public calendarService: CalendarService) {
     this.filters = {
@@ -32,39 +34,7 @@ export class LeftPanelComponent {
   }
 
   private filter() {
-    // const { all } = this.calendarService.content;
-    // let content = clone(all);
-    // if (this.filters.groupName) {
-    //   content = !this.filters.groupName
-    //     ? content
-    //     : content
-    //         .filter((userSchedule) =>
-    //           userSchedule.groups
-    //             .map(({ name }) => name)
-    //             .join('[]')
-    //             .toLowerCase()
-    //             .includes(this.filters.groupName.toLowerCase())
-    //         )
-    //         .map((userSchedule) => {
-    //           if (this.filters.groupName) {
-    //             userSchedule.groups = userSchedule.groups.filter(({ name }) =>
-    //               name
-    //                 .toLowerCase()
-    //                 .includes(this.filters.groupName.toLowerCase())
-    //             );
-    //           }
-    //           return userSchedule;
-    //         });
-    // }
-
-    // content = !this.filters.userName
-    //   ? content
-    //   : content.filter((userSchedule) =>
-    //       userSchedule.profile.name
-    //         .toLowerCase()
-    //         .includes(this.filters.userName.toLowerCase())
-    //     );
-    // this.calendarService.changeCurrentContent(content, 'filtered');
+    this.calendarService.startFiltering(this.filters);
   }
 
   addActivity() {

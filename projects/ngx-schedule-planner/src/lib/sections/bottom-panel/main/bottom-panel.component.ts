@@ -7,6 +7,7 @@ import { IActivity, IGroup, IProfile } from '../../../main/internal.interfaces';
 import {
   EEvent,
   ICalendarContent,
+  ICalendarFilters,
 } from '../../../services/calendar/calendar.interface';
 import { ICreatingActivity } from './bottom-panel.interface';
 import { isBetween } from '../../../utils/moment';
@@ -23,11 +24,13 @@ import { ISubColumn } from '../../top-panel/components/right-panel/right-panel.i
 export class BottomPanelComponent {
   creatingActivity!: ICreatingActivity;
   calendarContent!: ICalendarContent[];
+  filters: ICalendarFilters;
   subColumns: ISubColumn[];
   isCollapsed: boolean;
 
   constructor(private calendarService: CalendarService) {
     this.isCollapsed = this.calendarService.config.leftPanel.isCollapsed;
+    this.filters = this.calendarService.config.filters;
     this.subColumns = [];
     this.calendarService.on.event.subscribe(async ({ event, data }) => {
       if (EEvent.contentChange == event) {
@@ -39,6 +42,9 @@ export class BottomPanelComponent {
       }
       if (event == EEvent.leftPanelCollapse) {
         this.isCollapsed = data;
+      }
+      if (event == EEvent.filtering) {
+        this.filters = this.calendarService.config.filters;
       }
     });
     this.resetCreatingActivity();

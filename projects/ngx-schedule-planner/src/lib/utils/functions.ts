@@ -312,3 +312,23 @@ function unique(str: string) {
   }
   return uniq;
 }
+
+export function includes(
+  str1: string | { [key: string]: any }[],
+  str2: string,
+  path?: string
+) {
+  const str2Lower = str2.toLowerCase();
+  if (typeof str1 == 'string') {
+    return str1.toLowerCase().includes(str2Lower);
+  } else {
+    return (
+      Array.isArray(str1) &&
+      str1.some((value) =>
+        String(getValueOfObjectByPath(value, path!))
+          .toLowerCase()
+          .includes(str2Lower)
+      )
+    );
+  }
+}

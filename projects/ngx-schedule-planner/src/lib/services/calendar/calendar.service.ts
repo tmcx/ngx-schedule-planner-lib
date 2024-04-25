@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, filter } from 'rxjs';
 import {
   IActivity,
   IProcessedCustomization,
 } from '../../main/internal.interfaces';
-import { clone, uuid } from '../../utils/functions';
+import { clone, includes, uuid } from '../../utils/functions';
 import { CONFIG } from '../../config/constants';
 import {
   EEvent,
   ICalendarConfig,
   ICalendarContent,
+  ICalendarFilters,
   ICalendarSelectors,
   ICalendarServiceEvents,
   ISubColumnComplemented,
@@ -55,12 +56,20 @@ export class CalendarService {
     this.config = {
       activity: { factor: { width: '' } },
       leftPanel: { isCollapsed: false },
+      summary: {
+        showingUsers: 0,
+        totalUsers: 0,
+      },
       referenceDate: new Date(),
       mode: EMode.monthly,
       customization: {},
       isLoading: false,
       columns: [],
       title: '',
+      filters: {
+        groupName: '',
+        userName: '',
+      },
     };
   }
 
@@ -87,7 +96,12 @@ export class CalendarService {
     this.on.event.next({ event: EEvent.referenceDate, data: date });
   }
 
-  async changeCurrentContent(originalContent?: IContent[]) {
+  async setCurrentContentByFiltering(content: ICalendarContent[]) {
+    this.content = content;
+    this.on.event.next({ event: EEvent.contentChange, data: 'filtered' });
+  }
+
+  async setCurrentContentFromOriginal(originalContent?: IContent[]) {
     this.originalContent = originalContent ?? this.originalContent;
     const { startDate, endDate } = await this.subColumns();
     this.content = convertToCalendarContent(this, startDate, endDate);
@@ -167,11 +181,12 @@ export class CalendarService {
     this.setMode();
     this.refreshTitle();
     this.refreshWidthFactor();
-    await this.changeCurrentContent();
+    await this.setCurrentContentFromOriginal();
     this.on.event.next({
       event: EEvent.contentChange,
       data: 'filtered',
     });
+    this.startFiltering();
     this.setLoading(false);
   }
 
@@ -206,5 +221,33 @@ export class CalendarService {
       event: EEvent.clickOnActivity,
       data: clonedActivity,
     });
+  }
+
+  startFiltering(filters: ICalendarFilters = this.config.filters) {
+    let showingUsers = 0;
+    this.content.forEach((rowContent) => {
+      rowContent.profile['hidden'] = {
+        byUserName: !includes(rowContent.profile.name, filters.userName),
+        byGroupName: !includes(
+          rowContent.current,
+          filters.groupName,
+          'group.name'
+        ),
+      };
+      if (!rowContent.profile.hidden.byUserName) {
+        showingUsers++;
+      }
+      rowContent.current.forEach((groupedActivities) => {
+        groupedActivities.group['hidden'] = {
+          byGroupName: !includes(
+            groupedActivities.group.name,
+            filters.groupName
+          ),
+        };
+      });
+    });
+    this.on.event.next({ event: EEvent.filtering });
+    this.config.summary.totalUsers = this.originalContent.length;
+    this.config.summary.showingUsers = showingUsers;
   }
 }

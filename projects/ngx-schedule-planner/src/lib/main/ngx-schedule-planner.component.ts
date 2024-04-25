@@ -40,7 +40,7 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
   @Output() onAddActivityClick: EventEmitter<void>;
 
   @Input() set content(content: IContent[]) {
-    this.calendarService.changeCurrentContent(content);
+    this.calendarService.setCurrentContentFromOriginal(content);
   }
 
   @Input() set referencedDate(referencedDate: Date) {
