@@ -92,6 +92,10 @@ $header-height: var(--ngx-header-height);
       }
     }
   }
+
+  .hidden {
+    display: none;
+  }
 }
 
 :host {

@@ -2,16 +2,15 @@ import { Component } from '@angular/core';
 import { CalendarService } from '../../../../services/calendar/calendar.service';
 import { InputSearchComponent } from '../../../../shared/inputs/input-search/input-search.component';
 import { CommonModule } from '@angular/common';
-import {
-  ICalendarFilters,
-} from '../../../../services/calendar/calendar.interface';
+import { ICalendarFilters } from '../../../../services/calendar/calendar.interface';
+import { AddActivityBtnComponent } from '../../../../shared/components/add-activity-btn/add-activity-btn.component';
 
 @Component({
   standalone: true,
   selector: 'app-left-panel',
   templateUrl: './left-panel.component.html',
   styleUrls: ['./left-panel.component.scss'],
-  imports: [InputSearchComponent, CommonModule],
+  imports: [InputSearchComponent, AddActivityBtnComponent, CommonModule],
 })
 export class LeftPanelComponent {
   filters: ICalendarFilters;
@@ -35,10 +34,6 @@ export class LeftPanelComponent {
 
   private filter() {
     this.calendarService.startFiltering(this.filters);
-  }
-
-  addActivity() {
-    this.calendarService.addActivityClicked();
   }
 
   get isCollapsed() {

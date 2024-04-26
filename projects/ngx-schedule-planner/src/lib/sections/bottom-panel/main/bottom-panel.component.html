@@ -54,7 +54,6 @@
 
 
 
-<ng-container *ngIf="calendarContent">
   <ng-container  *ngFor="let rowContent of calendarContent">
 
     <ng-container  *ngIf="!rowContent.profile.hidden?.byGroupName && !rowContent.profile.hidden?.byUserName">
@@ -90,4 +89,4 @@
     </ng-container>
   </ng-container>
 
-</ng-container>
+<app-no-content></app-no-content>

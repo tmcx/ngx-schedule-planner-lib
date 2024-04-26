@@ -1,6 +1,6 @@
 <section class="main">
   <h2>{{ calendarService.config.title }}</h2>
-  <button (click)="addActivity()">+ Activity</button>
+  <app-add-activity-btn></app-add-activity-btn>
   <button (click)="isCollapsed=!isCollapsed" class="collapse-btn" [ngClass]="{'collapsed': isCollapsed}"></button>
 </section>
 <section class="summary">
