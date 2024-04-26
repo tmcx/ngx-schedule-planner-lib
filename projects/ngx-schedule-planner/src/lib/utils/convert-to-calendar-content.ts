@@ -16,7 +16,7 @@ export function convertToCalendarContent(
   let output: ICalendarContent[] = [];
 
   const originalContent = clone(calendarService.originalContent);
-  console.log('Conversion starting', originalContent.activities);
+  console.log('Conversion starting');
 
   function hasConflict(activityA: IActivity, activityB: IActivity): boolean {
     const startA = moment(activityA.startDate);

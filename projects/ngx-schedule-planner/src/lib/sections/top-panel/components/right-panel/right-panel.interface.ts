@@ -23,13 +23,6 @@ export interface ISubColumn {
 
 export type TNavigationChange = 'mode' | 'previous' | 'next';
 
-export enum ENavigationChange {
-  'mode' = 'mode',
-  'previous' = 'previous',
-  'next' = 'next',
-}
-export type TPeriod = 'previous' | 'next' | 'today';
-
 export enum EPeriod {
   'referenceDate' = 'referenceDate',
   'previous' = 'previous',

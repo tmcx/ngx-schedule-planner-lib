@@ -79,39 +79,6 @@ export async function querySelectorAll(
   });
 }
 
-export function groupActivities(activities: IActivity[]): IActivity[][] {
-  const groups: IActivity[][] = [];
-
-  const hasCollision = (group: IActivity[], interval: IActivity) => {
-    for (let i = 0; i < group.length; i++) {
-      if (
-        interval.startDate < group[i].endDate &&
-        interval.endDate > group[i].startDate
-      ) {
-        return true;
-      }
-    }
-    return false;
-  };
-
-  activities.forEach((interval) => {
-    let added = false;
-
-    groups.forEach((group) => {
-      if (!added && !hasCollision(group, interval)) {
-        group.push(interval);
-        added = true;
-      }
-    });
-
-    if (!added) {
-      groups.push([interval]);
-    }
-  });
-
-  return groups;
-}
-
 export function getValueOfObjectByPath<T>(
   object: { [key: string]: any },
   path: string

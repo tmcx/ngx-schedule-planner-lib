@@ -52,25 +52,25 @@ export interface IProcessedCustomization {
   };
 }
 
-export interface ICTag {
+interface ICTag {
   valuePath: string;
   isArray?: boolean;
   type: 'icon-tag';
 }
 
-export interface ICText {
+interface ICText {
   valuePath: string;
   isArray?: boolean;
   type: 'text';
 }
 
-export interface ICIConText {
+interface ICIConText {
   valuePath: string;
   isArray?: boolean;
   type: 'icon-text';
 }
 
-export interface ICDate {
+interface ICDate {
   valuePath: string;
   isArray?: boolean;
   format?: string;
