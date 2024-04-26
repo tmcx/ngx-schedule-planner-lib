@@ -341,3 +341,14 @@ export function wait(delay: number) {
     }, delay);
   });
 }
+
+export function groupBy<T>(
+  array: { [key: string]: any }[],
+  _key: string
+): { [key: string]: T[] } {
+  return array.reduce((result, next) => {
+    const key = next[_key];
+    result[key] = (result[key] || []).concat(next);
+    return result;
+  }, {} as { [key: string]: T[] });
+}

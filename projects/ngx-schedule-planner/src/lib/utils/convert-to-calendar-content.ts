@@ -1,8 +1,9 @@
+import { CalendarContent } from '../../public-interfaces';
 import { IActivity } from '../main/internal.interfaces';
 import { ICalendarContent } from '../services/calendar/calendar.interface';
 import { CalendarService } from '../services/calendar/calendar.service';
 import { ActivityHTML } from './classes/activity-html';
-import { clone } from './functions';
+import { clone, groupBy } from './functions';
 import moment from 'moment';
 
 export function convertToCalendarContent(
@@ -10,8 +11,12 @@ export function convertToCalendarContent(
   startDate: Date,
   endDate: Date
 ): ICalendarContent[] {
+  const start = new Date().getTime();
   const activityHTML = new ActivityHTML(calendarService);
-  const contents = clone(calendarService.originalContent);
+  let output: ICalendarContent[] = [];
+
+  const originalContent = clone(calendarService.originalContent);
+  console.log('Conversion starting', originalContent.activities);
 
   function hasConflict(activityA: IActivity, activityB: IActivity): boolean {
     const startA = moment(activityA.startDate);
@@ -19,6 +24,10 @@ export function convertToCalendarContent(
     const startB = moment(activityB.startDate);
     const endB = moment(activityB.endDate);
     return startA.isBefore(endB) && endA.isAfter(startB);
+  }
+
+  function durationInMin(activity: CalendarContent['activities'][0]) {
+    return moment(activity.endDate).diff(activity.startDate, 'minutes');
   }
 
   function groupAndFilterActivities(activities: IActivity[]): IActivity[][] {
@@ -55,48 +64,55 @@ export function convertToCalendarContent(
 
     return groups;
   }
+  output = originalContent.profiles
+    .map((profile) => {
+      const profileActivities: CalendarContent['activities'][0][] =
+        profile.activities
+          .map(({ activityId }) => {
+            const activity = originalContent.activities[activityId];
+            return {
+              ...activity,
+              durationInMin: durationInMin(activity),
+              startDate: activity.startDate,
+              endDate: activity.endDate,
+            };
+          })
+          .flatMap((activity) => [
+            activity,
+            ...activity.repeat.map((repeat) => {
+              const actClone = clone(activity);
+              return {
+                ...actClone,
+                startDate: repeat + 'T' + actClone.startDate.split('T')[1],
+                endDate: repeat + 'T' + actClone.endDate.split('T')[1],
+              };
+            }),
+          ]);
+      const groups = Object.values(
+        groupBy<IActivity>(profileActivities, 'groupId')
+      );
 
-  const output = contents.map((content) => {
-    return {
-      profile: {
-        id: content.profile.id,
-        name: content.profile.name,
-        description: content.profile.description,
-        tags: content.profile.tags,
-        imageUrl: content.profile.imageUrl,
-      },
-      current: content.groups.map((group) => {
-        group.activities = group.activities.flatMap((activity) => {
-          const activities = activity.repeat.map((repeat) => {
-            const clonedActivity = clone(activity);
-            const repeatDate = moment(repeat);
-            clonedActivity.startDate = moment(activity.startDate)
-              .year(repeatDate.year())
-              .month(repeatDate.month())
-              .date(repeatDate.date())
-              .toDate();
-            clonedActivity.endDate = moment(activity.endDate)
-              .year(repeatDate.year())
-              .month(repeatDate.month())
-              .date(repeatDate.date())
-              .toDate();
+      const current: ICalendarContent['current'] = groups
+        .flatMap((group) => ({
+          group: { ...originalContent.groups[group[0].groupId] },
+          activities: groupAndFilterActivities(group),
+        }))
+        .filter(({ activities }) => activities.length > 0);
 
-            return clonedActivity;
-          });
-          return [activity, ...activities];
-        });
-        const groupedActivities = groupAndFilterActivities(group.activities);
-        return {
-          group: {
-            name: group.name,
-            id: group.id,
-            icon: group.icon,
-            style: group.style,
-          },
-          activities: groupedActivities,
-        };
-      }),
-    };
-  });
+      return {
+        current,
+        profile: {
+          ...profile,
+          tags: profile.tags.map((tagId) => originalContent.tags[tagId]),
+        },
+      };
+    })
+    .filter((row) => row.current.length > 0);
+
+  console.log(
+    'Conversion finished',
+    output.length,
+    ((new Date().getTime() - start) / 1000).toFixed(1) + 's'
+  );
   return output;
 }

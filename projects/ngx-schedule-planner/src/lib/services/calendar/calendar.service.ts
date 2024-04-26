@@ -27,7 +27,7 @@ import {
   EMode,
   TMode,
 } from '../../sections/top-panel/components/right-panel/right-panel.interface';
-import { IContent } from '../../../public-interfaces';
+import { CalendarContent } from '../../../public-interfaces';
 import { convertToCalendarContent } from '../../utils/convert-to-calendar-content';
 
 @Injectable({
@@ -35,14 +35,20 @@ import { convertToCalendarContent } from '../../utils/convert-to-calendar-conten
 })
 export class CalendarService {
   selectors: ICalendarSelectors;
-  originalContent: IContent[];
+  originalContent: CalendarContent;
   on: ICalendarServiceEvents;
   content: ICalendarContent[];
   config: ICalendarConfig;
   uuid: string;
 
   constructor() {
-    this.originalContent = [];
+    this.originalContent = {
+      activities: [],
+      profiles: [],
+      groups: {},
+      roles: {},
+      tags: {},
+    };
     this.uuid = 'ngx-schedule-planner-' + uuid();
     this.selectors = {
       HOST: `#${this.uuid}`,
@@ -101,7 +107,7 @@ export class CalendarService {
     this.on.event.next({ event: EEvent.contentChange, data: 'filtered' });
   }
 
-  async setCurrentContentFromOriginal(originalContent?: IContent[]) {
+  async setCurrentContentFromOriginal(originalContent?: CalendarContent) {
     this.originalContent = originalContent ?? this.originalContent;
     const { startDate, endDate } = await this.subColumns();
     this.content = convertToCalendarContent(this, startDate, endDate);
@@ -250,7 +256,7 @@ export class CalendarService {
       });
     });
     this.on.event.next({ event: EEvent.filtering });
-    this.config.summary.totalUsers = this.originalContent.length;
+    this.config.summary.totalUsers = this.originalContent.profiles.length;
     this.config.summary.showingUsers = showingUsers;
   }
 }

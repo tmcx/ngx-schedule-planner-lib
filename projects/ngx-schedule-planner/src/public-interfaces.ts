@@ -1,48 +1,3 @@
-export interface IContent {
-  profile: IProfile;
-  groups: IGroup[];
-}
-
-export interface IProfile {
-  id: number;
-  name: string;
-  description: string;
-  tags: {
-    id: number;
-    name: string;
-  }[];
-  imageUrl: string;
-}
-
-export interface IGroup {
-  name: string;
-  id: number;
-  icon: string;
-  activities: IActivity[];
-  style?: { height: number };
-}
-
-export interface IActivity {
-  id: number;
-  name: string;
-  durationInMin: number;
-  startDate: Date;
-  endDate: Date;
-  repeat: string[];
-  tags: ITag[];
-  [key: string]: IIconText | string | number | any;
-}
-
-export interface IIconText {
-  icon: string;
-  text: string;
-}
-
-export interface ITag {
-  id: number;
-  icon: string;
-  name: string;
-}
 
 export interface ICustomization {
   CALENDAR?: {
@@ -64,15 +19,59 @@ interface ICText {
   type: 'text';
 }
 
-export interface ICIConText {
+interface ICIConText {
   valuePath: string;
   isArray?: boolean;
   type: 'icon-text';
 }
 
-export interface ICDate {
+interface ICDate {
   valuePath: string;
   isArray?: boolean;
   format: string;
   type: 'date';
+}
+
+interface IActivity {
+  groupId: number;
+  activityId: number;
+  name: string;
+  startDate: string;
+  endDate: string;
+  repeat: string[];
+  tags: number[];
+}
+
+interface IProfile {
+  profileId: number;
+  name: string;
+  description: string;
+  tags: number[];
+  activities: { activityId: number }[];
+  imageUrl: string;
+}
+
+interface IGroup {
+  name: string;
+  groupId: number;
+  icon: string;
+}
+
+interface ITag {
+  tagId: number;
+  icon: string;
+  name: string;
+}
+
+interface IRole {
+  roleId: number;
+  label: string;
+}
+
+export interface CalendarContent {
+  activities: { [activityId: number]: IActivity };
+  groups: { [activityId: number]: IGroup };
+  roles: { [roleId: number]: IRole };
+  tags: { [tagId: number]: ITag };
+  profiles: IProfile[];
 }

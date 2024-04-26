@@ -2,11 +2,11 @@ import { TMode } from '../sections/top-panel/components/right-panel/right-panel.
 import { EEvent } from '../services/calendar/calendar.interface';
 
 export interface IProfile {
-  id: number;
+  profileId: number;
   name: string;
   description: string;
   tags: {
-    id: number;
+    tagId: number;
     name: string;
   }[];
   imageUrl: string;
@@ -14,13 +14,14 @@ export interface IProfile {
 
 export interface IGroup {
   name: string;
-  id: number;
+  groupId: number;
   icon: string;
   style?: { height: number };
 }
 
 export interface IActivity {
-  id: number;
+  activityId: number;
+  groupId: number;
   name: string;
   durationInMin: number;
   startDate: Date;
@@ -38,7 +39,7 @@ export interface IIconText {
 }
 
 export interface ITag {
-  id: number;
+  tagId: number;
   icon: string;
   name: string;
 }

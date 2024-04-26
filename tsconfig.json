@@ -15,6 +15,12 @@
     "paths": {
       "ngx-schedule-planner": [
         "dist/ngx-schedule-planner"
+      ],
+      "rxjs": [
+        "node_modules/rxjs"
+      ],
+      "rxjs/*": [
+        "node_modules/rxjs/*"
       ]
     },
     "declaration": false,

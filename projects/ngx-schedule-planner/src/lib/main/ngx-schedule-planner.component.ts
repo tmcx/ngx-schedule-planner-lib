@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { CalendarService } from '../services/calendar/calendar.service';
 import { IActivity, IConstants } from './internal.interfaces';
-import { IContent, ICustomization } from '../../public-interfaces';
+import { ICustomization, CalendarContent } from '../../public-interfaces';
 import {
   floatingScroll,
   hasScroll,
@@ -24,6 +24,7 @@ import { BottomPanelComponent } from '../sections/bottom-panel/main/bottom-panel
 import { ISelectedRange } from '../sections/bottom-panel/main/bottom-panel.interface';
 import { TMode } from '../sections/top-panel/components/right-panel/right-panel.interface';
 import { LoaderComponent } from '../shared/components/loader/loader.component';
+import { convertToCalendarContent } from '../utils/convert-to-calendar-content';
 
 @Component({
   standalone: true,
@@ -42,8 +43,8 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
   private isInitializing: boolean;
   private inputContent: {
     customization?: ICustomization;
+    content?: CalendarContent;
     referenceDate?: Date;
-    content?: IContent[];
     mode?: TMode;
   };
   isCollapsed: boolean;
@@ -52,7 +53,7 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
   @Output() onActivityClick: EventEmitter<IActivity>;
   @Output() onAddActivityClick: EventEmitter<void>;
 
-  @Input() set content(content: IContent[]) {
+  @Input() set content(content: CalendarContent) {
     this.inputContent['content'] = content;
     this.initialize();
   }

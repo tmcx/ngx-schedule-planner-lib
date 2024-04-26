@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MOCK } from './mock';
 import moment from 'moment';
-import { IContent, ICustomization } from 'ngx-schedule-planner';
+import { ICustomization } from 'ngx-schedule-planner';
 
 @Component({
   selector: 'app-root',
@@ -51,32 +51,6 @@ export class AppComponent {
   }
 
   format() {
-    const content: IContent[] = JSON.parse(JSON.stringify(MOCK));
-    content.forEach(({ groups }) => {
-      groups.forEach((group) => {
-        group.activities.forEach((activity) => {
-          activity.startDate = moment(new Date(activity.startDate))
-            .month(3)
-            .toDate();
-          activity.endDate = moment(new Date(activity.endDate))
-            .month(3)
-            .toDate();
-          activity['assistants'] = {
-            icon: '🙋‍♂️',
-            text: '3',
-          };
-        });
-      });
-    });
-    return [
-      ...content,
-      ...content,
-      ...content,
-      ...content,
-      ...content,
-      ...content,
-      ...content,
-      ...content,
-    ];
+    return MOCK;
   }
 }

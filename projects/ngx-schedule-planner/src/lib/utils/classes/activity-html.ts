@@ -58,7 +58,9 @@ export class ActivityHTML {
             }
           } else {
             const text = getValueOfObjectByPath<IIconText>(activity, valuePath);
-            htmlContent += `<p title="${text.text}">${text.icon} ${text.text}</p>`;
+            if (text) {
+              htmlContent += `<p title="${text.text}">${text.icon} ${text.text}</p>`;
+            }
           }
           htmlContent += '</section>';
           break;
