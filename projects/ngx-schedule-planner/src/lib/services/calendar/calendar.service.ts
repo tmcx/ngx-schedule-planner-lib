@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject, filter } from 'rxjs';
+import { Subject } from 'rxjs';
 import {
   IActivity,
   IProcessedCustomization,
@@ -11,7 +11,6 @@ import {
   ICalendarConfig,
   ICalendarContent,
   ICalendarFilters,
-  ICalendarSelectors,
   ICalendarServiceEvents,
   ISubColumnComplemented,
 } from './calendar.interface';
@@ -34,7 +33,6 @@ import { convertToCalendarContent } from '../../utils/convert-to-calendar-conten
   providedIn: 'root',
 })
 export class CalendarService {
-  selectors: ICalendarSelectors;
   originalContent: CalendarContent;
   on: ICalendarServiceEvents;
   content: ICalendarContent[];
@@ -50,11 +48,6 @@ export class CalendarService {
       tags: {},
     };
     this.uuid = 'ngx-schedule-planner-' + uuid();
-    this.selectors = {
-      HOST: `#${this.uuid}`,
-      APP_MARKER: `#${this.uuid} app-bottom-panel app-marker`,
-      BOTTOM_PANEL: `#${this.uuid} app-bottom-panel`,
-    };
     this.on = {
       event: new Subject(),
     };

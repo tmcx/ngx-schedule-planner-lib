@@ -254,7 +254,7 @@ export async function floatingScroll(
   selector: string,
   dir = { vertical: false }
 ) {
-  const id = unique(selector);
+  const id = 'fs' + unique(selector);
   const el = await querySelector(selector);
   if (!el.parentElement?.querySelector(`.${id}`)) {
     (el.style as any).scrollbarWidth = 'none';
@@ -269,15 +269,9 @@ export async function floatingScroll(
       vScroll.onscroll = (e) => (el.scrollTop = (e as any).target.scrollTop);
       el.onscroll = (e) => (vScroll.scrollTop = (e as any).target.scrollTop);
 
-      vScroll.onmouseleave = () => (vScroll.style.opacity = '.4');
-      el.onmouseleave = () => (vScroll.style.opacity = '.4');
-
-      vScroll.onmouseenter = () => (vScroll.style.opacity = '1');
-      el.onmouseenter = () => (vScroll.style.opacity = '1');
-
-      vScroll.style.height = `calc(100% - 10px - ${CONFIG.STYLE['--ngx-header-height']})`;
+      vScroll.style.height = `calc(100% - 10px - ${CONFIG.STYLE.HEADER_HEIGHT})`;
       vScroll.style.lineHeight = el.scrollHeight + 'px';
-      vScroll.style.top = el.offsetTop + 'px';
+      vScroll.style.top = `calc(10px + ${CONFIG.STYLE.HEADER_HEIGHT})`;
       vScroll.style.right = '11px';
 
       el.parentElement?.append(vScroll);
@@ -301,14 +295,12 @@ export async function floatingScroll(
 }
 
 function unique(str: string) {
-  let uniq = '';
-
+  let hash = 0;
   for (let i = 0; i < str.length; i++) {
-    if (uniq.includes(str[i]) === false) {
-      uniq += str[i];
-    }
+    hash += str.charCodeAt(i);
   }
-  return uniq;
+  hash = hash % 1000;
+  return hash;
 }
 
 export function includes(

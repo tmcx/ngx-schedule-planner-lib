@@ -16,7 +16,7 @@ import {
   querySelector,
   wait,
 } from '../utils/functions';
-import { CONFIG } from '../config/constants';
+import { CONFIG, SELECTOR } from '../config/constants';
 import { EEvent } from '../services/calendar/calendar.interface';
 import { CommonModule } from '@angular/common';
 import { TopPanelComponent } from '../sections/top-panel/main/top-panel.component';
@@ -24,7 +24,7 @@ import { BottomPanelComponent } from '../sections/bottom-panel/main/bottom-panel
 import { ISelectedRange } from '../sections/bottom-panel/main/bottom-panel.interface';
 import { TMode } from '../sections/top-panel/components/right-panel/right-panel.interface';
 import { LoaderComponent } from '../shared/components/loader/loader.component';
-import { convertToCalendarContent } from '../utils/convert-to-calendar-content';
+import { StyleProcessor } from '../utils/style-processor';
 
 @Component({
   standalone: true,
@@ -74,10 +74,11 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
   }
 
   constructor(private calendarService: CalendarService) {
+    StyleProcessor.initialize(this.calendarService.uuid);
     this.inputContent = {};
     this.isCollapsed = this.calendarService.config.leftPanel.isCollapsed;
     this.isInitializing = false;
-    this.toggleCollapse(this.isCollapsed);
+    this.toggleCollapse();
     this.uuid = this.calendarService.uuid;
     this.onAddActivityClick = new EventEmitter();
     this.onActivityClick = new EventEmitter();
@@ -94,55 +95,28 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
       }
       if (event == EEvent.leftPanelCollapse) {
         this.isCollapsed = data;
-        this.toggleCollapse(this.isCollapsed);
+        this.toggleCollapse();
       }
     });
   }
 
   async ngAfterViewInit(): Promise<void> {
-    this.setCssVariables();
-    onResizeDo(this.calendarService.selectors.HOST, () => {
-      hasScroll(this.calendarService.selectors.BOTTOM_PANEL).then(
-        async ({ horizontal }) => {
-          var root = await querySelector(this.calendarService.selectors.HOST);
-          const key = '--ngx-scroll-height';
-          const value = horizontal ? CONFIG.STYLE[key] : '0px';
-          root.style.setProperty(key, value);
-        }
-      );
+    onResizeDo(SELECTOR.HOST, () => {
+      hasScroll(SELECTOR.BOTTOM_PANEL).then(async ({ horizontal }) => {
+        const value = horizontal ? CONFIG.STYLE.SCROLL_HEIGHT : '0px';
+        StyleProcessor.setProp(CONFIG.STYLE_VAR.SCROLL_HEIGHT, value);
+      });
     });
-    floatingScroll('app-bottom-panel', { vertical: true });
-    linkSize(
-      'ngx-schedule-planner app-top-panel app-right-panel',
-      ['ngx-schedule-planner app-bottom-panel .group .row'],
-      { width: true }
-    );
+    floatingScroll(SELECTOR.BOTTOM_PANEL, { vertical: true });
+    linkSize(SELECTOR.APP_RIGHT_PANEL, [SELECTOR.BOTTOM_PANEL_ROW], {
+      width: true,
+    });
   }
 
-  async setCssVariables() {
-    var root = await querySelector(this.calendarService.selectors.HOST);
-    for (const varName in CONFIG.STYLE) {
-      if (Object.prototype.hasOwnProperty.call(CONFIG.STYLE, varName)) {
-        const value = CONFIG.STYLE[varName as keyof IConstants['STYLE']];
-        root.style.setProperty(varName, value);
-      }
-    }
-  }
-
-  async toggleCollapse(collapsed: boolean) {
-    var root = await querySelector(this.calendarService.selectors.HOST);
-
-    if (collapsed) {
-      root.style.setProperty(
-        '--ngx-header-width',
-        CONFIG.STYLE['--ngx-header-width-collapsed']
-      );
-    } else {
-      root.style.setProperty(
-        '--ngx-header-width',
-        CONFIG.STYLE['--ngx-header-width']
-      );
-    }
+  async toggleCollapse() {
+    const { HEADER_WIDTH, HEADER_WIDTH_COLLAPSED } = CONFIG.STYLE;
+    const value = this.isCollapsed ? HEADER_WIDTH_COLLAPSED : HEADER_WIDTH;
+    StyleProcessor.setProp(CONFIG.STYLE_VAR.HEADER_WIDTH, value);
   }
 
   async initialize() {

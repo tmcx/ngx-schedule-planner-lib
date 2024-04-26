@@ -7,7 +7,8 @@ import { CalendarService } from '../../../../../lib/services/calendar/calendar.s
 import { format, isBetween } from '../../../../../lib/utils/moment';
 import moment from 'moment';
 import { interval } from 'rxjs';
-import { CONFIG } from '../../../../config/constants';
+import { CONFIG, SELECTOR } from '../../../../config/constants';
+import { StyleProcessor } from '../../../../utils/style-processor';
 
 @Component({
   standalone: true,
@@ -30,22 +31,17 @@ export class MarkerComponent implements OnInit {
   }
 
   async ngOnInit() {
-    const { BOTTOM_PANEL, APP_MARKER } = this.calendarService.selectors;
+    const { BOTTOM_PANEL, APP_MARKER } = SELECTOR;
     const marker = await querySelector(APP_MARKER);
-    var root = await querySelector(this.calendarService.selectors.HOST);
 
     interval(1000).subscribe(() => {
       const currentDate = new Date();
-      if (
-        this.startDate &&
-        this.endDate &&
-        isBetween(currentDate, this.startDate, this.endDate)
-      ) {
+      if (isBetween(currentDate, this.startDate, this.endDate)) {
         getElementSize(BOTTOM_PANEL).then(
-          ({ scrollWidth: width, scrollHeight }) => {
-            const leftPanelWidth = +root.style
-              .getPropertyValue('--ngx-header-width')
-              .split('px')[0];
+          async ({ scrollWidth: width, scrollHeight }) => {
+            const leftPanelWidth = +(
+              await StyleProcessor.getProp(CONFIG.STYLE_VAR.HEADER_WIDTH)
+            ).split('px')[0];
             marker.style.height = scrollHeight + 'px';
             const oneSecondInSpace =
               moment(this.endDate).diff(this.startDate, 'seconds') /

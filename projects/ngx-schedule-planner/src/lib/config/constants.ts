@@ -1,4 +1,4 @@
-import { IConstants } from '../main/internal.interfaces';
+import { IConstants, ISelectors } from '../main/internal.interfaces';
 import { EEvent } from '../services/calendar/calendar.interface';
 
 export const CONFIG: IConstants = {
@@ -13,14 +13,23 @@ export const CONFIG: IConstants = {
       ACTIVITY: { FACTOR: { WIDTH: '(100% / (24 * 60))' } },
     },
   },
+  STYLE_VAR: {
+    HEADER_WIDTH_COLLAPSED: '--ngx-header-width-collapsed',
+    SP_HOST_BG_COLOR: '--ngx-sp-host-bg-color',
+    SP_BORDER_COLOR: '--ngx-sp-border-color',
+    LOADER_BG_COLOR: '--ngx-loader-bg-color',
+    HEADER_HEIGHT: '--ngx-header-height',
+    HEADER_WIDTH: '--ngx-header-width',
+    SCROLL_HEIGHT: '--ngx-scroll-height',
+  },
   STYLE: {
-    '--ngx-header-width-collapsed': '47px',
-    '--ngx-sp-host-bg-color': '#222222',
-    '--ngx-sp-border-color': '#b2b2b2',
-    '--ngx-loader-bg-color': '#5e5e5e',
-    '--ngx-header-height': '149px',
-    '--ngx-header-width': '350px',
-    '--ngx-scroll-height': '17px',
+    HEADER_WIDTH_COLLAPSED: '47px',
+    SP_HOST_BG_COLOR: '#222222',
+    SP_BORDER_COLOR: '#b2b2b2',
+    LOADER_BG_COLOR: '#5e5e5e',
+    HEADER_HEIGHT: '149px',
+    HEADER_WIDTH: '350px',
+    SCROLL_HEIGHT: '17px',
   },
   eventGroups: {
     SUB_COLUMNS: [
@@ -31,4 +40,11 @@ export const CONFIG: IConstants = {
       EEvent.mode,
     ],
   },
+};
+export var SELECTOR: ISelectors = {
+  HOST: `#{uuid}`,
+  BOTTOM_PANEL_ROW:`#{uuid} app-bottom-panel .group .row`,
+  APP_RIGHT_PANEL: `#{uuid} app-top-panel app-right-panel`,
+  APP_MARKER: `#{uuid} app-bottom-panel app-marker`,
+  BOTTOM_PANEL: `#{uuid} app-bottom-panel`,
 };

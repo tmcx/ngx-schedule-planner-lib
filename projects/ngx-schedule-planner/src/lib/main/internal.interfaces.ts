@@ -77,7 +77,9 @@ export interface ICDate {
   type: 'date';
 }
 
-export type IConstants = {
+export type STYLE_VAR_KEYS = keyof IConstants['STYLE_VAR'];
+
+export interface IConstants {
   CALENDAR: {
     [key in TMode]: {
       ACTIVITY: {
@@ -87,16 +89,27 @@ export type IConstants = {
       };
     };
   };
+  STYLE_VAR: {
+    HEADER_WIDTH_COLLAPSED: string;
+    SP_HOST_BG_COLOR: string;
+    SP_BORDER_COLOR: string;
+    LOADER_BG_COLOR: string;
+    HEADER_HEIGHT: string;
+    HEADER_WIDTH: string;
+    SCROLL_HEIGHT: string;
+  };
   STYLE: {
-    '--ngx-header-width-collapsed': string;
-    '--ngx-sp-host-bg-color': string;
-    '--ngx-loader-bg-color': string;
-    '--ngx-sp-border-color': string;
-    '--ngx-scroll-height': string;
-    '--ngx-header-height': string;
-    '--ngx-header-width': string;
+    [key in STYLE_VAR_KEYS]: string;
   };
   eventGroups: {
     SUB_COLUMNS: EEvent[];
   };
-};
+}
+
+export interface ISelectors {
+  HOST: string;
+  APP_MARKER: string;
+  BOTTOM_PANEL: string;
+  APP_RIGHT_PANEL: string;
+  BOTTOM_PANEL_ROW: string;
+}

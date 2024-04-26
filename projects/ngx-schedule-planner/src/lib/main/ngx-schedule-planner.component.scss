@@ -5,6 +5,13 @@ $border-color: var(--ngx-sp-border-color);
 $border: solid 1px $border-color;
 $header-height: var(--ngx-header-height);
 
+
+::ng-deep *:has(> .v-floating-scroll):hover {
+  .v-floating-scroll {
+    opacity: 1 !important;
+  }
+}
+
 ::ng-deep ngx-schedule-planner {
   * {
     font-family: "Roboto", "sans-serif";
@@ -108,6 +115,7 @@ $header-height: var(--ngx-header-height);
     opacity: 0.4;
     z-index: 1;
   }
+
 }
 
 :host {

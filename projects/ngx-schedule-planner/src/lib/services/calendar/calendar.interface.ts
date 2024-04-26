@@ -86,12 +86,6 @@ interface IGroupWithFilters extends IGroup {
   hidden?: { byGroupName: boolean };
 }
 
-export interface ICalendarSelectors {
-  HOST: string;
-  BOTTOM_PANEL: string;
-  APP_MARKER: string;
-}
-
 export interface ISubColumnComplemented {
   subColumns: ISubColumn[];
   startDate: Date;
