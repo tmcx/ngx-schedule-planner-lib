@@ -262,6 +262,7 @@ export async function floatingScroll(
 
     if (dir.vertical) {
       const vScroll = document.createElement('span');
+      vScroll.classList.add('v-floating-scroll');
       vScroll.classList.add(id);
       vScroll.innerText = '.';
 
@@ -274,30 +275,27 @@ export async function floatingScroll(
       vScroll.onmouseenter = () => (vScroll.style.opacity = '1');
       el.onmouseenter = () => (vScroll.style.opacity = '1');
 
-      (vScroll.style as any).scrollbarColor = 'white transparent';
-      vScroll.style.lineHeight = el.scrollHeight + 'px';
-
       vScroll.style.height = `calc(100% - 10px - ${CONFIG.STYLE['--ngx-header-height']})`;
-      vScroll.style.transition = 'opacity 0.5s ease 0s';
-      (vScroll.style as any).scrollbarWidth = 'thin';
-      vScroll.style.right = 11 + 'px';
+      vScroll.style.lineHeight = el.scrollHeight + 'px';
       vScroll.style.top = el.offsetTop + 'px';
-      vScroll.style.position = 'absolute';
-      vScroll.style.overflow = 'auto';
-      vScroll.style.width = '11px';
-      vScroll.style.opacity = '.4';
-      vScroll.style.zIndex = '1';
+      vScroll.style.right = '11px';
 
       el.parentElement?.append(vScroll);
 
-      setInterval(() => {
+      setInterval(async () => {
         if (el.scrollTop > vScroll.scrollTop) {
           el.scrollTop = vScroll.scrollTop;
         } else {
-          vScroll.scrollTop = el.scrollTop;
-          vScroll.style.lineHeight = el.scrollHeight + 'px';
+          const { vertical } = await hasScroll(selector);
+          if (!vertical) {
+            vScroll.style.display = 'none';
+          } else {
+            vScroll.style.display = 'block';
+            vScroll.scrollTop = el.scrollTop;
+            vScroll.style.lineHeight = el.scrollHeight + 'px';
+          }
         }
-      }, 1000);
+      }, 100);
     }
   }
 }
