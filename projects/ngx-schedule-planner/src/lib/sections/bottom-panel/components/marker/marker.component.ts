@@ -45,7 +45,7 @@ export class MarkerComponent implements OnInit {
           ({ scrollWidth: width, scrollHeight }) => {
             const leftPanelWidth = +root.style
               .getPropertyValue('--ngx-header-width')
-              .split('px')[1];
+              .split('px')[0];
             marker.style.height = scrollHeight + 'px';
             const oneSecondInSpace =
               moment(this.endDate).diff(this.startDate, 'seconds') /
