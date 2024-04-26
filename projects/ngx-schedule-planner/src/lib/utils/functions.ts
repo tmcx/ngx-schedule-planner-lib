@@ -332,3 +332,12 @@ export function includes(
     );
   }
 }
+
+export function wait(delay: number) {
+  return new Promise<void>((resolve) => {
+    const timeout = setTimeout(() => {
+      clearTimeout(timeout);
+      resolve();
+    }, delay);
+  });
+}

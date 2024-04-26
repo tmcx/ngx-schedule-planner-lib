@@ -1,0 +1,61 @@
+$loader-bg-color: var(--ngx-loader-bg-color);
+$border-color: var(--ngx-sp-border-color);
+$header-height: var(--ngx-header-height);
+$border: solid 1px $border-color;
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+:host {
+  position: absolute;
+  border: $border;
+  background-color: $loader-bg-color;
+  z-index: 2;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.false {
+    display: none;
+  }
+
+  &.total {
+    height: calc(100% - 20px);
+    width: calc(100% - 20px);
+    top: 10px;
+  }
+
+  &.partial {
+    height: calc(100% - $header-height - 10px);
+    width: calc(100% - 20px);
+    top: $header-height;
+  }
+
+  .spinner {
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    background: transparent;
+    border: $border;
+    animation: spin 1.5s linear infinite;
+    border-style: ridge;
+
+    &::after {
+      content: "";
+      box-shadow: 2px 2px 0px 0px $loader-bg-color;
+      width: 6px;
+      height: 6px;
+      display: block;
+      background: $border-color;
+      border-radius: 50%;
+      translate: 30px;
+    }
+  }
+}

@@ -68,6 +68,15 @@ export class AppComponent {
         });
       });
     });
-    return [...content,...content,...content,...content];
+    return [
+      ...content,
+      ...content,
+      ...content,
+      ...content,
+      ...content,
+      ...content,
+      ...content,
+      ...content,
+    ];
   }
 }

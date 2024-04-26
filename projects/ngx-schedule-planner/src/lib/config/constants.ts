@@ -24,6 +24,7 @@ export const CONFIG: IConstants = {
   },
   eventGroups: {
     SUB_COLUMNS: [
+      EEvent.afterRefreshCalendarContent,
       EEvent.referenceDate,
       EEvent.navigation,
       EEvent.period,

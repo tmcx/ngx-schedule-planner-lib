@@ -188,6 +188,9 @@ export class CalendarService {
     });
     this.startFiltering();
     this.setLoading(false);
+    this.on.event.next({
+      event: EEvent.afterRefreshCalendarContent,
+    });
   }
 
   refreshTitle() {

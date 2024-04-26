@@ -14,6 +14,7 @@ import {
   linkSize,
   onResizeDo,
   querySelector,
+  wait,
 } from '../utils/functions';
 import { CONFIG } from '../config/constants';
 import { EEvent } from '../services/calendar/calendar.interface';
@@ -22,6 +23,7 @@ import { TopPanelComponent } from '../sections/top-panel/main/top-panel.componen
 import { BottomPanelComponent } from '../sections/bottom-panel/main/bottom-panel.component';
 import { ISelectedRange } from '../sections/bottom-panel/main/bottom-panel.interface';
 import { TMode } from '../sections/top-panel/components/right-panel/right-panel.interface';
+import { LoaderComponent } from '../shared/components/loader/loader.component';
 
 @Component({
   standalone: true,
@@ -29,35 +31,51 @@ import { TMode } from '../sections/top-panel/components/right-panel/right-panel.
   templateUrl: './ngx-schedule-planner.component.html',
   styleUrls: ['./ngx-schedule-planner.component.scss'],
   host: { '[id]': 'uuid', '[attr.collapsed]': 'isCollapsed' },
-  imports: [TopPanelComponent, BottomPanelComponent, CommonModule],
+  imports: [
+    BottomPanelComponent,
+    TopPanelComponent,
+    LoaderComponent,
+    CommonModule,
+  ],
 })
 export class NgxSchedulePlannerComponent implements AfterViewInit {
+  private isInitializing: boolean;
+  private inputContent: {
+    customization?: ICustomization;
+    referenceDate?: Date;
+    content?: IContent[];
+    mode?: TMode;
+  };
   isCollapsed: boolean;
-  isLoading: boolean;
   uuid: string;
   @Output() onSelectRange: EventEmitter<ISelectedRange>;
   @Output() onActivityClick: EventEmitter<IActivity>;
   @Output() onAddActivityClick: EventEmitter<void>;
 
   @Input() set content(content: IContent[]) {
-    this.calendarService.setCurrentContentFromOriginal(content);
+    this.inputContent['content'] = content;
+    this.initialize();
   }
 
-  @Input() set referencedDate(referencedDate: Date) {
-    this.calendarService.changeReferenceDate(referencedDate);
+  @Input() set referenceDate(referenceDate: Date) {
+    this.inputContent['referenceDate'] = referenceDate;
+    this.initialize();
   }
 
   @Input() set mode(mode: TMode) {
-    this.calendarService.changeMode(mode, true);
+    this.inputContent['mode'] = mode;
+    this.initialize();
   }
 
   @Input() set customization(customization: ICustomization) {
-    this.calendarService.setCustomization(customization);
+    this.inputContent['customization'] = customization;
+    this.initialize();
   }
 
   constructor(private calendarService: CalendarService) {
+    this.inputContent = {};
     this.isCollapsed = this.calendarService.config.leftPanel.isCollapsed;
-    this.isLoading = this.calendarService.config.isLoading;
+    this.isInitializing = false;
     this.toggleCollapse(this.isCollapsed);
     this.uuid = this.calendarService.uuid;
     this.onAddActivityClick = new EventEmitter();
@@ -76,9 +94,6 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
       if (event == EEvent.leftPanelCollapse) {
         this.isCollapsed = data;
         this.toggleCollapse(this.isCollapsed);
-      }
-      if (event == EEvent.loading) {
-        this.isLoading = data;
       }
     });
   }
@@ -127,5 +142,30 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
         CONFIG.STYLE['--ngx-header-width']
       );
     }
+  }
+
+  async initialize() {
+    if (!this.isInitializing) {
+      wait(100).then(async () => {
+        const { referenceDate, customization, content, mode } =
+          this.inputContent;
+
+        if (referenceDate) {
+          this.calendarService.config.referenceDate = referenceDate;
+        }
+        if (customization) {
+          this.calendarService.setCustomization(customization);
+        }
+        if (content) {
+          this.calendarService.originalContent = content;
+        }
+        if (mode) {
+          this.calendarService.config.mode = mode;
+        }
+        await this.calendarService.refreshCalendarContent();
+        this.isInitializing = false;
+      });
+    }
+    this.isInitializing = true;
   }
 }
