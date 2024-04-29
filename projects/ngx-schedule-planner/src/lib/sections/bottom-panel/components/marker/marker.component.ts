@@ -21,11 +21,10 @@ export class MarkerComponent implements OnInit {
   endDate!: Date;
 
   constructor(private calendarService: CalendarService) {
-    this.calendarService.on.event.subscribe(async ({ event }) => {
+    this.calendarService.on.event.subscribe(({ event }) => {
       if (CONFIG.eventGroups.SUB_COLUMNS.includes(event)) {
-        const { startDate, endDate } = await this.calendarService.subColumns();
-        this.startDate = startDate;
-        this.endDate = endDate;
+        ({ startDate: this.startDate, endDate: this.endDate } =
+          this.calendarService.config.interval);
       }
     });
   }

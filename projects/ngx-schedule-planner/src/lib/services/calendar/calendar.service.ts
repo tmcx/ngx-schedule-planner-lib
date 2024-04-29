@@ -12,13 +12,9 @@ import {
   ICalendarContent,
   ICalendarFilters,
   ICalendarServiceEvents,
-  ISubColumnComplemented,
 } from './calendar.interface';
-import { startOf } from '../../utils/moment';
+import { endOf, startOf } from '../../utils/moment';
 import { ActivityHTML } from '../../utils/classes/activity-html';
-import { MonthlyCalendar } from '../../utils/monthly-calendar';
-import { WeeklyCalendar } from '../../utils/weekly-calendar';
-import { DailyCalendar } from '../../utils/daily-calendar';
 import { ISelectedRange } from '../../sections/bottom-panel/main/bottom-panel.interface';
 import {
   TNavigationChange,
@@ -63,6 +59,10 @@ export class CalendarService {
       mode: EMode.monthly,
       customization: {},
       isLoading: false,
+      interval: {
+        endDate: new Date(),
+        startDate: new Date(),
+      },
       columns: [],
       title: '',
       filters: {
@@ -100,9 +100,9 @@ export class CalendarService {
     this.on.event.next({ event: EEvent.contentChange, data: 'filtered' });
   }
 
-  async setCurrentContentFromOriginal(originalContent?: CalendarContent) {
+  setCurrentContentFromOriginal(originalContent?: CalendarContent) {
     this.originalContent = originalContent ?? this.originalContent;
-    const { startDate, endDate } = await this.subColumns();
+    const { startDate, endDate } = this.config.interval;
     this.content = convertToCalendarContent(this, startDate, endDate);
     this.on.event.next({ event: EEvent.contentChange, data: 'all' });
   }
@@ -140,36 +140,6 @@ export class CalendarService {
     this.on.event.next({ event: EEvent.loading, data: isLoading });
   }
 
-  subColumns(): Promise<ISubColumnComplemented> {
-    const getContent = () => {
-      const subColumns = this.config.columns.length
-        ? this.config.columns[0].subColumns
-        : [];
-      const endDate = subColumns[subColumns.length - 1]?.lastSection.end;
-      const startDate = subColumns[0]?.firstSection.start;
-      return {
-        subColumns,
-        startDate,
-        endDate,
-      };
-    };
-
-    return new Promise((resolve) => {
-      const content = getContent();
-      if (content.startDate && content.endDate) {
-        resolve(content);
-        return;
-      }
-      const interval = setInterval(() => {
-        const content = getContent();
-        if (content.startDate && content.endDate) {
-          clearInterval(interval);
-          resolve(content);
-        }
-      }, 100);
-    });
-  }
-
   setLeftPanelCollapse(isCollapsed: boolean) {
     this.config.leftPanel.isCollapsed = isCollapsed;
     this.on.event.next({ event: EEvent.leftPanelCollapse, data: isCollapsed });
@@ -198,21 +168,13 @@ export class CalendarService {
 
   private setMode() {
     const { referenceDate, mode } = this.config;
-    switch (mode) {
-      case EMode.monthly:
-        this.config.columns = MonthlyCalendar.getColumns(
-          startOf(referenceDate, 'month')
-        );
-        break;
-      case EMode.weekly:
-        this.config.columns = WeeklyCalendar.getColumns(
-          startOf(referenceDate, 'week')
-        );
-        break;
-      case EMode.daily:
-        this.config.columns = DailyCalendar.getColumns(referenceDate);
-        break;
-    }
+    const entity = CONFIG.CALENDAR[mode].ENTITY[0];
+    const unit = CONFIG.CALENDAR[mode].ENTITY[1];
+    this.config.interval = {
+      startDate: startOf(referenceDate, unit),
+      endDate: endOf(referenceDate, unit),
+    };
+    this.config.columns = entity.getColumns(startOf(referenceDate, unit));
   }
 
   clickOnActivity(activity: IActivity) {

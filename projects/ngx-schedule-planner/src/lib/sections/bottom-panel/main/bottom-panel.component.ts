@@ -33,13 +33,12 @@ export class BottomPanelComponent {
     this.isCollapsed = this.calendarService.config.leftPanel.isCollapsed;
     this.filters = this.calendarService.config.filters;
     this.subColumns = [];
-    this.calendarService.on.event.subscribe(async ({ event, data }) => {
+    this.calendarService.on.event.subscribe(({ event, data }) => {
       if (EEvent.contentChange == event) {
         this.calendarContent = this.calendarService.content;
       }
       if (CONFIG.eventGroups.SUB_COLUMNS.includes(event)) {
-        const { subColumns } = await this.calendarService.subColumns();
-        this.subColumns = subColumns;
+        this.subColumns = this.calendarService.config.columns[0].subColumns;
       }
       if (event == EEvent.leftPanelCollapse) {
         this.isCollapsed = data;

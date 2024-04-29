@@ -1,16 +1,22 @@
 import { IConstants, ISelectors } from '../main/internal.interfaces';
 import { EEvent } from '../services/calendar/calendar.interface';
+import { MonthlyCalendar } from '../utils/monthly-calendar';
+import { WeeklyCalendar } from '../utils/weekly-calendar';
+import { DailyCalendar } from '../utils/daily-calendar';
 
 export const CONFIG: IConstants = {
   CALENDAR: {
     monthly: {
       ACTIVITY: { FACTOR: { WIDTH: '(100% / (24 * 60))' } },
+      ENTITY: [MonthlyCalendar, 'month'],
     },
     weekly: {
       ACTIVITY: { FACTOR: { WIDTH: '(100% / (7 * 24 * 60))' } },
+      ENTITY: [WeeklyCalendar, 'week'],
     },
     daily: {
       ACTIVITY: { FACTOR: { WIDTH: '(100% / (24 * 60))' } },
+      ENTITY: [DailyCalendar, 'day'],
     },
   },
   STYLE_VAR: {
@@ -43,7 +49,7 @@ export const CONFIG: IConstants = {
 };
 export var SELECTOR: ISelectors = {
   HOST: `#{uuid}`,
-  BOTTOM_PANEL_ROW:`#{uuid} app-bottom-panel .group .row`,
+  BOTTOM_PANEL_ROW: `#{uuid} app-bottom-panel .group .row`,
   APP_RIGHT_PANEL: `#{uuid} app-top-panel app-right-panel`,
   APP_MARKER: `#{uuid} app-bottom-panel app-marker`,
   BOTTOM_PANEL: `#{uuid} app-bottom-panel`,

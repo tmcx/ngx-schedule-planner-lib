@@ -62,6 +62,10 @@ export interface ICalendarConfig {
   customization: IProcessedCustomization;
   referenceDate: Date;
   isLoading: boolean;
+  interval: {
+    startDate: Date;
+    endDate: Date;
+  };
   leftPanel: {
     isCollapsed: boolean;
   };
@@ -84,10 +88,4 @@ interface IProfileWithFilters extends IProfile {
 
 interface IGroupWithFilters extends IGroup {
   hidden?: { byGroupName: boolean };
-}
-
-export interface ISubColumnComplemented {
-  subColumns: ISubColumn[];
-  startDate: Date;
-  endDate: Date;
 }

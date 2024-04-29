@@ -2,7 +2,7 @@ import { IActivity, IIconText, ITag } from '../../main/internal.interfaces';
 import { EMode } from '../../sections/top-panel/components/right-panel/right-panel.interface';
 import { CalendarService } from '../../services/calendar/calendar.service';
 import { getValueOfObjectByPath } from '../functions';
-import { format, startOf } from '../moment';
+import { format } from '../moment';
 import moment from 'moment';
 
 export class ActivityHTML {
@@ -90,13 +90,11 @@ export class ActivityHTML {
       activity: {
         factor: { width: widthFactor },
       },
+      interval: { startDate },
     } = this.calendarService.config;
     let left = '';
     let width = '';
-    let leftMinutes = moment(activity.startDate).diff(
-      startOf(activity.startDate, 'd'),
-      'm'
-    );
+    const leftMinutes = moment(activity.startDate).diff(startDate, 'minutes');
     switch (this.calendarService.config.mode) {
       case EMode.monthly:
         const daysOfMonth = moment(activity.startDate).daysInMonth();

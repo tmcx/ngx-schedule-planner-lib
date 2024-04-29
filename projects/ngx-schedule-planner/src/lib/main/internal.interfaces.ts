@@ -1,5 +1,6 @@
 import { TMode } from '../sections/top-panel/components/right-panel/right-panel.interface';
 import { EEvent } from '../services/calendar/calendar.interface';
+import moment from 'moment';
 
 export interface IProfile {
   profileId: number;
@@ -87,6 +88,7 @@ export interface IConstants {
           WIDTH: string;
         };
       };
+      ENTITY: [any, moment.unitOfTime.StartOf];
     };
   };
   STYLE_VAR: {
