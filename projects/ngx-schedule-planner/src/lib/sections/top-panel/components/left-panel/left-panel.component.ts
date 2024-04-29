@@ -2,15 +2,24 @@ import { Component } from '@angular/core';
 import { CalendarService } from '../../../../services/calendar/calendar.service';
 import { InputSearchComponent } from '../../../../shared/inputs/input-search/input-search.component';
 import { CommonModule } from '@angular/common';
-import { ICalendarFilters } from '../../../../services/calendar/calendar.interface';
+import {
+  ICalendarFilters,
+  SortDirection,
+} from '../../../../services/calendar/calendar.interface';
 import { AddActivityBtnComponent } from '../../../../shared/components/add-activity-btn/add-activity-btn.component';
+import { InputSortComponent } from '../../../../shared/inputs/input-sort/input-sort.component';
 
 @Component({
   standalone: true,
   selector: 'app-left-panel',
   templateUrl: './left-panel.component.html',
   styleUrls: ['./left-panel.component.scss'],
-  imports: [InputSearchComponent, AddActivityBtnComponent, CommonModule],
+  imports: [
+    AddActivityBtnComponent,
+    InputSearchComponent,
+    InputSortComponent,
+    CommonModule,
+  ],
 })
 export class LeftPanelComponent {
   filters: ICalendarFilters;
@@ -42,5 +51,9 @@ export class LeftPanelComponent {
 
   set isCollapsed(isCollapsed: boolean) {
     this.calendarService.setLeftPanelCollapse(isCollapsed);
+  }
+
+  sort(direction: SortDirection) {
+    this.calendarService.sort(direction);
   }
 }

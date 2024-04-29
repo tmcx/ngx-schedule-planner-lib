@@ -52,6 +52,11 @@ export interface ICalendarFilters {
   userName: string;
 }
 
+export enum SortDirection {
+  asc = 'asc',
+  desc = 'desc',
+}
+
 export interface ICalendarConfig {
   summary: {
     totalUsers: number;
@@ -69,6 +74,7 @@ export interface ICalendarConfig {
   leftPanel: {
     isCollapsed: boolean;
   };
+  sortBy: { field: 'name'; direction: SortDirection };
   columns: IColumn[];
   title: string;
   mode: TMode;

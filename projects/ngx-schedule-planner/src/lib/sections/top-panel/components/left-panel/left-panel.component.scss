@@ -29,6 +29,12 @@ button {
 
 .filters {
   grid-template-columns: 1fr 1fr;
+
+  .left {
+    display: grid;
+    gap: 5px;
+    grid-template-columns: 1fr min-content;
+  }
 }
 
 h2 {

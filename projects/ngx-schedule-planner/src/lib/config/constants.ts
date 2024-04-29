@@ -33,7 +33,7 @@ export const CONFIG: IConstants = {
     SP_HOST_BG_COLOR: '#222222',
     SP_BORDER_COLOR: '#b2b2b2',
     LOADER_BG_COLOR: '#5e5e5e',
-    HEADER_HEIGHT: '149px',
+    HEADER_HEIGHT: '110px',
     HEADER_WIDTH: '350px',
     SCROLL_HEIGHT: '17px',
   },

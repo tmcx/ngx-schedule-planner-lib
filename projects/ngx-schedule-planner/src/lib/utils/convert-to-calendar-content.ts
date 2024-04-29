@@ -7,12 +7,14 @@ import { clone, groupBy } from './functions';
 import moment from 'moment';
 
 export function convertToCalendarContent(
-  calendarService: CalendarService,
-  startDate: Date,
-  endDate: Date
+  calendarService: CalendarService
 ): ICalendarContent[] {
   const start = new Date().getTime();
   const activityHTML = new ActivityHTML(calendarService);
+  const {
+    interval: { startDate, endDate },
+  } = calendarService.config;
+
   let output: ICalendarContent[] = [];
 
   const originalContent = clone(calendarService.originalContent);

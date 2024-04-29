@@ -12,6 +12,7 @@ import {
   ICalendarContent,
   ICalendarFilters,
   ICalendarServiceEvents,
+  SortDirection,
 } from './calendar.interface';
 import { endOf, startOf } from '../../utils/moment';
 import { ActivityHTML } from '../../utils/classes/activity-html';
@@ -69,6 +70,10 @@ export class CalendarService {
         groupName: '',
         userName: '',
       },
+      sortBy: {
+        field: 'name',
+        direction: SortDirection.asc,
+      },
     };
   }
 
@@ -102,8 +107,7 @@ export class CalendarService {
 
   setCurrentContentFromOriginal(originalContent?: CalendarContent) {
     this.originalContent = originalContent ?? this.originalContent;
-    const { startDate, endDate } = this.config.interval;
-    this.content = convertToCalendarContent(this, startDate, endDate);
+    this.content = convertToCalendarContent(this);
     this.on.event.next({ event: EEvent.contentChange, data: 'all' });
   }
 
@@ -151,12 +155,13 @@ export class CalendarService {
     this.refreshTitle();
     this.refreshWidthFactor();
     await this.setCurrentContentFromOriginal();
+    this.sort();
+    this.startFiltering();
+    this.setLoading(false);
     this.on.event.next({
       event: EEvent.contentChange,
       data: 'filtered',
     });
-    this.startFiltering();
-    this.setLoading(false);
     this.on.event.next({
       event: EEvent.afterRefreshCalendarContent,
     });
@@ -213,5 +218,21 @@ export class CalendarService {
     this.on.event.next({ event: EEvent.filtering });
     this.config.summary.totalUsers = this.originalContent.profiles.length;
     this.config.summary.showingUsers = showingUsers;
+  }
+
+  sort(direction: SortDirection = this.config.sortBy.direction) {
+    this.config.sortBy.direction = direction;
+    const { field } = this.config.sortBy;
+
+    const sortFunction = (a: ICalendarContent, b: ICalendarContent) => {
+      if (direction == SortDirection.asc) {
+        return a.profile[field] > b.profile[field] ? 1 : -1;
+      }
+      if (direction == SortDirection.desc) {
+        return a.profile[field] < b.profile[field] ? 1 : -1;
+      }
+      return 0;
+    };
+    this.content.sort(sortFunction);
   }
 }
