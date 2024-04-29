@@ -1,12 +1,15 @@
-$header-height: var(--ngx-header-height);
-$header-width: var(--ngx-header-width);
-$border-color: var(--ngx-sp-border-color);
-$scroll-height: var(--ngx-scroll-height);
+$act-horizontal-spacing: var(--act-horizontal-spacing);
+$header-bg-color: var(--header-bg-color);
+$header-height: var(--header-height);
+$header-width: var(--header-width);
+$border-color: var(--border-color);
+$scroll-height: var(--scroll-height);
 
 :host {
   display: grid;
-  grid-template-columns: $header-width 1fr;
+  grid-template-columns: calc($header-width + $act-horizontal-spacing) 1fr;
   grid-template-rows: $header-height;
   box-shadow: inset 0 -1px $border-color;
+  background: $header-bg-color;
   overflow: hidden;
 }

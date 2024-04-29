@@ -54,7 +54,7 @@
 
 
 
-  <ng-container  *ngFor="let rowContent of calendarContent">
+  <section class="profile-schedule" *ngFor="let rowContent of calendarContent">
 
     <ng-container  *ngIf="!rowContent.profile.hidden?.byGroupName && !rowContent.profile.hidden?.byUserName">
       <ng-container
@@ -87,6 +87,6 @@
         </ng-container>
       </section>
     </ng-container>
-  </ng-container>
+  </section>
 
 <app-no-content></app-no-content>

@@ -1,4 +1,4 @@
-$border-color: var(--ngx-sp-border-color);
+$border-color: var(--border-color);
 $border: solid 1px $border-color;
 
 :host {
@@ -15,7 +15,7 @@ input {
   right: 1px;
   top: 0;
   height: 100%;
-  fill: #b2b2b2;
+  fill: $border-color;
   width: fit-content;
   border-left: $border;
   padding: 3px;

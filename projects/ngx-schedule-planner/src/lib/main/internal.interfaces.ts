@@ -77,8 +77,6 @@ interface ICDate {
   type: 'date';
 }
 
-export type STYLE_VAR_KEYS = keyof IConstants['STYLE_VAR'];
-
 export interface IConstants {
   CALENDAR: {
     [key in TMode]: {
@@ -90,16 +88,15 @@ export interface IConstants {
     };
   };
   STYLE_VAR: {
+    ASPECT: IConstants['ASPECT'];
+    THEME: ITheme;
+  };
+  ASPECT: {
     HEADER_WIDTH_COLLAPSED: string;
-    SP_HOST_BG_COLOR: string;
-    SP_BORDER_COLOR: string;
-    LOADER_BG_COLOR: string;
+    BORDER_RADIUS: string;
+    SCROLL_HEIGHT: string;
     HEADER_HEIGHT: string;
     HEADER_WIDTH: string;
-    SCROLL_HEIGHT: string;
-  };
-  STYLE: {
-    [key in STYLE_VAR_KEYS]: string;
   };
   eventGroups: {
     SUB_COLUMNS: EEvent[];
@@ -112,4 +109,42 @@ export interface ISelectors {
   BOTTOM_PANEL: string;
   APP_RIGHT_PANEL: string;
   BOTTOM_PANEL_ROW: string;
+}
+
+export interface IThemes {
+  LIGHT: ITheme;
+  DARK: ITheme;
+  [key: string]: ITheme;
+}
+
+interface IObject {
+  [key: string]: string | object;
+}
+
+export interface ITheme extends IObject {
+  PROFILE: {
+    BOX_SHADOW: string;
+    HORIZONTAL_SPACING: string;
+    VERTICAL_SPACING: string;
+  };
+  ACTIVITY: {
+    BACKGROUND_COLOR: string;
+    FONT_COLOR: string;
+    NEW_ACTIVITY_LINE: {
+      BACKGROUND_COLOR: string;
+    };
+  };
+  HEADER: {
+    BACKGROUND_COLOR: string;
+  };
+  BODY: {
+    BACKGROUND_COLOR: string;
+  };
+  GLOBAL: {
+    BACKGROUND_COLOR: string;
+    LOADER_BG_COLOR: string;
+    SCROLLBAR_COLOR: string;
+    BORDER_COLOR: string;
+    FONT_COLOR: string;
+  };
 }

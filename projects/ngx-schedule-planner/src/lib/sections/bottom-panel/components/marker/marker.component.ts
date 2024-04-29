@@ -40,7 +40,7 @@ export class MarkerComponent implements OnInit {
         getElementSize(BOTTOM_PANEL).then(
           async ({ scrollWidth: width, scrollHeight }) => {
             const leftPanelWidth = +(
-              await StyleProcessor.getProp(CONFIG.STYLE_VAR.HEADER_WIDTH)
+              await StyleProcessor.getProp(CONFIG.STYLE_VAR.ASPECT.HEADER_WIDTH)
             ).split('px')[0];
             marker.style.height = scrollHeight + 'px';
             const oneSecondInSpace =

@@ -1,18 +1,29 @@
-$border-color: var(--ngx-sp-border-color);
+$act-new-line-bg-color: var(--act-new-line-bg-color);
+$act-font-color: var(--act-font-color);
+$act-horizontal-spacing: var(--act-horizontal-spacing);
+$act-vertical-spacing: var(--act-vertical-spacing);
+$act-bg-color: var(--act-bg-color);
+$body-bg-color: var(--body-bg-color);
+$border-color: var(--border-color);
 $border: solid 1px $border-color;
-$header-width: var(--ngx-header-width);
+$header-width: var(--header-width);
 $image-width: 40px;
 
 :host {
+  background: $body-bg-color;
   display: grid;
-  border-right: $border;
-  border-left: $border;
   position: relative;
   display: grid;
   grid-auto-flow: row;
-  border-bottom: $border;
-  grid-template-columns: calc($header-width / 2 - 2px) 1fr;
   grid-auto-rows: min-content;
+  padding-top: $act-vertical-spacing;
+  gap: $act-vertical-spacing 0;
+
+  .profile-schedule {
+    display: grid;
+    grid-template-columns: calc($header-width / 2 - 1px) 1fr;
+    gap: 0 $act-horizontal-spacing;
+  }
 }
 
 ::ng-deep app-bottom-panel:has(> app-no-content:not(.hidden)) {
@@ -21,12 +32,37 @@ $image-width: 40px;
 
 .profile-group {
   display: grid;
+  box-shadow: 0 0 0 1px $border-color, 8px 0 1px 1px $body-bg-color;
   grid-template-columns: 1fr;
   align-items: center;
-  box-shadow: 0px -1px $border-color;
+  position: sticky;
+  background: $body-bg-color;
+  z-index: 1;
+  left: 0px;
+
+  &::before {
+    content: "";
+    position: absolute;
+    background: $border-color;
+    height: 100%;
+    width: 1px;
+    top: 0;
+    left: 0;
+    z-index: 2;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: calc($header-width / 2 + $act-horizontal-spacing - 1px);
+    box-shadow: 0px 0px 0px 1px $border-color;
+    z-index: 1;
+  }
 
   .profile {
-    box-shadow: inset 0 -1px 0 0 $border-color;
     display: grid;
     grid-template-columns: $image-width 1fr;
     grid-template-rows: repeat(3, min-content);
@@ -34,15 +70,6 @@ $image-width: 40px;
     padding: 10px;
     height: 100%;
     position: relative;
-
-    &::after {
-      content: "";
-      position: absolute;
-      height: 100%;
-      width: 1px;
-      background-color: $border-color;
-      right: -1px;
-    }
 
     img {
       width: $image-width;
@@ -117,7 +144,7 @@ $image-width: 40px;
 }
 
 .new-activity {
-  background: #00ffe938;
+  background: $act-new-line-bg-color;
   display: grid;
   grid-auto-flow: column;
   padding: 2px 0 2px;
@@ -128,7 +155,7 @@ $image-width: 40px;
     user-select: none;
 
     &.creating {
-      background-color: #00ffe938;
+      background-color: $act-new-line-bg-color;
 
       &::before {
         @extend .plus-icon;
@@ -136,7 +163,7 @@ $image-width: 40px;
     }
 
     &:hover {
-      background-color: #00ffe938;
+      background-color: $act-new-line-bg-color;
       cursor: pointer;
 
       &::before {
@@ -159,36 +186,31 @@ $image-width: 40px;
 
 .user-groups {
   position: relative;
-  box-shadow: inset 0 -1px 0 0 $border-color;
-
-  &::before {
-    content: "";
-    position: absolute;
-    height: 100%;
-    background: $border-color;
-    width: 1px;
-    left: calc($header-width / 2);
-    z-index: 1;
-  }
+  z-index: 0;
+  position: relative;
 
   .group {
     display: grid;
-    grid-template-columns: calc($header-width / 2) 1fr;
+    grid-template-columns: calc($header-width / 2 - 1px) 1fr;
     grid-auto-flow: row;
 
     .group-header {
       display: grid;
-      box-shadow: 1px -1px 0 $border-color;
       padding: 10px;
       grid-auto-flow: column;
       gap: 5px;
       justify-content: start;
       align-items: center;
+      position: sticky;
+      background: $body-bg-color;
+      z-index: 2;
+      left: calc($header-width / 2 + $act-horizontal-spacing - 1px);
+      width: calc(100% + 1px);
     }
   }
 }
 ::ng-deep ngx-schedule-planner app-bottom-panel .activity {
-  background-color: #585858;
+  background: $act-bg-color;
   position: absolute;
   height: 22px;
   border: $border;
@@ -199,13 +221,24 @@ $image-width: 40px;
   grid-auto-flow: column;
   justify-content: start;
   cursor: pointer;
+  z-index: 1;
   gap: 3px;
+
+  &::before {
+    position: absolute;
+    background-color: $act-bg-color;
+    content: "";
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
 
   &:hover {
     opacity: 0.8;
   }
 
   * {
+    color: $act-font-color;
     user-select: none;
   }
 

@@ -6,17 +6,17 @@ import {
   Output,
 } from '@angular/core';
 import { CalendarService } from '../services/calendar/calendar.service';
-import { IActivity, IConstants } from './internal.interfaces';
+import { IActivity, ITheme } from './internal.interfaces';
 import { ICustomization, CalendarContent } from '../../public-interfaces';
 import {
   floatingScroll,
   hasScroll,
-  linkSize,
   onResizeDo,
   querySelector,
+  querySelectorAll,
   wait,
 } from '../utils/functions';
-import { CONFIG, SELECTOR } from '../config/constants';
+import { CONFIG, SELECTOR, THEME } from '../config/constants';
 import { EEvent } from '../services/calendar/calendar.interface';
 import { CommonModule } from '@angular/common';
 import { TopPanelComponent } from '../sections/top-panel/main/top-panel.component';
@@ -45,6 +45,7 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
     customization?: ICustomization;
     content?: CalendarContent;
     referenceDate?: Date;
+    theme?: ITheme;
     mode?: TMode;
   };
   isCollapsed: boolean;
@@ -68,13 +69,22 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
     this.initialize();
   }
 
+  @Input() set theme(themeName: string) {
+    if (!THEME[themeName]) {
+      throw new Error(`Missing theme ${themeName}`);
+    }
+    this.inputContent['theme'] = THEME[themeName];
+  }
+
   @Input() set customization(customization: ICustomization) {
     this.inputContent['customization'] = customization;
     this.initialize();
   }
 
   constructor(private calendarService: CalendarService) {
-    StyleProcessor.initialize(this.calendarService.uuid);
+    StyleProcessor.initialize(this.calendarService.uuid).then(() => {
+      this.theme = 'DARK';
+    });
     this.inputContent = {};
     this.isCollapsed = this.calendarService.config.leftPanel.isCollapsed;
     this.isInitializing = false;
@@ -103,26 +113,32 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
   async ngAfterViewInit(): Promise<void> {
     onResizeDo(SELECTOR.HOST, () => {
       hasScroll(SELECTOR.BOTTOM_PANEL).then(async ({ horizontal }) => {
-        const value = horizontal ? CONFIG.STYLE.SCROLL_HEIGHT : '0px';
-        StyleProcessor.setProp(CONFIG.STYLE_VAR.SCROLL_HEIGHT, value);
+        const value = horizontal ? CONFIG.ASPECT.SCROLL_HEIGHT : '0px';
+        StyleProcessor.setProp(CONFIG.STYLE_VAR.ASPECT.SCROLL_HEIGHT, value);
+      });
+
+      querySelector('.sub-column').then((main) => {
+        querySelectorAll('.row.new-activity span').then((els) => {
+          els.forEach((el) => {
+            console.log(main.offsetWidth, main.clientWidth, main.scrollWidth);
+            el.style.width = main.clientWidth / 2 + 'px';
+          });
+        });
       });
     });
     floatingScroll(SELECTOR.BOTTOM_PANEL, { vertical: true });
-    linkSize(SELECTOR.APP_RIGHT_PANEL, [SELECTOR.BOTTOM_PANEL_ROW], {
-      width: true,
-    });
   }
 
   async toggleCollapse() {
-    const { HEADER_WIDTH, HEADER_WIDTH_COLLAPSED } = CONFIG.STYLE;
+    const { HEADER_WIDTH, HEADER_WIDTH_COLLAPSED } = CONFIG.ASPECT;
     const value = this.isCollapsed ? HEADER_WIDTH_COLLAPSED : HEADER_WIDTH;
-    StyleProcessor.setProp(CONFIG.STYLE_VAR.HEADER_WIDTH, value);
+    StyleProcessor.setProp(CONFIG.STYLE_VAR.ASPECT.HEADER_WIDTH, value);
   }
 
   async initialize() {
     if (!this.isInitializing) {
       wait(100).then(async () => {
-        const { referenceDate, customization, content, mode } =
+        const { referenceDate, customization, content, mode, theme } =
           this.inputContent;
 
         if (referenceDate) {
@@ -136,6 +152,9 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
         }
         if (mode) {
           this.calendarService.config.mode = mode;
+        }
+        if (theme) {
+          StyleProcessor.setTheme(theme);
         }
         await this.calendarService.refreshCalendarContent();
         this.isInitializing = false;

@@ -1,6 +1,6 @@
-$loader-bg-color: var(--ngx-loader-bg-color);
-$border-color: var(--ngx-sp-border-color);
-$header-height: var(--ngx-header-height);
+$loader-bg-color: var(--loader-bg-color);
+$border-color: var(--border-color);
+$header-height: var(--header-height);
 $border: solid 1px $border-color;
 
 @keyframes spin {

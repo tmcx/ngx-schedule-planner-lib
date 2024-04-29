@@ -1,10 +1,12 @@
-$header-width: var(--ngx-header-width);
-$loader-bg-color: var(--ngx-loader-bg-color);
-$background-color: var(--ngx-sp-host-bg-color);
-$border-color: var(--ngx-sp-border-color);
+$header-width: var(--header-width);
+$scrollbar-color: var(--scrollbar-color);
+$border-radius: var(--border-radius);
+$loader-bg-color: var(--loader-bg-color);
+$background-color: var(--background-color);
+$border-color: var(--border-color);
+$font-color: var(--font-color);
 $border: solid 1px $border-color;
-$header-height: var(--ngx-header-height);
-
+$header-height: var(--header-height);
 
 ::ng-deep *:has(> .v-floating-scroll):hover {
   .v-floating-scroll {
@@ -13,23 +15,28 @@ $header-height: var(--ngx-header-height);
 }
 
 ::ng-deep ngx-schedule-planner {
+  padding: 10px;
   * {
     font-family: "Roboto", "sans-serif";
     box-sizing: border-box;
     margin: initial;
     font-size: 12px;
-    color: #fff;
+    color: $font-color;
   }
 
   input,
   select,
   button,
   input[type="date"] {
-    background: #222;
+    background: transparent;
     border: $border;
 
     &:not([type="text"]) {
       cursor: pointer;
+    }
+
+    &:focus-visible {
+      outline: none;
     }
   }
 
@@ -60,7 +67,9 @@ $header-height: var(--ngx-header-height);
       }
     }
     app-bottom-panel {
-      grid-template-columns: calc($header-width / 2 - 1px) 1fr;
+      .profile-schedule {
+        grid-template-columns: calc($header-width / 2 - 1px) 1fr;
+      }
 
       .profile-group {
         display: grid;
@@ -110,7 +119,7 @@ $header-height: var(--ngx-header-height);
   }
 
   .v-floating-scroll {
-    scrollbar-color: white transparent;
+    scrollbar-color: $scrollbar-color transparent;
     transition: opacity 0.5s ease 0s;
     scrollbar-width: thin;
     position: absolute;
@@ -127,6 +136,8 @@ $header-height: var(--ngx-header-height);
   grid-auto-flow: row;
   grid-template-rows: $header-height calc(100% - $header-height);
   background-color: $background-color;
+  border-radius: $border-radius;
+  box-shadow: 0px 0px 4px 1px #00000026;
   position: relative;
-  padding: 10px;
+  overflow: hidden;
 }

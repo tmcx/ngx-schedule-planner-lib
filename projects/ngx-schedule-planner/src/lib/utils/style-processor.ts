@@ -1,5 +1,5 @@
 import { CONFIG, SELECTOR } from '../config/constants';
-import { ISelectors, STYLE_VAR_KEYS } from '../main/internal.interfaces';
+import { ISelectors, ITheme } from '../main/internal.interfaces';
 import { querySelector } from './functions';
 
 export class StyleProcessor {
@@ -11,12 +11,8 @@ export class StyleProcessor {
       const key = _key as keyof ISelectors;
       SELECTOR[key] = SELECTOR[key].replace('{uuid}', uuid);
     });
-    for (const _key in CONFIG.STYLE) {
-      const key = _key as STYLE_VAR_KEYS;
-      const value = CONFIG.STYLE[key];
-      const varName = CONFIG.STYLE_VAR[key];
-      await StyleProcessor.setProp(varName, value);
-    }
+
+    await this.setNestedProps(CONFIG.ASPECT, CONFIG.STYLE_VAR.ASPECT);
   }
 
   static async setProp(varName: string, value: string) {
@@ -32,6 +28,24 @@ export class StyleProcessor {
   static async validateHost() {
     if (!StyleProcessor.root) {
       StyleProcessor.root = await querySelector(SELECTOR.HOST);
+    }
+  }
+
+  static async setTheme(theme: ITheme) {
+    await this.setNestedProps(theme, CONFIG.STYLE_VAR.THEME);
+  }
+
+  private static async setNestedProps(
+    values: { [key: string]: any },
+    varNames: { [key: string]: any }
+  ) {
+    for (const [key, value] of Object.entries(values)) {
+      if (typeof value == 'object') {
+        await this.setNestedProps(value, varNames[key]);
+        continue;
+      }
+      const varName = varNames[key];
+      await StyleProcessor.setProp(varName, value);
     }
   }
 }

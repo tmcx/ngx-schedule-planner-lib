@@ -115,6 +115,8 @@ export async function getElementSize(
   };
 
   return {
+    offsetHeight: summarize('offsetHeight'),
+    offsetWidth: summarize('offsetWidth'),
     clientHeight: summarize('clientHeight'),
     clientWidth: summarize('clientWidth'),
     scrollHeight: summarize('scrollHeight'),
@@ -186,13 +188,15 @@ export async function linkSize(
     entries.forEach(async (entry) => {
       const { width, height } = entry.contentRect;
       selectors.forEach((selector) => {
-        querySelector(selector).then((element) => {
-          if (options?.width) {
-            element.style.width = width + 'px';
-          }
-          if (options?.height) {
-            element.style.height = height + 'px';
-          }
+        querySelectorAll(selector).then((elements) => {
+          elements.forEach((element) => {
+            if (options?.width) {
+              element.style.width = width + 'px';
+            }
+            if (options?.height) {
+              element.style.height = height + 'px';
+            }
+          });
         });
       });
     });
@@ -236,9 +240,9 @@ export async function floatingScroll(
       vScroll.onscroll = (e) => (el.scrollTop = (e as any).target.scrollTop);
       el.onscroll = (e) => (vScroll.scrollTop = (e as any).target.scrollTop);
 
-      vScroll.style.height = `calc(100% - 10px - ${CONFIG.STYLE.HEADER_HEIGHT})`;
+      vScroll.style.height = `calc(100% - 10px - ${CONFIG.ASPECT.HEADER_HEIGHT})`;
       vScroll.style.lineHeight = el.scrollHeight + 'px';
-      vScroll.style.top = `calc(10px + ${CONFIG.STYLE.HEADER_HEIGHT})`;
+      vScroll.style.top = `calc(10px + ${CONFIG.ASPECT.HEADER_HEIGHT})`;
       vScroll.style.right = '11px';
 
       el.parentElement?.append(vScroll);
