@@ -23,8 +23,9 @@ export class MarkerComponent implements OnInit {
   constructor(private calendarService: CalendarService) {
     this.calendarService.on.event.subscribe(({ event }) => {
       if (CONFIG.eventGroups.SUB_COLUMNS.includes(event)) {
-        ({ startDate: this.startDate, endDate: this.endDate } =
-          this.calendarService.config.interval);
+        ({
+          global: { startDate: this.startDate, endDate: this.endDate },
+        } = this.calendarService.config.interval);
       }
     });
   }

@@ -14,7 +14,7 @@ import {
   ICalendarServiceEvents,
   SortDirection,
 } from './calendar.interface';
-import { endOf, startOf } from '../../utils/moment';
+import { endOf, setDate, startOf } from '../../utils/moment';
 import { ActivityHTML } from '../../utils/classes/activity-html';
 import { ISelectedRange } from '../../sections/bottom-panel/main/bottom-panel.interface';
 import {
@@ -61,8 +61,12 @@ export class CalendarService {
       customization: {},
       isLoading: false,
       interval: {
-        endDate: new Date(),
-        startDate: new Date(),
+        global: { endDate: new Date(), startDate: new Date() },
+        timeRange: {
+          hrFrom: 0,
+          hrTo: 24,
+        },
+        hoursAmount: 24,
       },
       columns: [],
       title: '',
@@ -150,6 +154,7 @@ export class CalendarService {
   }
 
   async refreshCalendarContent() {
+    this.updateInterval();
     this.setLoading(true);
     this.setMode();
     this.refreshTitle();
@@ -172,14 +177,32 @@ export class CalendarService {
   }
 
   private setMode() {
-    const { referenceDate, mode } = this.config;
+    const { mode } = this.config;
     const entity = CONFIG.CALENDAR[mode].ENTITY[0];
+
+    this.config.columns = entity.getColumns(this);
+  }
+
+  updateInterval() {
+    const {
+      mode,
+      referenceDate,
+      interval: {
+        timeRange: { hrFrom, hrTo },
+      },
+    } = this.config;
     const unit = CONFIG.CALENDAR[mode].ENTITY[1];
+    let startDate = startOf(referenceDate, unit);
+    startDate = setDate(startDate, { h: hrFrom, m: 0, s: 0, ms: 0 });
+
+    let endDate = endOf(referenceDate, unit);
+    endDate = setDate(endDate, { h: hrTo - 1, m: 0, s: 0, ms: 0 });
+    const hoursAmount = hrTo - hrFrom;
     this.config.interval = {
-      startDate: startOf(referenceDate, unit),
-      endDate: endOf(referenceDate, unit),
+      global: { startDate, endDate },
+      timeRange: { hrFrom, hrTo },
+      hoursAmount,
     };
-    this.config.columns = entity.getColumns(startOf(referenceDate, unit));
   }
 
   clickOnActivity(activity: IActivity) {

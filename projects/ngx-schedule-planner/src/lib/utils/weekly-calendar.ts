@@ -1,11 +1,13 @@
 import moment from 'moment';
 import { addToDate, getWeekDays } from './moment';
 import { IColumn } from '../sections/top-panel/components/right-panel/right-panel.interface';
+import { CalendarService } from '../services/calendar/calendar.service';
 
 export class WeeklyCalendar {
-  static getColumns(date: Date): IColumn[] {
-    const columns: IColumn[] = [];
+  static getColumns(calendarService: CalendarService): IColumn[] {
+    const date = calendarService.config.interval.global.startDate;
 
+    const columns: IColumn[] = [];
     const currentYear = moment(date).year();
     const startWeek = moment(date).startOf('M').week();
     const endWeek = moment(date).endOf('M').week();

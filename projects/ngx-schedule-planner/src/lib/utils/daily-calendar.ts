@@ -2,30 +2,37 @@ import moment from 'moment';
 import { addToDate, format, getDaysOfMonth } from './moment';
 import { arrayOf } from './functions';
 import { IColumn } from '../sections/top-panel/components/right-panel/right-panel.interface';
+import { CalendarService } from '../services/calendar/calendar.service';
 
 export class DailyCalendar {
-  static getColumns(date: Date): IColumn[] {
+  static getColumns(calendarService: CalendarService): IColumn[] {
+    const {
+      global: { startDate, endDate },
+    } = calendarService.config.interval;
+    const length = endDate.getHours() - startDate.getHours();
+
+    const startHr = startDate.getHours();
     const columns: IColumn[] = [];
-    const currentYear = moment(date).year();
-    const currentMonth = moment(date).month();
+    const currentYear = moment(startDate).year();
+    const currentMonth = moment(startDate).month();
     const days = getDaysOfMonth(currentYear, currentMonth);
     for (const { name, num } of days) {
       columns.push({
         title: `${name}, ${num}`,
-        subColumns: arrayOf(23).map((hr, i) => ({
-          label: `${hr}:00`,
+        subColumns: arrayOf(length).map((hr, i) => ({
+          label: `${hr + startHr}:00`,
           firstSection: {
-            start: addToDate(date, { h: i }, { startOf: ['d'] }),
-            end: addToDate(date, { h: i, m: 30 }, { startOf: ['d'] }),
+            start: addToDate(startDate, { h: i }),
+            end: addToDate(startDate, { h: i, m: 30 }),
           },
           lastSection: {
-            start: addToDate(date, { h: i, m: 31 }, { startOf: ['d'] }),
-            end: addToDate(date, { h: i, m: 59 }, { startOf: ['d'] }),
+            start: addToDate(startDate, { h: i, m: 31 }),
+            end: addToDate(startDate, { h: i, m: 59 }),
           },
         })),
       });
     }
-    const desiredDay = ', ' + format(date, 'D');
+    const desiredDay = ', ' + format(startDate, 'D');
     return columns.filter(({ title }) => title.endsWith(desiredDay));
   }
 }

@@ -24,7 +24,6 @@ export interface IActivity {
   activityId: number;
   groupId: number;
   name: string;
-  durationInMin: number;
   startDate: Date;
   endDate: Date;
   repeat: string[];

@@ -2,9 +2,12 @@ import moment from 'moment';
 import { setDate, format } from './moment';
 import { arrayOf } from './functions';
 import { IColumn } from '../sections/top-panel/components/right-panel/right-panel.interface';
+import { CalendarService } from '../services/calendar/calendar.service';
 
 export class MonthlyCalendar {
-  static getColumns(date: Date): IColumn[] {
+  static getColumns(calendarService: CalendarService): IColumn[] {
+    const date = calendarService.config.interval.global.startDate;
+
     const columns: IColumn[] = [];
     for (const month of moment.months()) {
       columns.push({

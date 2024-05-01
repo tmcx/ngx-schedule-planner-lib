@@ -12,7 +12,10 @@ export function convertToCalendarContent(
   const start = new Date().getTime();
   const activityHTML = new ActivityHTML(calendarService);
   const {
-    interval: { startDate, endDate },
+    interval: {
+      global: { startDate, endDate },
+      timeRange: { hrFrom, hrTo },
+    },
   } = calendarService.config;
 
   let output: ICalendarContent[] = [];
@@ -28,18 +31,16 @@ export function convertToCalendarContent(
     return startA.isBefore(endB) && endA.isAfter(startB);
   }
 
-  function durationInMin(activity: CalendarContent['activities'][0]) {
-    return moment(activity.endDate).diff(activity.startDate, 'minutes');
-  }
-
   function groupAndFilterActivities(activities: IActivity[]): IActivity[][] {
     const filteredActivities = activities.filter((activity) => {
       const activityStartDate = moment(activity.startDate);
       const activityEndDate = moment(activity.endDate);
-      return (
-        (!startDate || activityStartDate.isSameOrAfter(startDate)) &&
-        (!endDate || activityEndDate.isSameOrBefore(endDate))
-      );
+      const belongsToPeriod =
+        activityStartDate.isSameOrAfter(startDate) &&
+        activityEndDate.isSameOrBefore(endDate);
+      const belongsToHrsInterval =
+        activityStartDate.hour() >= hrFrom && activityEndDate.hour() <= hrTo;
+      return belongsToPeriod && belongsToHrsInterval;
     });
 
     const groups: IActivity[][] = [];
@@ -51,10 +52,6 @@ export function convertToCalendarContent(
         )
       );
 
-      activity.durationInMin = moment(activity.endDate).diff(
-        activity.startDate,
-        'minutes'
-      );
       activity.htmlContent = activityHTML.activityHTMLContent(activity);
       activity.style = activityHTML.activityStyle(activity);
       if (groupIndex !== -1) {
@@ -68,15 +65,15 @@ export function convertToCalendarContent(
   }
   output = originalContent.profiles
     .map((profile) => {
-      const profileActivities: CalendarContent['activities'][0][] =
+      const profileActivities: ICalendarContent['current'][0]['activities'][0] =
         profile.activities
           .map(({ activityId }) => {
             const activity = originalContent.activities[activityId];
             return {
               ...activity,
-              durationInMin: durationInMin(activity),
-              startDate: activity.startDate,
-              endDate: activity.endDate,
+              startDate: new Date(activity.startDate),
+              endDate: new Date(activity.endDate),
+              tags: activity.tags.map((tagId) => originalContent.tags[tagId]),
             };
           })
           .flatMap((activity) => [
@@ -85,8 +82,12 @@ export function convertToCalendarContent(
               const actClone = clone(activity);
               return {
                 ...actClone,
-                startDate: repeat + 'T' + actClone.startDate.split('T')[1],
-                endDate: repeat + 'T' + actClone.endDate.split('T')[1],
+                startDate: new Date(
+                  repeat + 'T' + actClone.startDate.toISOString().split('T')[1]
+                ),
+                endDate: new Date(
+                  repeat + 'T' + actClone.endDate.toISOString().split('T')[1]
+                ),
               };
             }),
           ]);

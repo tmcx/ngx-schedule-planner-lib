@@ -3,6 +3,7 @@
   [mode]="'daily'"
   [referenceDate]="referencedDate"
   [customization]="customization"
+  [timeRange]="{ hrFrom: 8, hrTo: 17 }"
   (onAddActivityClick)="log($event)"
   (onActivityClick)="log($event)"
   (onSelectRange)="log($event)"

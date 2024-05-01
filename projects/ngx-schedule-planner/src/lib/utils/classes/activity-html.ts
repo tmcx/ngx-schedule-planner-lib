@@ -85,32 +85,34 @@ export class ActivityHTML {
   }
 
   activityStyle(activity: IActivity) {
-    const minutes = activity.durationInMin;
-    const {
+    let {
       activity: {
         factor: { width: widthFactor },
       },
-      interval: { startDate },
+      interval: {
+        global: { startDate },
+        timeRange: daily,
+        hoursAmount,
+      },
     } = this.calendarService.config;
-    let left = '';
-    let width = '';
-    const leftMinutes = moment(activity.startDate).diff(startDate, 'minutes');
-    switch (this.calendarService.config.mode) {
-      case EMode.monthly:
-        const daysOfMonth = moment(activity.startDate).daysInMonth();
-        width = `calc((${widthFactor}/${daysOfMonth}) * ${minutes})`;
-        left = `calc((${widthFactor}/${daysOfMonth}) * ${leftMinutes})`;
-        break;
-      case EMode.weekly:
-        width = `calc((${widthFactor}) * ${minutes})`;
-        left = `calc((${widthFactor}) * ${leftMinutes})`;
-        break;
-      case EMode.daily:
-        width = `calc((${widthFactor}) * ${minutes})`;
-        left = `calc((${widthFactor}) * ${leftMinutes})`;
-        break;
-    }
-    return { width, left };
+    const leftMinutes = calculateLeftMinutes(
+      daily,
+      startDate,
+      activity.startDate
+    );
+    const minutes = calculateDurationMinutes(
+      daily,
+      activity.startDate,
+      activity.endDate
+    );
+    const daysOfMonth = moment(activity.startDate).daysInMonth();
+    widthFactor = widthFactor
+      .replace('{hoursAmount}', hoursAmount + '')
+      .replace('{daysOfMonth}', daysOfMonth + '');
+    return {
+      width: `calc((${widthFactor}) * ${minutes})`,
+      left: `calc((${widthFactor}) * ${leftMinutes})`,
+    };
   }
 
   calendarTitle() {
@@ -133,4 +135,48 @@ export class ActivityHTML {
 
     return title;
   }
+}
+
+export function calculateLeftMinutes(
+  interval: { hrFrom: number; hrTo: number },
+  baseDate: Date,
+  actStartDate: Date
+): number {
+  const { hrFrom, hrTo } = interval;
+  let copyBaseDate = moment(baseDate);
+  let ignoreMins = 0;
+  while (copyBaseDate.date() < moment(actStartDate).date()) {
+    ignoreMins += copyBaseDate
+      .clone()
+      .set({ hour: hrFrom })
+      .diff(copyBaseDate.clone().startOf('d'), 'm');
+    ignoreMins += copyBaseDate
+      .clone()
+      .endOf('d')
+      .diff(copyBaseDate.clone().set({ hour: hrTo }), 'm');
+    copyBaseDate.add({ d: 1 });
+  }
+  return moment(actStartDate).diff(baseDate, 'm') - ignoreMins;
+}
+
+export function calculateDurationMinutes(
+  interval: { hrFrom: number; hrTo: number },
+  actStartDate: Date,
+  actEndDate: Date
+): number | null {
+  const { hrFrom, hrTo } = interval;
+  let copyActStartDate = moment(actStartDate);
+  let sumMins = 0;
+  while (copyActStartDate.date() < moment(actEndDate).date()) {
+    sumMins += copyActStartDate
+      .clone()
+      .set({ hour: hrFrom })
+      .diff(copyActStartDate.clone().startOf('d'), 'm');
+    sumMins += copyActStartDate
+      .clone()
+      .endOf('d')
+      .diff(copyActStartDate.clone().set({ hour: hrTo }), 'm');
+    copyActStartDate.add({ d: 1 });
+  }
+  return moment(actEndDate).diff(actStartDate, 'minutes') - sumMins;
 }

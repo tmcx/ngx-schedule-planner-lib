@@ -7,15 +7,15 @@ import { DailyCalendar } from '../utils/daily-calendar';
 export const CONFIG: IConstants = {
   CALENDAR: {
     monthly: {
-      ACTIVITY: { FACTOR: { WIDTH: '(100% / (24 * 60))' } },
+      ACTIVITY: { FACTOR: { WIDTH: '(100% / ({hoursAmount} * 60)) / {daysOfMonth}' } },
       ENTITY: [MonthlyCalendar, 'month'],
     },
     weekly: {
-      ACTIVITY: { FACTOR: { WIDTH: '(100% / (7 * 24 * 60))' } },
+      ACTIVITY: { FACTOR: { WIDTH: '100% / (7 * {hoursAmount} * 60)' } },
       ENTITY: [WeeklyCalendar, 'week'],
     },
     daily: {
-      ACTIVITY: { FACTOR: { WIDTH: '(100% / (24 * 60))' } },
+      ACTIVITY: { FACTOR: { WIDTH: '(100% / ({hoursAmount} * 60))' } },
       ENTITY: [DailyCalendar, 'day'],
     },
   },

@@ -57,6 +57,11 @@ export enum SortDirection {
   desc = 'desc',
 }
 
+export interface ITimeRange {
+  hrFrom: number;
+  hrTo: number;
+}
+
 export interface ICalendarConfig {
   summary: {
     totalUsers: number;
@@ -68,8 +73,12 @@ export interface ICalendarConfig {
   referenceDate: Date;
   isLoading: boolean;
   interval: {
-    startDate: Date;
-    endDate: Date;
+    timeRange: ITimeRange;
+    hoursAmount: number;
+    global: {
+      startDate: Date;
+      endDate: Date;
+    };
   };
   leftPanel: {
     isCollapsed: boolean;

@@ -6,7 +6,7 @@ import {
   Output,
 } from '@angular/core';
 import { CalendarService } from '../services/calendar/calendar.service';
-import { IActivity, IConstants } from './internal.interfaces';
+import { IActivity } from './internal.interfaces';
 import { ICustomization, CalendarContent } from '../../public-interfaces';
 import {
   floatingScroll,
@@ -17,7 +17,7 @@ import {
   wait,
 } from '../utils/functions';
 import { CONFIG, SELECTOR } from '../config/constants';
-import { EEvent } from '../services/calendar/calendar.interface';
+import { EEvent, ITimeRange } from '../services/calendar/calendar.interface';
 import { CommonModule } from '@angular/common';
 import { TopPanelComponent } from '../sections/top-panel/main/top-panel.component';
 import { BottomPanelComponent } from '../sections/bottom-panel/main/bottom-panel.component';
@@ -42,6 +42,7 @@ import { StyleProcessor } from '../utils/style-processor';
 export class NgxSchedulePlannerComponent implements AfterViewInit {
   private isInitializing: boolean;
   private inputContent: {
+    timeRange?: { hrFrom: number; hrTo: number };
     customization?: ICustomization;
     content?: CalendarContent;
     referenceDate?: Date;
@@ -60,6 +61,11 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
 
   @Input() set referenceDate(referenceDate: Date) {
     this.inputContent['referenceDate'] = referenceDate;
+    this.initialize();
+  }
+
+  @Input() set timeRange(timeRange: ITimeRange) {
+    this.inputContent['timeRange'] = timeRange;
     this.initialize();
   }
 
@@ -122,7 +128,7 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
   async initialize() {
     if (!this.isInitializing) {
       wait(100).then(async () => {
-        const { referenceDate, customization, content, mode } =
+        const { referenceDate, customization, content, mode, timeRange } =
           this.inputContent;
 
         if (referenceDate) {
@@ -136,6 +142,9 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
         }
         if (mode) {
           this.calendarService.config.mode = mode;
+        }
+        if (timeRange) {
+          this.calendarService.config.interval.timeRange = timeRange;
         }
         await this.calendarService.refreshCalendarContent();
         this.isInitializing = false;
