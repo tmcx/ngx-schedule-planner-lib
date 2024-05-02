@@ -93,6 +93,15 @@ export const THEME = {
     BACKGROUND: '#1D7AE4',
     BORDER_COLOR: '#E8E8E8',
     FONT_COLOR: '#FFFFFF',
+    NEW_ACTIVITY_SECTION: {
+      BACKGROUND: '#d4ffd4',
+    },
+    ACTIVITY: {
+      BACKGROUND: '#FFFFFF',
+    },
+    PROFILE: {
+      BACKGROUND: '#FAFAFA',
+    },
   },
 };
 
@@ -132,5 +141,14 @@ export const THEME_VARS = {
     BACKGROUND: '--bottom-background-color',
     BORDER_COLOR: '--bottom-border-color',
     FONT_COLOR: '--bottom-font-color',
+    NEW_ACTIVITY_SECTION: {
+      BACKGROUND: '--bottom-new-activity-section-background-color',
+    },
+    ACTIVITY: {
+      BACKGROUND: '--bottom-activity-background-color',
+    },
+    PROFILE: {
+      BACKGROUND: '--bottom-profile-background-color',
+    },
   },
 };

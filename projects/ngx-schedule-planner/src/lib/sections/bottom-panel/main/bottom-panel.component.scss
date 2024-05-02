@@ -3,9 +3,15 @@ $border: solid 1px $border-color;
 $header-width: var(--ngx-header-width);
 $image-width: 40px;
 
+$bottom-profile-background-color: var(--bottom-profile-background-color);
+$bottom-activity-background-color: var(--bottom-activity-background-color);
 $bottom-background-color: var(--bottom-background-color);
 $bottom-border-color: var(--bottom-border-color);
 $bottom-font-color: var(--bottom-font-color);
+
+$bottom-new-activity-section-background-color: var(
+  --bottom-new-activity-section-background-color
+);
 
 :host {
   display: grid;
@@ -24,6 +30,7 @@ $bottom-font-color: var(--bottom-font-color);
   display: grid;
   grid-template-columns: 1fr;
   align-items: center;
+  background: $bottom-profile-background-color;
 
   .profile {
     box-shadow: inset 0 -1px 0 0 $bottom-border-color;
@@ -78,7 +85,9 @@ $bottom-font-color: var(--bottom-font-color);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  opacity: 0.5;
+  background: $bottom-new-activity-section-background-color;
+  text-align: center;
+  width: 100%;
   font-size: 18px;
 }
 
@@ -117,7 +126,8 @@ $bottom-font-color: var(--bottom-font-color);
       width: 100%;
       height: 30px;
       padding: 4px 0 5px 0;
-      box-shadow: 0px -1px 0px 0px $bottom-border-color;
+      box-shadow: 0px -1px 0px 0px $bottom-border-color,
+        0 1px 0 0 $bottom-border-color;
 
       &:last-of-type {
         box-shadow: 0px 1px 0px 0px $bottom-border-color;
@@ -125,7 +135,8 @@ $bottom-font-color: var(--bottom-font-color);
     }
 
     .new-activity {
-      background: #00ffe938;
+      box-shadow: inset 0 -1px 0 0 $bottom-border-color;
+      background: $bottom-new-activity-section-background-color;
       display: grid;
       grid-auto-flow: column;
       padding: 2px 0 2px;
@@ -136,7 +147,7 @@ $bottom-font-color: var(--bottom-font-color);
         user-select: none;
 
         &.creating {
-          background-color: #00ffe938;
+          background-color: $bottom-new-activity-section-background-color;
 
           &::before {
             @extend .plus-icon;
@@ -144,7 +155,7 @@ $bottom-font-color: var(--bottom-font-color);
         }
 
         &:hover {
-          background-color: #00ffe938;
+          background-color: $bottom-new-activity-section-background-color;
           cursor: pointer;
 
           &::before {
@@ -157,7 +168,7 @@ $bottom-font-color: var(--bottom-font-color);
 }
 
 ::ng-deep ngx-schedule-planner app-bottom-panel .activity {
-  background-color: #585858;
+  background-color: $bottom-activity-background-color;
   position: absolute;
   height: 22px;
   border: $border;
