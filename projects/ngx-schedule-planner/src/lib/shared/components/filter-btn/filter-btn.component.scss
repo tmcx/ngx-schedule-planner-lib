@@ -1,0 +1,60 @@
+$background-color: var(--ngx-sp-host-bg-color);
+$border-color: var(--ngx-sp-border-color);
+$border: solid 1px $border-color;
+
+button {
+  height: 18px;
+  padding: 0px 7px;
+}
+
+.content {
+  position: absolute;
+  background-color: $background-color;
+  border: $border;
+  border-radius: 5px;
+  z-index: 2;
+  padding: 5px;
+  margin-top: 5px;
+
+  .tags {
+    display: flex;
+    gap: 0 5px;
+    flex-wrap: wrap;
+
+    label,
+    p {
+      position: sticky;
+      background: $background-color;
+      top: 0;
+      height: 19px;
+      display: block;
+    }
+
+    label {
+      width: 100%;
+    }
+
+    p {
+      padding-left: 10px;
+    }
+
+    gap: 0 5px;
+  }
+
+  .selected,
+  .options {
+    flex: 1 1 0px;
+    min-width: 150px;
+    overflow: auto;
+    max-height: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px 0;
+
+    span {
+      padding-left: 10px;
+      display: flex;
+      gap: 2px;
+    }
+  }
+}

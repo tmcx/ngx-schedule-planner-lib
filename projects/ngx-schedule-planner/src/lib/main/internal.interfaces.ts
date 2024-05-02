@@ -40,7 +40,7 @@ export interface IIconText {
 
 export interface ITag {
   tagId: number;
-  icon: string;
+  icon?: string;
   name: string;
 }
 

@@ -4,7 +4,7 @@ import {
   IActivity,
   IProcessedCustomization,
 } from '../../main/internal.interfaces';
-import { clone, includes, uuid } from '../../utils/functions';
+import { clone, crossIncludes, includes, uuid } from '../../utils/functions';
 import { CONFIG } from '../../config/constants';
 import {
   EEvent,
@@ -73,6 +73,7 @@ export class CalendarService {
       filters: {
         groupName: '',
         userName: '',
+        tags: [],
       },
       sortBy: {
         field: 'name',
@@ -225,6 +226,10 @@ export class CalendarService {
           filters.groupName,
           'group.name'
         ),
+        byTagName:
+          filters.tags.length == 0
+            ? false
+            : !crossIncludes(rowContent.profile.tags, filters.tags, 'name'),
       };
       if (!rowContent.profile.hidden.byUserName) {
         showingUsers++;

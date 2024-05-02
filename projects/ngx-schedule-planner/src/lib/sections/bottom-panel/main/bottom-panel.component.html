@@ -10,9 +10,7 @@
       <h1 [title]="profile.name">{{ isCollapsed ? (profile.name | shortName) : profile.name }}</h1>
       <p>{{ profile.description }}</p>
       <section class="tags">
-        <span *ngFor="let tag of profile.tags">{{
-          tag.name
-        }}</span>
+        <span *ngFor="let tag of profile.tags">{{tag.icon}} {{tag.name}}</span>
       </section>
     </section>
   </section>
@@ -56,7 +54,7 @@
 
   <ng-container  *ngFor="let rowContent of calendarContent">
 
-    <ng-container  *ngIf="!rowContent.profile.hidden?.byGroupName && !rowContent.profile.hidden?.byUserName">
+    <ng-container  *ngIf="!rowContent.profile.hidden?.byGroupName && !rowContent.profile.hidden?.byUserName && !rowContent.profile.hidden?.byTagName">
       <ng-container
         *ngTemplateOutlet="profileGroup; context: { profile: rowContent.profile }"
       ></ng-container>

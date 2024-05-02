@@ -270,7 +270,7 @@ const PROFILES: CalendarContent['profiles'] = [
     profileId: 7,
     name: 'Emily Davis',
     description: 'Student passionate about machine learning.',
-    tags: [1, 42],
+    tags: [1],
     imageUrl:
       'https://img.freepik.com/foto-gratis/closeup-retrato-mujer-sonriendo-sonrisa-perfecta-dientes-blancos_273609-13702.jpg',
     activities: [
@@ -326,9 +326,9 @@ const TAGS: CalendarContent['tags'] = {
   13: { tagId: 13, icon: '🏞️', name: 'Indigenous Rights' },
   14: { tagId: 14, icon: '⚖️', name: 'Legal Rights' },
   15: { tagId: 15, icon: '🧠', name: 'Artificial Intelligence' },
-  16: { tagId: 16, icon: '', name: 'Human Rights Law' },
-  17: { tagId: 17, icon: '', name: 'Advocacy' },
-  18: { tagId: 18, icon: '', name: 'Legal Research' },
+  16: { tagId: 16, name: 'Human Rights Law' },
+  17: { tagId: 17, name: 'Advocacy' },
+  18: { tagId: 18, name: 'Legal Research' },
   19: { tagId: 19, icon: '💡', name: 'Innovation' },
   20: { tagId: 20, icon: '🔍', name: 'Search Algorithms' },
   21: { tagId: 21, icon: '🌐', name: 'Web Development' },
@@ -351,8 +351,7 @@ const TAGS: CalendarContent['tags'] = {
   38: { tagId: 38, icon: '🧬', name: 'Bioinformatics' },
   39: { tagId: 39, icon: '🧪', name: 'Biotechnology' },
   40: { tagId: 40, icon: '🎭', name: 'Ethical Hacking' },
-  41: { tagId: 41, icon: '💰', name: 'Cryptocurrency' },
-  42: { tagId: 42, icon: '📚', name: 'Education' },
+  41: { tagId: 41, icon: '💰', name: 'Cryptocurrency' }
 };
 
 const ROLES: CalendarContent['roles'] = {

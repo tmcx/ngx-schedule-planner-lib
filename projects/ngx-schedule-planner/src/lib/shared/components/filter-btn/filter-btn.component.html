@@ -1,0 +1,33 @@
+<ng-template #tagList let-tags="tags" let-checked="checked">
+  <ng-container>
+    <p>{{ checked ? "Selected(One of):" : "All:" }}</p>
+    <ng-container *ngFor="let tag of tags">
+      <span *ngIf="!checked ? !selected.tags.includes(tag) : true">
+        <input type="checkbox" [checked]="checked" (click)="toggleTag(tag)" />
+        [{{ tag.icon ?? "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" }}]
+        {{ tag.name }}
+      </span>
+    </ng-container>
+  </ng-container>
+</ng-template>
+
+<button (click)="toggleModal()">🝖</button>
+<section class="content" *ngIf="showModal">
+  <section class="tags">
+    <label>Tags:</label>
+    <section class="options">
+      <ng-container
+        *ngTemplateOutlet="tagList; context: { tags, checked: false }"
+      ></ng-container>
+    </section>
+
+    <section class="selected" *ngIf="selected.tags.length > 0">
+      <ng-container
+        *ngTemplateOutlet="
+          tagList;
+          context: { tags: selected.tags, checked: true }
+        "
+      ></ng-container>
+    </section>
+  </section>
+</section>

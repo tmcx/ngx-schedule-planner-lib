@@ -28,13 +28,8 @@ button {
 }
 
 .filters {
-  grid-template-columns: 1fr 1fr;
-
-  .left {
-    display: grid;
-    gap: 5px;
-    grid-template-columns: 1fr min-content;
-  }
+  gap: 5px;
+  grid-template-columns: 1fr min-content min-content 1fr;
 }
 
 h2 {

@@ -4,6 +4,7 @@ import {
   IGroup,
   IProcessedCustomization,
   IProfile,
+  ITag,
 } from '../../main/internal.interfaces';
 import { ISelectedRange } from '../../sections/bottom-panel/main/bottom-panel.interface';
 import {
@@ -11,7 +12,6 @@ import {
   EPeriod,
   TMode,
   IColumn,
-  ISubColumn,
 } from '../../sections/top-panel/components/right-panel/right-panel.interface';
 
 export enum EEvent {
@@ -50,6 +50,7 @@ export interface ICalendarServiceEvents {
 export interface ICalendarFilters {
   groupName: string;
   userName: string;
+  tags: ITag[];
 }
 
 export enum SortDirection {
@@ -98,7 +99,7 @@ export interface ICalendarContent {
 }
 
 interface IProfileWithFilters extends IProfile {
-  hidden?: { byUserName: boolean; byGroupName: boolean };
+  hidden?: { byUserName: boolean; byGroupName: boolean; byTagName: boolean };
 }
 
 interface IGroupWithFilters extends IGroup {

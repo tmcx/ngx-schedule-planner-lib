@@ -59,7 +59,7 @@ interface IGroup {
 
 interface ITag {
   tagId: number;
-  icon: string;
+  icon?: string;
   name: string;
 }
 

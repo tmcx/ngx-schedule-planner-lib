@@ -8,6 +8,8 @@ import {
 } from '../../../../services/calendar/calendar.interface';
 import { AddActivityBtnComponent } from '../../../../shared/components/add-activity-btn/add-activity-btn.component';
 import { InputSortComponent } from '../../../../shared/inputs/input-sort/input-sort.component';
+import { FilterBtnComponent } from '../../../../shared/components/filter-btn/filter-btn.component';
+import { IFilters } from '../../../../shared/components/filter-btn/filter-btn.interface';
 
 @Component({
   standalone: true,
@@ -18,6 +20,7 @@ import { InputSortComponent } from '../../../../shared/inputs/input-sort/input-s
     AddActivityBtnComponent,
     InputSearchComponent,
     InputSortComponent,
+    FilterBtnComponent,
     CommonModule,
   ],
 })
@@ -28,6 +31,7 @@ export class LeftPanelComponent {
     this.filters = {
       groupName: '',
       userName: '',
+      tags: [],
     };
   }
 
@@ -55,5 +59,10 @@ export class LeftPanelComponent {
 
   sort(direction: SortDirection) {
     this.calendarService.sort(direction);
+  }
+
+  filterByTags(filters: IFilters) {
+    ({ tags: this.filters.tags } = filters);
+    this.calendarService.startFiltering(this.filters);
   }
 }

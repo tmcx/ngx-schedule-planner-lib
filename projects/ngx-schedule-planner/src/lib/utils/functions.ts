@@ -309,3 +309,12 @@ export function groupBy<T>(
     return result;
   }, {} as { [key: string]: T[] });
 }
+
+export function crossIncludes(
+  array1: { [key: string]: any }[],
+  array2: { [key: string]: any }[],
+  field: string
+) {
+  const values = array1.map((object) => object[field]);
+  return array2.some((object) => values.includes(object[field]));
+}
