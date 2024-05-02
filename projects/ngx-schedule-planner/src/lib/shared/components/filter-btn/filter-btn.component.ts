@@ -1,11 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  HostListener,
-  Output,
-} from '@angular/core';
+import { Component, ElementRef, EventEmitter, Output } from '@angular/core';
 import { CalendarService } from '../../../services/calendar/calendar.service';
 import { EEvent } from '../../../services/calendar/calendar.interface';
 import { ITag } from '../../../main/internal.interfaces';
@@ -56,14 +50,5 @@ export class FilterBtnComponent {
       this.selected.tags.sort((a, b) => (a.name < b.name ? -1 : 1));
     }
     this.onTagSelection.emit(this.selected);
-  }
-
-  @HostListener('document:click', ['$event.target'])
-  handleClick(target: HTMLElement) {
-    const clickedInside = this.elementRef.nativeElement.contains(target);
-    const inputClicked = (target as HTMLElement).tagName === 'INPUT';
-    if (!clickedInside && !inputClicked) {
-      this.toggleModal();
-    }
   }
 }

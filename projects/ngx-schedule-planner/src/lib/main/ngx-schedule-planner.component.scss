@@ -9,6 +9,9 @@ $global-border-radius: var(--global-border-radius);
 $global-box-shadow: var(--global-box-shadow);
 $global-background: var(--global-background);
 
+$global-scroll-background: var(--global-scroll-background);
+$global-scroll-slider-color: var(--global-scroll-slider-color);
+
 ::ng-deep *:has(> .v-floating-scroll):hover {
   .v-floating-scroll {
     opacity: 1 !important;
@@ -21,6 +24,8 @@ $global-background: var(--global-background);
     box-sizing: border-box;
     margin: initial;
     font-size: 12px;
+    scrollbar-color: $global-scroll-slider-color $global-scroll-background;
+    scrollbar-width: thin;
   }
 
   input,
@@ -117,14 +122,12 @@ $global-background: var(--global-background);
   }
 
   .v-floating-scroll {
-    scrollbar-color: white transparent;
     transition: opacity 0.5s ease 0s;
-    scrollbar-width: thin;
     position: absolute;
     display: block;
     overflow: auto;
     width: 11px;
-    opacity: 0.4;
+    opacity: 0.3;
     z-index: 1;
   }
 }

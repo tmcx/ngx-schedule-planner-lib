@@ -236,10 +236,10 @@ export async function floatingScroll(
       vScroll.onscroll = (e) => (el.scrollTop = (e as any).target.scrollTop);
       el.onscroll = (e) => (vScroll.scrollTop = (e as any).target.scrollTop);
 
-      vScroll.style.height = `calc(100% - 10px - ${CONFIG.STYLE.HEADER_HEIGHT})`;
+      vScroll.style.height = `calc(100% - ${CONFIG.STYLE.HEADER_HEIGHT})`;
       vScroll.style.lineHeight = el.scrollHeight + 'px';
-      vScroll.style.top = `calc(10px + ${CONFIG.STYLE.HEADER_HEIGHT})`;
-      vScroll.style.right = '11px';
+      vScroll.style.top = CONFIG.STYLE.HEADER_HEIGHT;
+      vScroll.style.right = '1px';
 
       el.parentElement?.append(vScroll);
 

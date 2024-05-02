@@ -62,6 +62,10 @@ export const THEME = {
     BACKGROUND: '#FFFFFF',
     BORDER_RADIUS: '5px',
     BOX_SHADOW: '0px 0px 4px #004b8757',
+    SCROLL: {
+      BACKGROUND: 'transparent',
+      SLIDER_COLOR: '#1D7AE4',
+    },
   },
   TOP: {
     RIGHT: {
@@ -110,6 +114,10 @@ export const THEME_VARS = {
     BACKGROUND: '--global-background',
     BORDER_RADIUS: '--global-border-radius',
     BOX_SHADOW: '--global-box-shadow',
+    SCROLL: {
+      BACKGROUND: '--global-scroll-background',
+      SLIDER_COLOR: '--global-scroll-slider-color',
+    },
   },
   TOP: {
     RIGHT: {

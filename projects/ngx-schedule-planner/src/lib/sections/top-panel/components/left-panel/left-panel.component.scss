@@ -25,6 +25,11 @@ $border: solid 1px $top-left-button-border-color;
     svg {
       border-color: $top-left-button-border-color !important;
     }
+    app-filter-btn .content,
+    app-filter-btn p,
+    app-filter-btn label {
+      background: $top-left-button-background !important;
+    }
   }
 }
 
