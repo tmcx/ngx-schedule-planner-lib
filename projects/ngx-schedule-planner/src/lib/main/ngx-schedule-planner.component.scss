@@ -34,6 +34,10 @@ $global-background: var(--global-background);
     &:not([type="text"]) {
       cursor: pointer;
     }
+
+    &:focus {
+      outline: none;
+    }
   }
 
   h2 {

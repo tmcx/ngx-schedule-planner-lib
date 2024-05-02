@@ -89,6 +89,11 @@ export const THEME = {
       },
     },
   },
+  BOTTOM: {
+    BACKGROUND: '#1D7AE4',
+    BORDER_COLOR: '#E8E8E8',
+    FONT_COLOR: '#FFFFFF',
+  },
 };
 
 export const THEME_VARS = {
@@ -122,5 +127,10 @@ export const THEME_VARS = {
         FONT_COLOR: '--top-left-button-font-color',
       },
     },
+  },
+  BOTTOM: {
+    BACKGROUND: '--bottom-background-color',
+    BORDER_COLOR: '--bottom-border-color',
+    FONT_COLOR: '--bottom-font-color',
   },
 };

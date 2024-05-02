@@ -52,39 +52,39 @@
 
 
 
-  <ng-container  *ngFor="let rowContent of calendarContent">
+<ng-container  *ngFor="let rowContent of calendarContent">
 
-    <ng-container  *ngIf="!rowContent.profile.hidden?.byGroupName && !rowContent.profile.hidden?.byUserName && !rowContent.profile.hidden?.byTagName">
-      <ng-container
-        *ngTemplateOutlet="profileGroup; context: { profile: rowContent.profile }"
-      ></ng-container>
+  <ng-container  *ngIf="!rowContent.profile.hidden?.byGroupName && !rowContent.profile.hidden?.byUserName && !rowContent.profile.hidden?.byTagName">
+    <ng-container
+      *ngTemplateOutlet="profileGroup; context: { profile: rowContent.profile }"
+    ></ng-container>
 
-      <section class="user-groups">
-        <ng-container *ngFor="let groupContent of rowContent.current">
-          <section *ngIf="!groupContent.group.hidden?.byGroupName" class="group">
+    <section class="user-groups">
+      <ng-container *ngFor="let groupContent of rowContent.current">
+        <section *ngIf="!groupContent.group.hidden?.byGroupName" class="group">
 
-            <section class="group-header"
-              [ngStyle]="{'grid-row': 'span ' + ( 1 + groupContent.activities.length ) }">
-              <h1 [title]="groupContent.group.name">{{ groupContent.group.icon }}</h1>
-              <h1 [title]="groupContent.group.name">{{ groupContent.group.name }}</h1>
-            </section>
-
-            <section class="row new-activity">
-              <ng-container
-                *ngTemplateOutlet="newActivityRow; context: { group: groupContent.group, profile: rowContent.profile }"
-              ></ng-container>
-            </section>
-
-            <section class="row" *ngFor="let activities of groupContent.activities">
-              <ng-container
-                *ngTemplateOutlet="activitiesRow; context: { activities }"
-              ></ng-container>
-            </section>
-
+          <section class="group-header"
+            [ngStyle]="{'grid-row': 'span ' + ( 1 + groupContent.activities.length ) }">
+            <h1 [title]="groupContent.group.name">{{ groupContent.group.icon }}</h1>
+            <h1 [title]="groupContent.group.name">{{ groupContent.group.name }}</h1>
           </section>
-        </ng-container>
-      </section>
-    </ng-container>
+
+          <section class="row new-activity">
+            <ng-container
+              *ngTemplateOutlet="newActivityRow; context: { group: groupContent.group, profile: rowContent.profile }"
+            ></ng-container>
+          </section>
+
+          <section class="row" *ngFor="let activities of groupContent.activities">
+            <ng-container
+              *ngTemplateOutlet="activitiesRow; context: { activities }"
+            ></ng-container>
+          </section>
+
+        </section>
+      </ng-container>
+    </section>
   </ng-container>
+</ng-container>
 
 <app-no-content></app-no-content>
