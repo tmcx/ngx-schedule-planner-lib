@@ -23,6 +23,7 @@ export class MonthlyCalendar {
               start: setDate(date, { d: i + 1, h: 12, m: 1 }),
               end: setDate(date, { d: i + 1, h: 23, m: 59 }),
             },
+            style: { minWidth: '40px' },
           })
         ),
       });

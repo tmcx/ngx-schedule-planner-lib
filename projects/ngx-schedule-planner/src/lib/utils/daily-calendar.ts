@@ -29,6 +29,7 @@ export class DailyCalendar {
             start: addToDate(startDate, { h: i, m: 31 }),
             end: addToDate(startDate, { h: i, m: 59 }),
           },
+          style: { minWidth: '40px' },
         })),
       });
     }

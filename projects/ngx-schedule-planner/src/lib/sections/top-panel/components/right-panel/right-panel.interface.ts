@@ -17,6 +17,7 @@ export interface IColumn {
 
 export interface ISubColumn {
   label: string | number;
+  style: { minWidth: string };
   firstSection: { start: Date; end: Date };
   lastSection: { start: Date; end: Date };
 }

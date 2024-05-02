@@ -20,7 +20,13 @@
 </section>
 
 <section class="title">
-  {{calendarService.config.leftPanel.isCollapsed ? calendarService.config.title : (columns.length?columns[0].title:'')}}
+  {{
+    calendarService.config.leftPanel.isCollapsed
+      ? calendarService.config.title
+      : columns.length
+      ? columns[0].title
+      : ""
+  }}
 </section>
 
 <section class="columns">
@@ -31,9 +37,11 @@
         'grid-template-columns':
           'repeat(' +
           column.subColumns.length +
-          ',calc(100%/' +
+          ', minmax(' +
+          column.subColumns[0].style.minWidth +
+          ', calc(100%/' +
           column.subColumns.length +
-          '))'
+          ')))'
       }"
     >
       <section class="sub-column" *ngFor="let subColumn of column.subColumns">

@@ -114,9 +114,6 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
       });
     });
     floatingScroll(SELECTOR.BOTTOM_PANEL, { vertical: true });
-    linkSize(SELECTOR.APP_RIGHT_PANEL, [SELECTOR.BOTTOM_PANEL_ROW], {
-      width: true,
-    });
   }
 
   async toggleCollapse() {

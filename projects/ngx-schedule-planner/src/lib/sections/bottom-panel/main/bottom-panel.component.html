@@ -69,7 +69,10 @@
             <h1 [title]="groupContent.group.name">{{ groupContent.group.name }}</h1>
           </section>
 
-          <section class="row new-activity">
+          <section class="row new-activity"
+            [ngStyle]="{
+              'grid-template-columns': 'repeat(' + subColumns.length * 2 + ', minmax(calc(' + subColumns[0].style.minWidth + ' / 2), calc((100% /'+subColumns.length+') / 2)))'
+          }">
             <ng-container
               *ngTemplateOutlet="newActivityRow; context: { group: groupContent.group, profile: rowContent.profile }"
             ></ng-container>

@@ -25,6 +25,7 @@ export class WeeklyCalendar {
             start: addToDate(date, { h: 12, m: 1 }, { startOf: ['d'] }),
             end: addToDate(date, { h: 23, m: 59 }, { startOf: ['d'] }),
           },
+          style: { minWidth: '110px' },
         })),
       });
     }
