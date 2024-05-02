@@ -189,7 +189,7 @@ const PROFILES: CalendarContent['profiles'] = [
     description: 'Software engineer passionate about artificial intelligence.',
     tags: [3, 15],
     imageUrl:
-      'https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=1200&h=992&fl=progressive&q=70&fm=jpg',
+      'https://img.freepik.com/foto-gratis/primer-plano-hombre-negocios-serio-camisa-blanca-mirando-camara-pie-confiado_1258-26762.jpg',
     activities: [{ activityId: 1 }, { activityId: 2 }, { activityId: 7 }],
   },
   {
@@ -198,7 +198,7 @@ const PROFILES: CalendarContent['profiles'] = [
     description: 'Human rights lawyer specializing in advocacy.',
     tags: [16, 17, 18],
     imageUrl:
-      'https://fotografias.antena3.com/clipping/cmsimages01/2021/05/02/26E03450-C5FB-4D16-BC9B-B282AE784352/57.jpg?crop=1868,1080,x52,y0&width=1280&height=740&optimize=low&format=webply',
+      'https://img.freepik.com/foto-gratis/elegante-empresaria-segura-sonriendo_176420-19466.jpg',
     activities: [
       { activityId: 1 },
       { activityId: 3 },
@@ -212,7 +212,8 @@ const PROFILES: CalendarContent['profiles'] = [
     name: 'Luisa Rodriguez',
     description: 'Biomedical engineer interested in bioinformatics.',
     tags: [38, 39],
-    imageUrl: 'https://www.ohchr.org/sites/default/files/styles/hero_5_image_desktop/public/2022-11/women-rights-main-image.jpg?itok=RRGl2PFb',
+    imageUrl:
+      'https://img.freepik.com/foto-gratis/belleza-moda-mujer-caucasica-atractiva-rien-sonrien-camara-posando-romantico-vestido-brillante_1258-83868.jpg',
     activities: [
       { activityId: 8 },
       { activityId: 10 },
@@ -226,7 +227,7 @@ const PROFILES: CalendarContent['profiles'] = [
     name: 'Yusuf Khan',
     description: 'Ethical hacker with a passion for cybersecurity.',
     tags: [9, 40],
-    imageUrl: 'https://plus.unsplash.com/premium_photo-1661627681947-4431c8c97659?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG9tYnJlJTIwZXNwYSVDMyVCMW9sfGVufDB8fDB8fHww',
+    imageUrl: 'https://img.freepik.com/foto-gratis/feliz-joven_1098-20869.jpg',
     activities: [
       { activityId: 9 },
       { activityId: 11 },
@@ -240,7 +241,8 @@ const PROFILES: CalendarContent['profiles'] = [
     name: 'Sophie Chen',
     description: 'Data scientist fascinated by artificial intelligence.',
     tags: [1, 15],
-    imageUrl: 'https://img.freepik.com/foto-gratis/retrato-expresivo-mujer-joven_1258-48167.jpg',
+    imageUrl:
+      'https://img.freepik.com/foto-gratis/paraguas-wagasa-japones-ayudado-mujer-joven_23-2149576116.jpg',
     activities: [
       { activityId: 10 },
       { activityId: 12 },
@@ -254,7 +256,8 @@ const PROFILES: CalendarContent['profiles'] = [
     name: 'Rafael Costa',
     description: 'Software developer exploring blockchain technology.',
     tags: [7, 41],
-    imageUrl: 'https://img.freepik.com/foto-gratis/hombre-feliz-pie-playa_107420-9868.jpg',
+    imageUrl:
+      'https://img.freepik.com/foto-gratis/hombre-sorprendido-feliz-ganando-algo-linea-sosteniendo-telefono-inteligente-regocijandose-pie-contra-fondo-azul_1258-65563.jpg',
     activities: [
       { activityId: 11 },
       { activityId: 13 },
@@ -268,7 +271,8 @@ const PROFILES: CalendarContent['profiles'] = [
     name: 'Emily Davis',
     description: 'Student passionate about machine learning.',
     tags: [1, 42],
-    imageUrl: 'https://weremote.net/wp-content/uploads/2022/08/mujer-sonriente-apunta-arriba.jpg',
+    imageUrl:
+      'https://img.freepik.com/foto-gratis/closeup-retrato-mujer-sonriendo-sonrisa-perfecta-dientes-blancos_273609-13702.jpg',
     activities: [
       { activityId: 12 },
       { activityId: 14 },
