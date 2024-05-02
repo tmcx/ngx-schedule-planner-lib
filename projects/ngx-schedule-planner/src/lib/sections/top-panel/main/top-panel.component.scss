@@ -1,12 +1,10 @@
 $header-height: var(--ngx-header-height);
 $header-width: var(--ngx-header-width);
-$border-color: var(--ngx-sp-border-color);
-$scroll-height: var(--ngx-scroll-height);
 
 :host {
   display: grid;
   grid-template-columns: $header-width 1fr;
   grid-template-rows: $header-height;
-  box-shadow: inset 0 -1px $border-color;
+  box-shadow: 0 2px 4px 0px #b7b7b769;
   overflow: hidden;
 }

@@ -5,7 +5,6 @@ $border: solid 1px $border-color;
   display: inline-block;
   position: relative;
   cursor: pointer;
-  border: $border;
 
   &:hover {
     opacity: 0.85;
@@ -13,9 +12,13 @@ $border: solid 1px $border-color;
 }
 
 input[type="date"] {
-  background: transparent;
-  filter: invert(1);
+  padding-right: 2px;
   cursor: pointer;
   border: none;
-  width: 16px;
+  height: 20px;
+  width: 20px;
+
+  &:focus {
+    outline: none;
+  }
 }

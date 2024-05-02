@@ -7,7 +7,9 @@ import { DailyCalendar } from '../utils/daily-calendar';
 export const CONFIG: IConstants = {
   CALENDAR: {
     monthly: {
-      ACTIVITY: { FACTOR: { WIDTH: '(100% / ({hoursAmount} * 60)) / {daysOfMonth}' } },
+      ACTIVITY: {
+        FACTOR: { WIDTH: '(100% / ({hoursAmount} * 60)) / {daysOfMonth}' },
+      },
       ENTITY: [MonthlyCalendar, 'month'],
     },
     weekly: {
@@ -53,4 +55,48 @@ export var SELECTOR: ISelectors = {
   APP_RIGHT_PANEL: `#{uuid} app-top-panel app-right-panel`,
   APP_MARKER: `#{uuid} app-bottom-panel app-marker`,
   BOTTOM_PANEL: `#{uuid} app-bottom-panel`,
+};
+
+export const THEME = {
+  GLOBAL: {
+    BACKGROUND: '#FFFFFF',
+    BORDER_RADIUS: '5px',
+    BOX_SHADOW: '0px 0px 4px #004b8757',
+  },
+  TOP: {
+    RIGHT: {
+      BACKGROUND: '#1D7AE4',
+      BORDER_COLOR: '#FFFFFF',
+      FONT_COLOR: '#FFFFFF',
+      BUTTON: {
+        BORDER_RADIUS: '4px',
+        BACKGROUND: '#FFFFFF',
+        BORDER_COLOR: 'transparent',
+        BOX_SHADOW: 'none',
+        FONT_COLOR: '#000000',
+      },
+    },
+  },
+};
+
+export const THEME_VARS = {
+  GLOBAL: {
+    BACKGROUND: '--global-background',
+    BORDER_RADIUS: '--global-border-radius',
+    BOX_SHADOW: '--global-box-shadow',
+  },
+  TOP: {
+    RIGHT: {
+      BACKGROUND: '--top-right-background',
+      BORDER_COLOR: '--top-right-border-color',
+      FONT_COLOR: '--top-right-font-color',
+      BUTTON: {
+        BORDER_RADIUS: '--top-right-button-border-radius',
+        BACKGROUND: '--top-right-button-background',
+        BORDER_COLOR: '--top-right-button-border-color',
+        BOX_SHADOW: '--top-right-button-box-shadow',
+        FONT_COLOR: '--top-right-button-font-color',
+      },
+    },
+  },
 };

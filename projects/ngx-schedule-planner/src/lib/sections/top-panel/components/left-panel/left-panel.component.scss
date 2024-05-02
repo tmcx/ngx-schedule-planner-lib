@@ -3,7 +3,6 @@ $border-color: var(--ngx-sp-border-color);
 $border: solid 1px $border-color;
 
 :host {
-  border: $border;
   height: 100%;
   padding: 10px;
   display: grid;

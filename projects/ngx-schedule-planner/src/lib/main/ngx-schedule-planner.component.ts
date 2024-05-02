@@ -16,7 +16,7 @@ import {
   querySelector,
   wait,
 } from '../utils/functions';
-import { CONFIG, SELECTOR } from '../config/constants';
+import { CONFIG, SELECTOR, THEME, THEME_VARS } from '../config/constants';
 import { EEvent, ITimeRange } from '../services/calendar/calendar.interface';
 import { CommonModule } from '@angular/common';
 import { TopPanelComponent } from '../sections/top-panel/main/top-panel.component';
@@ -148,8 +148,13 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
         }
         await this.calendarService.refreshCalendarContent();
         this.isInitializing = false;
+        this.setTheme();
       });
     }
     this.isInitializing = true;
+  }
+
+  setTheme() {
+    StyleProcessor.setNestedProps(THEME, THEME_VARS);
   }
 }

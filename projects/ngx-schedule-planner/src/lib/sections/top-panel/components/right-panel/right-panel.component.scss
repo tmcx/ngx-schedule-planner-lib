@@ -1,5 +1,13 @@
-$border-color: var(--ngx-sp-border-color);
-$border: solid 1px $border-color;
+$top-right-button-background: var(--top-right-button-background);
+$top-right-button-border-radius: var(--top-right-button-border-radius);
+$top-right-button-border-color: var(--top-right-button-border-color);
+$top-right-button-box-shadow: var(--top-right-button-box-shadow);
+$top-right-button-font-color: var(--top-right-button-font-color);
+$top-right-border-color: var(--top-right-border-color);
+$top-right-background: var(--top-right-background);
+$top-right-font-color: var(--top-right-font-color);
+$border: solid 1px $top-right-border-color;
+
 $column-width: min-content;
 $row-height: 24px;
 
@@ -8,9 +16,24 @@ $row-height: 24px;
   display: grid;
   grid-auto-flow: row;
   grid-template-rows: 1fr 1fr 1fr;
-  border-bottom: $border;
-  border-right: $border;
-  border-top: $border;
+  background: $top-right-background;
+}
+
+:host ::ng-deep {
+  * {
+    color: $top-right-font-color;
+
+    select,
+    button,
+    input[type="date"],
+    option {
+      background: $top-right-button-background;
+      border: solid 1px $top-right-button-border-color;
+      box-shadow: $top-right-button-box-shadow;
+      border-radius: $top-right-button-border-radius;
+      color: $top-right-button-font-color;
+    }
+  }
 }
 
 .columns {
@@ -37,7 +60,7 @@ $row-height: 24px;
 
 .sub-column {
   @extend .center-column;
-  box-shadow: 1px 0px $border-color;
+  box-shadow: 1px 0px $top-right-border-color;
 }
 
 .center-column {

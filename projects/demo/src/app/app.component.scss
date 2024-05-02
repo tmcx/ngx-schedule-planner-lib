@@ -1,4 +1,9 @@
-ngx-schedule-planner{
+:host {
+  padding: 40px;
+  display: block;
+}
+
+ngx-schedule-planner {
   width: 90vw;
   height: 90vh;
 }

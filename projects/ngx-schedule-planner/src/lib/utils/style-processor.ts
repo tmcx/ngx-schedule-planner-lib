@@ -3,6 +3,7 @@ import { ISelectors, STYLE_VAR_KEYS } from '../main/internal.interfaces';
 import { querySelector } from './functions';
 
 export class StyleProcessor {
+
   static root: HTMLElement;
 
   static async initialize(uuid: string) {
@@ -11,12 +12,8 @@ export class StyleProcessor {
       const key = _key as keyof ISelectors;
       SELECTOR[key] = SELECTOR[key].replace('{uuid}', uuid);
     });
-    for (const _key in CONFIG.STYLE) {
-      const key = _key as STYLE_VAR_KEYS;
-      const value = CONFIG.STYLE[key];
-      const varName = CONFIG.STYLE_VAR[key];
-      await StyleProcessor.setProp(varName, value);
-    }
+
+    await this.setNestedProps(CONFIG.STYLE, CONFIG.STYLE_VAR);
   }
 
   static async setProp(varName: string, value: string) {
@@ -32,6 +29,20 @@ export class StyleProcessor {
   static async validateHost() {
     if (!StyleProcessor.root) {
       StyleProcessor.root = await querySelector(SELECTOR.HOST);
+    }
+  }
+
+  static async setNestedProps(
+    values: { [key: string]: any },
+    varNames: { [key: string]: any }
+  ) {
+    for (const [key, value] of Object.entries(values)) {
+      if (typeof value == 'object') {
+        await this.setNestedProps(value, varNames[key]);
+        continue;
+      }
+      const varName = varNames[key];
+      await StyleProcessor.setProp(varName, value);
     }
   }
 }
