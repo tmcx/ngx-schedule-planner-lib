@@ -1,6 +1,32 @@
-$background-color: var(--ngx-sp-host-bg-color);
-$border-color: var(--ngx-sp-border-color);
-$border: solid 1px $border-color;
+$top-left-button-background: var(--top-left-button-background);
+$top-left-button-border-color: var(--top-left-button-border-color);
+$top-left-button-box-shadow: var(--top-left-button-box-shadow);
+$top-left-button-border-radius: var(--top-left-button-border-radius);
+$top-left-button-font-color: var(--top-left-button-font-color);
+$top-left-font-color: var(--top-left-font-color);
+$top-left-background: var(--top-left-background);
+$border: solid 1px $top-left-button-border-color;
+
+:host ::ng-deep {
+  * {
+    color: $top-left-font-color;
+
+    select,
+    button,
+    input,
+    option {
+      background: $top-left-button-background;
+      border: $border;
+      box-shadow: $top-left-button-box-shadow;
+      border-radius: $top-left-button-border-radius;
+      color: $top-left-button-font-color;
+    }
+
+    svg {
+      border-color: $top-left-button-border-color !important;
+    }
+  }
+}
 
 :host {
   height: 100%;
@@ -8,6 +34,7 @@ $border: solid 1px $border-color;
   display: grid;
   gap: 10px;
   align-items: start;
+  background: $top-left-background;
 }
 
 button {
@@ -38,14 +65,13 @@ h2 {
 .collapse-btn {
   position: relative;
   padding: 0 9px 0 4px;
-  background: $border-color;
   height: 18px;
   width: 24px;
 
   &.collapsed {
     &::after {
       content: ">";
-      border-right: solid 1px $border-color;
+      border-right: $border;
       padding-right: 10px;
       left: 0;
       width: calc(100% - 20px);
@@ -56,7 +82,7 @@ h2 {
   &:not(.collapsed) {
     &::after {
       content: "<";
-      border-left: solid 1px $border-color;
+      border-left: $border;
       width: calc(100% - 10px);
       padding-left: 4px;
       left: 5px;
@@ -68,7 +94,6 @@ h2 {
     line-height: 16px;
     font-size: 16px;
     height: 100%;
-    background: $background-color;
     top: 0;
     text-align: left;
   }

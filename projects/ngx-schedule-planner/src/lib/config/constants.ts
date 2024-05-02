@@ -68,10 +68,22 @@ export const THEME = {
       BACKGROUND: '#1D7AE4',
       BORDER_COLOR: '#FFFFFF',
       FONT_COLOR: '#FFFFFF',
-      BUTTON: {
+      INPUT: {
         BORDER_RADIUS: '4px',
         BACKGROUND: '#FFFFFF',
         BORDER_COLOR: 'transparent',
+        BOX_SHADOW: 'none',
+        FONT_COLOR: '#000000',
+      },
+    },
+    LEFT: {
+      BACKGROUND: '#FFFFFF',
+      BORDER_COLOR: '#1D7AE4',
+      FONT_COLOR: '#000000',
+      INPUT: {
+        BORDER_RADIUS: '4px',
+        BACKGROUND: '#FFFFFF',
+        BORDER_COLOR: '#b9b9b9',
         BOX_SHADOW: 'none',
         FONT_COLOR: '#000000',
       },
@@ -90,12 +102,24 @@ export const THEME_VARS = {
       BACKGROUND: '--top-right-background',
       BORDER_COLOR: '--top-right-border-color',
       FONT_COLOR: '--top-right-font-color',
-      BUTTON: {
+      INPUT: {
         BORDER_RADIUS: '--top-right-button-border-radius',
         BACKGROUND: '--top-right-button-background',
         BORDER_COLOR: '--top-right-button-border-color',
         BOX_SHADOW: '--top-right-button-box-shadow',
         FONT_COLOR: '--top-right-button-font-color',
+      },
+    },
+    LEFT: {
+      BACKGROUND: '--top-left-background',
+      BORDER_COLOR: '--top-left-border-color',
+      FONT_COLOR: '--top-left-font-color',
+      INPUT: {
+        BORDER_RADIUS: '--top-left-button-border-radius',
+        BACKGROUND: '--top-left-button-background',
+        BORDER_COLOR: '--top-left-button-border-color',
+        BOX_SHADOW: '--top-left-button-box-shadow',
+        FONT_COLOR: '--top-left-button-font-color',
       },
     },
   },
