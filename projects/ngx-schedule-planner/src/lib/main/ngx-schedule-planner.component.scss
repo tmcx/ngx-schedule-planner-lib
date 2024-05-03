@@ -13,7 +13,8 @@ $global-scroll-background: var(--global-scroll-background);
 $global-scroll-slider-color: var(--global-scroll-slider-color);
 
 ::ng-deep *:has(> .v-floating-scroll):hover {
-  .v-floating-scroll {
+  .v-floating-scroll,
+  .h-floating-scroll {
     opacity: 1 !important;
   }
 }
@@ -121,14 +122,23 @@ $global-scroll-slider-color: var(--global-scroll-slider-color);
     display: none;
   }
 
-  .v-floating-scroll {
+  .floating-scroll {
     transition: opacity 0.5s ease 0s;
     position: absolute;
     display: block;
     overflow: auto;
-    width: 11px;
     opacity: 0.3;
     z-index: 1;
+  }
+
+  .v-floating-scroll {
+    @extend .floating-scroll;
+    width: 11px;
+  }
+
+  .h-floating-scroll {
+    @extend .floating-scroll;
+    width: 10px;
   }
 }
 

@@ -94,7 +94,7 @@ export const THEME = {
     },
   },
   BOTTOM: {
-    BACKGROUND: '#1D7AE4',
+    BACKGROUND: '#FFFFFF',
     BORDER_COLOR: '#E8E8E8',
     FONT_COLOR: '#FFFFFF',
     NEW_ACTIVITY_SECTION: {
@@ -159,4 +159,9 @@ export const THEME_VARS = {
       BACKGROUND: '--bottom-profile-background-color',
     },
   },
+};
+
+export var HEADER = {
+  HEIGHT: CONFIG.STYLE.HEADER_HEIGHT,
+  WIDTH: CONFIG.STYLE.HEADER_WIDTH,
 };

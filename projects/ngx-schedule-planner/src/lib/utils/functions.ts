@@ -1,5 +1,4 @@
-import { CONFIG } from '../config/constants';
-import { IActivity } from '../main/internal.interfaces';
+import { HEADER } from '../config/constants';
 
 export function arrayOf(length: number, plus: number = 0) {
   return Array.from(Array(length + 1).keys()).map((num) => num + plus);
@@ -219,46 +218,94 @@ export async function onResizeDo(
 
 export async function floatingScroll(
   selector: string,
-  dir = { vertical: false }
+  dir: { vertical?: boolean; horizontal?: boolean }
 ) {
-  const id = 'fs' + unique(selector);
-  const el = await querySelector(selector);
-  if (!el.parentElement?.querySelector(`.${id}`)) {
-    (el.style as any).scrollbarWidth = 'none';
-    el.style.overflow = 'auto';
+  let vScroll: HTMLElement | undefined;
+  let hScroll: HTMLElement | undefined;
 
-    if (dir.vertical) {
-      const vScroll = document.createElement('span');
+  const el = await querySelector(selector);
+  (el.style as any).scrollbarWidth = 'none';
+  el.style.overflow = 'auto';
+
+  const vId = 'v-fs' + unique(selector);
+  if (dir.vertical) {
+    if (!el.parentElement?.querySelector(`.${vId}`)) {
+      vScroll = document.createElement('span');
       vScroll.classList.add('v-floating-scroll');
-      vScroll.classList.add(id);
+      vScroll.classList.add(vId);
       vScroll.innerText = '.';
 
-      vScroll.onscroll = (e) => (el.scrollTop = (e as any).target.scrollTop);
-      el.onscroll = (e) => (vScroll.scrollTop = (e as any).target.scrollTop);
-
-      vScroll.style.height = `calc(100% - ${CONFIG.STYLE.HEADER_HEIGHT})`;
+      vScroll.style.height = `calc(100% - ${HEADER.HEIGHT})`;
       vScroll.style.lineHeight = el.scrollHeight + 'px';
-      vScroll.style.top = CONFIG.STYLE.HEADER_HEIGHT;
+      vScroll.style.top = HEADER.HEIGHT;
       vScroll.style.right = '1px';
 
       el.parentElement?.append(vScroll);
-
-      setInterval(async () => {
-        if (el.scrollTop > vScroll.scrollTop) {
-          el.scrollTop = vScroll.scrollTop;
-        } else {
-          const { vertical } = await hasScroll(selector);
-          if (!vertical) {
-            vScroll.style.display = 'none';
-          } else {
-            vScroll.style.display = 'block';
-            vScroll.scrollTop = el.scrollTop;
-            vScroll.style.lineHeight = el.scrollHeight + 'px';
-          }
-        }
-      }, 100);
     }
   }
+
+  const hId = 'h-fs' + unique(selector);
+  if (dir.horizontal) {
+    if (!el.parentElement?.querySelector(`.${hId}`)) {
+      hScroll = document.createElement('span');
+      hScroll.classList.add('h-floating-scroll');
+      hScroll.classList.add(hId);
+      hScroll.innerText = '.';
+
+      hScroll.style.width = `calc(100% - ${HEADER.WIDTH})`;
+      hScroll.style.letterSpacing = el.scrollWidth + 'px';
+      hScroll.style.left = HEADER.WIDTH;
+      hScroll.style.bottom = '1px';
+      hScroll.style.height = '10px';
+
+      el.parentElement?.append(hScroll);
+    }
+  }
+
+  el.onscroll = (e) => {
+    if (hScroll) {
+      hScroll.scrollLeft = (e as any).target.scrollLeft;
+    }
+    if (vScroll) {
+      vScroll.scrollTop = (e as any).target.scrollTop;
+    }
+  };
+
+  if (hScroll) {
+    hScroll.onscroll = (e) => (el.scrollLeft = (e as any).target.scrollLeft);
+  }
+  if (vScroll) {
+    vScroll.onscroll = (e) => (el.scrollTop = (e as any).target.scrollTop);
+  }
+
+  setInterval(async () => {
+    if (hScroll) {
+      const { horizontal } = await hasScroll(selector);
+      if (!horizontal) {
+        hScroll.style.display = 'none';
+      } else {
+        hScroll.style.display = 'block';
+        hScroll.scrollLeft = el.scrollLeft;
+        hScroll.style.left = HEADER.WIDTH;
+        hScroll.style.width = `calc(100% - ${HEADER.WIDTH})`;
+        hScroll.style.letterSpacing = `calc(${el.scrollWidth}px - 10px - ${HEADER.WIDTH})`;
+      }
+    }
+    if (vScroll) {
+      const { vertical } = await hasScroll(selector);
+      if (!vertical) {
+        vScroll.style.display = 'none';
+      } else {
+        vScroll.style.display = 'block';
+        vScroll.scrollTop = el.scrollTop;
+        vScroll.style.top = HEADER.HEIGHT;
+        vScroll.style.lineHeight = el.scrollHeight + 'px';
+        vScroll.style.height = `calc(100% - ${HEADER.HEIGHT})`;
+      }
+    }
+  }, 100);
+
+  return { vId: '.' + vId, hId: '.' + hId };
 }
 
 function unique(str: string) {

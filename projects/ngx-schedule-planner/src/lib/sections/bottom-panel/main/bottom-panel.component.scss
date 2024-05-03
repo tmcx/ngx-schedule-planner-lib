@@ -13,14 +13,14 @@ $bottom-new-activity-section-background-color: var(
   --bottom-new-activity-section-background-color
 );
 
-$half-header-width: $header-width / 2;
+$half-header-width: calc($header-width / 2);
 
 :host {
   display: grid;
   position: relative;
   display: grid;
   grid-auto-flow: row;
-  grid-template-columns: calc($half-header-width) 1fr;
+  grid-template-columns: $half-header-width 1fr;
   grid-auto-rows: min-content;
 }
 
@@ -33,6 +33,9 @@ $half-header-width: $header-width / 2;
   grid-template-columns: 1fr;
   align-items: center;
   background: $bottom-profile-background-color;
+  position: sticky;
+  z-index: 1;
+  left: 0;
 
   .profile {
     box-shadow: inset 0 -1px 0 0 $bottom-border-color;
@@ -44,13 +47,22 @@ $half-header-width: $header-width / 2;
     height: 100%;
     position: relative;
 
-    &::after {
+    &::before {
       content: "";
       position: absolute;
       height: 100%;
       width: 1px;
       background-color: $bottom-border-color;
       right: -1px;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      height: 100%;
+      width: 1px;
+      background-color: $bottom-border-color;
+      left: $header-width;
     }
 
     img {
@@ -97,19 +109,9 @@ $half-header-width: $header-width / 2;
   position: relative;
   box-shadow: inset 0 -1px 0 0 $bottom-border-color;
 
-  &::before {
-    content: "";
-    position: absolute;
-    height: 100%;
-    background: $bottom-border-color;
-    width: 1px;
-    left: calc($half-header-width);
-    z-index: 0;
-  }
-
   .group {
     display: grid;
-    grid-template-columns: calc($half-header-width) 1fr;
+    grid-template-columns: $half-header-width 1fr;
     grid-auto-flow: row;
 
     .group-header {
@@ -120,11 +122,29 @@ $half-header-width: $header-width / 2;
       gap: 5px;
       justify-content: start;
       align-items: center;
+      position: sticky;
+      left: $half-header-width;
+      z-index: 1;
+
+      h1 {
+        position: relative;
+        z-index: 2;
+      }
+
+      &::before {
+        content: "";
+        background: $bottom-background-color;
+        width: calc(100% - 1px);
+        height: calc(100% + 1px);
+        display: block;
+        position: absolute;
+        z-index: 1;
+        left: 1px;
+      }
     }
 
     .row {
       position: relative;
-      overflow: hidden;
       width: 100%;
       height: 30px;
       padding: 4px 0 5px 0;

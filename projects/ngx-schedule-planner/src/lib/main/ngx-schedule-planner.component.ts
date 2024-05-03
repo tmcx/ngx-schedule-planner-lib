@@ -8,15 +8,14 @@ import {
 import { CalendarService } from '../services/calendar/calendar.service';
 import { IActivity } from './internal.interfaces';
 import { ICustomization, CalendarContent } from '../../public-interfaces';
+import { floatingScroll, linkScroll, wait } from '../utils/functions';
 import {
-  floatingScroll,
-  hasScroll,
-  linkSize,
-  onResizeDo,
-  querySelector,
-  wait,
-} from '../utils/functions';
-import { CONFIG, SELECTOR, THEME, THEME_VARS } from '../config/constants';
+  CONFIG,
+  HEADER,
+  SELECTOR,
+  THEME,
+  THEME_VARS,
+} from '../config/constants';
 import { EEvent, ITimeRange } from '../services/calendar/calendar.interface';
 import { CommonModule } from '@angular/common';
 import { TopPanelComponent } from '../sections/top-panel/main/top-panel.component';
@@ -107,19 +106,19 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
   }
 
   async ngAfterViewInit(): Promise<void> {
-    onResizeDo(SELECTOR.HOST, () => {
-      hasScroll(SELECTOR.BOTTOM_PANEL).then(async ({ horizontal }) => {
-        const value = horizontal ? CONFIG.STYLE.SCROLL_HEIGHT : '0px';
-        StyleProcessor.setProp(CONFIG.STYLE_VAR.SCROLL_HEIGHT, value);
-      });
+    const { hId } = await floatingScroll(SELECTOR.BOTTOM_PANEL, {
+      vertical: true,
+      horizontal: true,
     });
-    floatingScroll(SELECTOR.BOTTOM_PANEL, { vertical: true });
+
+    linkScroll([hId, 'app-right-panel .columns'], { scrollLeft: true });
   }
 
   async toggleCollapse() {
     const { HEADER_WIDTH, HEADER_WIDTH_COLLAPSED } = CONFIG.STYLE;
     const value = this.isCollapsed ? HEADER_WIDTH_COLLAPSED : HEADER_WIDTH;
     StyleProcessor.setProp(CONFIG.STYLE_VAR.HEADER_WIDTH, value);
+    HEADER.WIDTH = value;
   }
 
   async initialize() {
