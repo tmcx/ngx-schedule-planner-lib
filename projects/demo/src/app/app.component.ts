@@ -19,11 +19,6 @@ export class AppComponent {
         ACTIVITY: {
           INLINE_SHOW: [
             {
-              type: 'icon-text',
-              valuePath: 'assistants',
-              isArray: false,
-            },
-            {
               type: 'text',
               valuePath: 'name',
               isArray: false,
