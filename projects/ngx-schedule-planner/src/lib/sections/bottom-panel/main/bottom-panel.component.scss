@@ -116,6 +116,7 @@ $half-header-width: calc($header-width / 2);
 
   & > span {
     background: $bottom-background-color;
+    box-shadow: 3px 0px 2px 0px #b7b7b769;
     height: 100%;
     position: sticky;
     left: $half-header-width;
@@ -129,7 +130,7 @@ $half-header-width: calc($header-width / 2);
 
     .group-header {
       display: grid;
-      box-shadow: 1px -1px 0 $bottom-border-color;
+      box-shadow: 1px -1px 0 $bottom-border-color, 3px 0px 2px 0px #b7b7b769;
       padding: 10px;
       grid-auto-flow: column;
       gap: 5px;
