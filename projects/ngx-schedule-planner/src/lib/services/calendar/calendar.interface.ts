@@ -96,25 +96,20 @@ export interface ICalendarContent {
   profile: IProfileWithFilters;
   current: {
     group: IGroupWithFilters;
-    activities: IActivityWithFilters[][];
+    rows: {
+      hidden?: boolean;
+      activities: IActivityWithFilters[];
+    }[];
   }[];
 }
 
 interface IProfileWithFilters extends IProfile {
-  hidden?: {
-    byUserName: boolean;
-    byGroupName: boolean;
-    byTagName: boolean;
-  };
+  hidden?: boolean;
 }
 
 interface IGroupWithFilters extends IGroup {
-  hidden?: {
-    byGroupName: boolean;
-  };
+  hidden?: boolean;
 }
 interface IActivityWithFilters extends IActivity {
-  hidden?: {
-    byColorTag: boolean;
-  };
+  hidden?: boolean;
 }

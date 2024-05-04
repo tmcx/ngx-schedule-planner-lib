@@ -65,7 +65,7 @@ export function convertToCalendarContent(
   }
   output = originalContent.profiles
     .map((profile) => {
-      const profileActivities: ICalendarContent['current'][0]['activities'][0] =
+      const profileActivities: ICalendarContent['current'][0]['rows'][0]['activities'] =
         profile.activities
           .map(({ activityId }) => {
             const activity = originalContent.activities[activityId];
@@ -101,9 +101,11 @@ export function convertToCalendarContent(
       const current: ICalendarContent['current'] = groups
         .flatMap((group) => ({
           group: { ...originalContent.groups[group[0].groupId] },
-          activities: groupAndFilterActivities(group),
+          rows: groupAndFilterActivities(group).map((row) => ({
+            activities: row,
+          })),
         }))
-        .filter(({ activities }) => activities.length > 0);
+        .filter(({ rows }) => rows.length > 0);
 
       return {
         current,

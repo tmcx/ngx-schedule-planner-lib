@@ -137,8 +137,8 @@ export class CalendarService {
     this.config.customization = customization;
     this.content.forEach((userRow) => {
       userRow.current.forEach((activityGroups) => {
-        activityGroups.activities.forEach((activities) => {
-          activities.forEach((activity) => {
+        activityGroups.rows.forEach((row) => {
+          row.activities.forEach((activity) => {
             activity.htmlContent = activityHTML.activityHTMLContent(activity);
           });
         });
@@ -221,38 +221,38 @@ export class CalendarService {
   startFiltering(filters: ICalendarFilters = this.config.filters) {
     let showingUsers = 0;
     this.content.forEach((rowContent) => {
-      rowContent.profile['hidden'] = {
-        byUserName: !includes(rowContent.profile.name, filters.userName),
-        byGroupName: !includes(
-          rowContent.current,
-          filters.groupName,
-          'group.name'
-        ),
-        byTagName:
-          filters.tags.length == 0
-            ? false
-            : !crossIncludes(rowContent.profile.tags, filters.tags, 'name'),
-      };
-      if (!rowContent.profile.hidden.byUserName) {
+      const byUserName = !includes(rowContent.profile.name, filters.userName);
+      const byGroupName = !includes(
+        rowContent.current,
+        filters.groupName,
+        'group.name'
+      );
+      const byTagName =
+        filters.tags.length == 0
+          ? false
+          : !crossIncludes(rowContent.profile.tags, filters.tags, 'name');
+
+      rowContent.profile['hidden'] = byUserName && byGroupName && byTagName;
+      if (!byUserName) {
         showingUsers++;
       }
       rowContent.current.forEach((groupedActivities) => {
-        groupedActivities.group['hidden'] = {
-          byGroupName: !includes(
-            groupedActivities.group.name,
-            filters.groupName
-          ),
-        };
-        groupedActivities.activities.forEach((activityGroup) => {
-          activityGroup.forEach((activity) => {
-            activity['hidden'] = {
-              byColorTag:
-                filters.colorTags.length == 0
-                  ? false
-                  : !crossIncludes(activity.colorTags, filters.colorTags, 'name'),
-            };
+        groupedActivities.rows.forEach((activityGroup) => {
+          activityGroup.activities.forEach((activity) => {
+            activity['hidden'] =
+              filters.colorTags.length == 0
+                ? false
+                : !crossIncludes(activity.colorTags, filters.colorTags, 'name');
           });
+
+          activityGroup.hidden =
+            activityGroup.activities.filter(({ hidden }) => hidden).length ==
+            activityGroup.activities.length;
         });
+        groupedActivities.group['hidden'] = !includes(
+          groupedActivities.group.name,
+          filters.groupName
+        );
       });
     });
     this.on.event.next({ event: EEvent.filtering });

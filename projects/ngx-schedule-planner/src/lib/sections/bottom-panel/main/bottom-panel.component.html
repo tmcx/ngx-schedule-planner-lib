@@ -40,7 +40,7 @@
 <ng-template #activitiesRow let-activities="activities">
   <ng-container  *ngFor="let activity of activities">
     <section
-      *ngIf="!activity.hidden?.byColorTag"
+      *ngIf="!activity.hidden"
       class="activity"
       (click)="clickOnActivity(activity)"
       [ngStyle]="activity.style"
@@ -61,17 +61,17 @@
 
 <ng-container  *ngFor="let rowContent of calendarContent">
 
-  <ng-container  *ngIf="!rowContent.profile.hidden?.byGroupName && !rowContent.profile.hidden?.byUserName && !rowContent.profile.hidden?.byTagName">
+  <ng-container  *ngIf="!rowContent.profile.hidden">
     <ng-container
       *ngTemplateOutlet="profileGroup; context: { profile: rowContent.profile }"
     ></ng-container>
 
     <section class="user-groups" [ngStyle]="{'grid-template-rows':'repeat('+rowContent.current.length+',auto) 1fr'}">
       <ng-container *ngFor="let groupContent of rowContent.current">
-        <section *ngIf="!groupContent.group.hidden?.byGroupName" class="group">
+        <section *ngIf="!groupContent.group.hidden" class="group">
 
           <section class="group-header"
-            [ngStyle]="{'grid-row': 'span ' + ( 1 + groupContent.activities.length ) }">
+            [ngStyle]="{'grid-row': 'span ' + ( 1 + groupContent.rows.length ) }">
             <h1 [title]="groupContent.group.name">{{ groupContent.group.icon }}</h1>
             <h1 [title]="groupContent.group.name">{{ groupContent.group.name }}</h1>
           </section>
@@ -86,15 +86,11 @@
             ></ng-container>
           </section>
 
-          <section class="row"
-            [ngStyle]="{
-              'background-size': 'calc(100% / ' + subColumns.length * 2 + ') 1px'
-            }"
-            *ngFor="let activities of groupContent.activities">
-            <ng-container
-              *ngTemplateOutlet="activitiesRow; context: { activities }"
-            ></ng-container>
-          </section>
+          <ng-container *ngFor="let row of groupContent.rows">
+            <section *ngIf="!row.hidden" class="row" [ngStyle]="{'background-size': 'calc(100% / ' + subColumns.length * 2 + ') 1px'}">
+                <ng-container *ngTemplateOutlet="activitiesRow; context: { activities: row.activities}"></ng-container>
+            </section>
+          </ng-container>
 
         </section>
       </ng-container>
