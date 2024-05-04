@@ -72,6 +72,7 @@ export class CalendarService {
       columns: [],
       title: '',
       filters: {
+        colorTags: [],
         groupName: '',
         userName: '',
         tags: [],
@@ -242,6 +243,16 @@ export class CalendarService {
             filters.groupName
           ),
         };
+        groupedActivities.activities.forEach((activityGroup) => {
+          activityGroup.forEach((activity) => {
+            activity['hidden'] = {
+              byColorTag:
+                filters.colorTags.length == 0
+                  ? false
+                  : !crossIncludes(activity.colorTags, filters.colorTags, 'name'),
+            };
+          });
+        });
       });
     });
     this.on.event.next({ event: EEvent.filtering });

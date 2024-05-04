@@ -29,6 +29,7 @@ export class LeftPanelComponent {
 
   constructor(public calendarService: CalendarService) {
     this.filters = {
+      colorTags: [],
       groupName: '',
       userName: '',
       tags: [],
@@ -62,7 +63,7 @@ export class LeftPanelComponent {
   }
 
   filterByTags(filters: IFilters) {
-    ({ tags: this.filters.tags } = filters);
+    ({ tags: this.filters.tags, colorTags: this.filters.colorTags } = filters);
     this.calendarService.startFiltering(this.filters);
   }
 }

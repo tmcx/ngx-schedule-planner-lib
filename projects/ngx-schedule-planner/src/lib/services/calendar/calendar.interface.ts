@@ -1,6 +1,7 @@
 import { Subject } from 'rxjs';
 import {
   IActivity,
+  IColorTag,
   IGroup,
   IProcessedCustomization,
   IProfile,
@@ -50,6 +51,7 @@ export interface ICalendarServiceEvents {
 export interface ICalendarFilters {
   groupName: string;
   userName: string;
+  colorTags: IColorTag[];
   tags: ITag[];
 }
 
@@ -94,14 +96,25 @@ export interface ICalendarContent {
   profile: IProfileWithFilters;
   current: {
     group: IGroupWithFilters;
-    activities: IActivity[][];
+    activities: IActivityWithFilters[][];
   }[];
 }
 
 interface IProfileWithFilters extends IProfile {
-  hidden?: { byUserName: boolean; byGroupName: boolean; byTagName: boolean };
+  hidden?: {
+    byUserName: boolean;
+    byGroupName: boolean;
+    byTagName: boolean;
+  };
 }
 
 interface IGroupWithFilters extends IGroup {
-  hidden?: { byGroupName: boolean };
+  hidden?: {
+    byGroupName: boolean;
+  };
+}
+interface IActivityWithFilters extends IActivity {
+  hidden?: {
+    byColorTag: boolean;
+  };
 }

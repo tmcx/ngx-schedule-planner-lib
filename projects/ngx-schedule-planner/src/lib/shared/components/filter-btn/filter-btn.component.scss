@@ -12,9 +12,11 @@ button {
   margin-top: 5px;
 
   .tags {
-    display: flex;
+    display: grid;
+    grid-template-columns: min-content 1fr;
+    grid-template-rows: min-content 80px;
+    margin-bottom: 10px;
     gap: 0 5px;
-    flex-wrap: wrap;
 
     label,
     p {
@@ -25,7 +27,9 @@ button {
     }
 
     label {
-      width: 100%;
+      grid-column: span 2;
+      font-weight: bold;
+      width: 210px;
     }
 
     p {
@@ -50,5 +54,18 @@ button {
       display: flex;
       gap: 2px;
     }
+  }
+
+  .options {
+    max-width: 210px;
+    width: 210px;
+    flex-basis: 210px;
+  }
+
+  .color-tag {
+    border-radius: 50%;
+    width: 13px;
+    height: 13px;
+    border: solid 1px #d9d9d9;
   }
 }

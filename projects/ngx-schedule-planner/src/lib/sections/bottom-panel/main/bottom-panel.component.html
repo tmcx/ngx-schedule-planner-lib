@@ -38,8 +38,15 @@
 </ng-template>
 
 <ng-template #activitiesRow let-activities="activities">
-    <section *ngFor="let activity of activities" class="activity" (click)="clickOnActivity(activity)" [ngStyle]="activity.style" [innerHTML]="activity.htmlContent | safeHtml" >
+  <ng-container  *ngFor="let activity of activities">
+    <section
+      *ngIf="!activity.hidden?.byColorTag"
+      class="activity"
+      (click)="clickOnActivity(activity)"
+      [ngStyle]="activity.style"
+      [innerHTML]="activity.htmlContent | safeHtml" >
     </section>
+  </ng-container>
 </ng-template>
 
 

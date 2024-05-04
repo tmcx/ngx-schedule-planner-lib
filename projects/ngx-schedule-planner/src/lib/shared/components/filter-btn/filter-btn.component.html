@@ -1,23 +1,35 @@
-<ng-template #tagList let-tags="tags" let-checked="checked">
+<ng-template #tagList let-tags="tags" let-checked="checked" let-type="type">
   <ng-container>
     <p>{{ checked ? "Selected(One of):" : "All:" }}</p>
     <ng-container *ngFor="let tag of tags">
-      <span *ngIf="!checked ? !selected.tags.includes(tag) : true">
-        <input type="checkbox" [checked]="checked" (click)="toggleTag(tag)" />
-        [{{ tag.icon ?? "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" }}]
+      <span *ngIf="!checked ? !includes(tag, type) : true">
+        <input
+          type="checkbox"
+          [checked]="checked"
+          (click)="toggleTag(tag, type)"
+        />
+        <ng-container *ngIf="type == 'tag'">
+          [{{ tag.icon ?? "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" }}]
+        </ng-container>
+        <ng-container *ngIf="type == 'colorTag'">
+          [<span class="color-tag" [style]="{ background: tag.color }"></span>]
+        </ng-container>
+
         {{ tag.name }}
       </span>
     </ng-container>
   </ng-container>
 </ng-template>
 
-<button (click)="toggleModal()">🝖</button>
-<section class="content" *ngIf="showModal">
+<ng-template #tagsFilter>
   <section class="tags">
     <label>Tags:</label>
     <section class="options">
       <ng-container
-        *ngTemplateOutlet="tagList; context: { tags, checked: false }"
+        *ngTemplateOutlet="
+          tagList;
+          context: { tags: original.tags, checked: false, type: 'tag' }
+        "
       ></ng-container>
     </section>
 
@@ -25,9 +37,44 @@
       <ng-container
         *ngTemplateOutlet="
           tagList;
-          context: { tags: selected.tags, checked: true }
+          context: { tags: selected.tags, checked: true, type: 'tag' }
         "
       ></ng-container>
     </section>
   </section>
+</ng-template>
+
+<ng-template #colorTagFilter>
+  <section class="tags">
+    <label>Color Tags:</label>
+    <section class="options">
+      <ng-container
+        *ngTemplateOutlet="
+          tagList;
+          context: {
+            tags: original.colorTags,
+            checked: false,
+            type: 'colorTag'
+          }
+        "
+      ></ng-container>
+    </section>
+
+    <section class="selected" *ngIf="selected.colorTags.length > 0">
+      <ng-container
+        *ngTemplateOutlet="
+          tagList;
+          context: { tags: selected.colorTags, checked: true, type: 'colorTag' }
+        "
+      ></ng-container>
+    </section>
+  </section>
+</ng-template>
+
+<button (click)="toggleModal()">🝖</button>
+<section class="content" *ngIf="showModal">
+  <ng-container *ngTemplateOutlet="tagsFilter"></ng-container>
+  <ng-container *ngTemplateOutlet="colorTagFilter"></ng-container>
+
+  <button (click)="toggleModal()">Close</button>
 </section>
