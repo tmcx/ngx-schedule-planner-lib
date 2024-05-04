@@ -1,9 +1,9 @@
+import { ITheme } from '../../public-interfaces';
 import { HEADER_STYLE, SELECTOR } from '../config/constants';
 import { ISelectors } from '../main/internal.interfaces';
 import { querySelector } from './functions';
 
 export class StyleProcessor {
-
   static root: HTMLElement;
 
   static async initialize(uuid: string) {
@@ -44,5 +44,28 @@ export class StyleProcessor {
       const varName = varNames[key];
       await StyleProcessor.setProp(varName, value);
     }
+  }
+
+  static mergeThemes(theme1: ITheme, theme2?: ITheme): ITheme {
+    const mergedTheme: ITheme = { ...theme1 };
+
+    for (const key1 in theme2) {
+      if (Object.prototype.hasOwnProperty.call(theme2, key1)) {
+        const value1 = theme1[key1 as keyof ITheme];
+        const value2 = theme2[key1 as keyof ITheme];
+
+        if (value2 && typeof value2 === 'object' && !Array.isArray(value2)) {
+          mergedTheme[key1 as keyof ITheme] = StyleProcessor.mergeThemes(
+            (value1 as any) || {},
+            value2 as any
+          ) as any;
+        } else {
+          mergedTheme[key1 as keyof ITheme] =
+            value2 !== undefined ? value2 : value1;
+        }
+      }
+    }
+
+    return mergedTheme;
   }
 }

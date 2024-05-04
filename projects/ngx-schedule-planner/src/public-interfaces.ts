@@ -1,4 +1,3 @@
-
 export interface ICustomization {
   CALENDAR?: {
     ACTIVITY?: {
@@ -74,4 +73,68 @@ export interface CalendarContent {
   roles: { [roleId: number]: IRole };
   tags: { [tagId: number]: ITag };
   profiles: IProfile[];
+}
+export interface ITheme {
+  GLOBAL?: {
+    BACKGROUND?: string;
+    BORDER_RADIUS?: string;
+    BORDER_COLOR?: string;
+    BOX_SHADOW?: string;
+    LOADER?: {
+      BORDER_COLOR?: string;
+      BACKGROUND?: string;
+    };
+    SCROLL?: {
+      BACKGROUND?: string;
+      SLIDER_COLOR?: string;
+    };
+  };
+  TOP?: {
+    RIGHT?: {
+      BACKGROUND?: string;
+      BORDER_COLOR?: string;
+      FONT_COLOR?: string;
+      INPUT?: {
+        BORDER_RADIUS?: string;
+        BACKGROUND?: string;
+        BORDER_COLOR?: string;
+        BOX_SHADOW?: string;
+        FONT_COLOR?: string;
+      };
+    };
+    LEFT?: {
+      BACKGROUND?: string;
+      BORDER_COLOR?: string;
+      FONT_COLOR?: string;
+      INPUT?: {
+        BORDER_RADIUS?: string;
+        BACKGROUND?: string;
+        BORDER_COLOR?: string;
+        BOX_SHADOW?: string;
+        FONT_COLOR?: string;
+      };
+    };
+  };
+  BOTTOM?: {
+    BACKGROUND?: string;
+    BORDER_COLOR?: string;
+    FONT_COLOR?: string;
+    NEW_ACTIVITY_SECTION?: {
+      BACKGROUND?: string;
+    };
+    ACTIVITY?: {
+      BACKGROUND?: string;
+      BORDER_COLOR?: string;
+    };
+    PROFILE?: {
+      BACKGROUND?: string;
+    };
+    INPUT?: {
+      BORDER_RADIUS?: string;
+      BACKGROUND?: string;
+      BORDER_COLOR?: string;
+      BOX_SHADOW?: string;
+      FONT_COLOR?: string;
+    };
+  };
 }

@@ -7,7 +7,11 @@ import {
 } from '@angular/core';
 import { CalendarService } from '../services/calendar/calendar.service';
 import { IActivity } from './internal.interfaces';
-import { ICustomization, CalendarContent } from '../../public-interfaces';
+import {
+  ICustomization,
+  CalendarContent,
+  ITheme,
+} from '../../public-interfaces';
 import { floatingScroll, linkScroll, wait } from '../utils/functions';
 import {
   HEADER,
@@ -45,6 +49,7 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
     customization?: ICustomization;
     content?: CalendarContent;
     referenceDate?: Date;
+    theme?: ITheme;
     mode?: TMode;
   };
   isCollapsed: boolean;
@@ -73,14 +78,19 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
     this.initialize();
   }
 
+  @Input() set theme(theme: ITheme) {
+    this.inputContent['theme'] = theme;
+    this.initialize();
+  }
+
   @Input() set customization(customization: ICustomization) {
     this.inputContent['customization'] = customization;
     this.initialize();
   }
 
   constructor(private calendarService: CalendarService) {
-    this.calendarService.setLoading(true);
     StyleProcessor.initialize(this.calendarService.uuid);
+    this.calendarService.setLoading(true);
     this.inputContent = {};
     this.isCollapsed = this.calendarService.config.leftPanel.isCollapsed;
     this.isInitializing = false;
@@ -146,15 +156,16 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
         if (timeRange) {
           this.calendarService.config.interval.timeRange = timeRange;
         }
+        this.setTheme();
         await this.calendarService.refreshCalendarContent();
         this.isInitializing = false;
-        this.setTheme();
       });
     }
     this.isInitializing = true;
   }
 
   setTheme() {
-    StyleProcessor.setNestedProps(THEME, THEME_VARS);
+    const theme = StyleProcessor.mergeThemes(THEME, this.inputContent.theme);
+    StyleProcessor.setNestedProps(theme, THEME_VARS);
   }
 }

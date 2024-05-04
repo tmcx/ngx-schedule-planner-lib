@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MOCK } from './mock';
 import moment from 'moment';
-import { ICustomization } from 'ngx-schedule-planner';
+import { ICustomization, ITheme } from 'ngx-schedule-planner';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +12,7 @@ export class AppComponent {
   mock = this.format();
   customization: ICustomization;
   referencedDate = moment(new Date()).date(30).month(3).toDate();
+  theme: ITheme = {};
 
   constructor() {
     this.customization = {
