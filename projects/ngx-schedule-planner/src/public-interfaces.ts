@@ -39,6 +39,7 @@ interface IActivity {
   endDate: string;
   repeat: string[];
   tags: number[];
+  colorTags: number[];
 }
 
 interface IProfile {
@@ -56,6 +57,12 @@ interface IGroup {
   icon: string;
 }
 
+interface IColorTag {
+  colorTagId: number;
+  color: string;
+  name: string;
+}
+
 interface ITag {
   tagId: number;
   icon?: string;
@@ -69,6 +76,7 @@ interface IRole {
 
 export interface CalendarContent {
   activities: { [activityId: number]: IActivity };
+  colorTags: { [colorTagId: number]: IColorTag };
   groups: { [activityId: number]: IGroup };
   roles: { [roleId: number]: IRole };
   tags: { [tagId: number]: ITag };

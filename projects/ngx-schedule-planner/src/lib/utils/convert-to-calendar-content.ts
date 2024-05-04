@@ -74,6 +74,9 @@ export function convertToCalendarContent(
               startDate: new Date(activity.startDate),
               endDate: new Date(activity.endDate),
               tags: activity.tags.map((tagId) => originalContent.tags[tagId]),
+              colorTags: activity.colorTags.map(
+                (colorTagId) => originalContent.colorTags[colorTagId]
+              ),
             };
           })
           .flatMap((activity) => [

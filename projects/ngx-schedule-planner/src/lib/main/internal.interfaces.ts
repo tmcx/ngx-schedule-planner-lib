@@ -20,6 +20,12 @@ export interface IGroup {
   style?: { height: number };
 }
 
+export interface IColorTag {
+  colorTagId: number;
+  color: string;
+  name: string;
+}
+
 export interface IActivity {
   activityId: number;
   groupId: number;
@@ -28,6 +34,7 @@ export interface IActivity {
   endDate: Date;
   repeat: string[];
   tags: ITag[];
+  colorTags: IColorTag[];
   style?: { width: string; left: string };
   htmlContent?: string;
   [key: string]: IIconText | string | number | any;

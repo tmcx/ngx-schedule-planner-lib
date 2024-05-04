@@ -40,6 +40,7 @@ export class CalendarService {
     this.originalContent = {
       activities: [],
       profiles: [],
+      colorTags: {},
       groups: {},
       roles: {},
       tags: {},

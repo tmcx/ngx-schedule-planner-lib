@@ -9,6 +9,7 @@ const ACTIVITIES: CalendarContent['activities'] = {
     endDate: '2024-04-08T13:00:00',
     repeat: ['2024-04-09', '2024-04-15'],
     tags: [1, 2],
+    colorTags: [1, 4],
   },
   2: {
     activityId: 2,
@@ -18,6 +19,7 @@ const ACTIVITIES: CalendarContent['activities'] = {
     endDate: '2024-04-08T13:00:00',
     repeat: ['2024-04-09', '2024-04-11'],
     tags: [3, 4],
+    colorTags: [2],
   },
   3: {
     activityId: 3,
@@ -27,6 +29,7 @@ const ACTIVITIES: CalendarContent['activities'] = {
     endDate: '2024-04-08T14:00:00',
     repeat: ['2024-05-25', '2024-06-05'],
     tags: [5, 6],
+    colorTags: [3],
   },
   4: {
     activityId: 4,
@@ -36,6 +39,7 @@ const ACTIVITIES: CalendarContent['activities'] = {
     endDate: '2024-04-08T23:59:00',
     repeat: ['2024-07-01', '2024-07-15'],
     tags: [7, 8],
+    colorTags: [4],
   },
   5: {
     activityId: 5,
@@ -45,6 +49,7 @@ const ACTIVITIES: CalendarContent['activities'] = {
     endDate: '2024-04-08T13:00:00',
     repeat: ['2024-07-20', '2024-08-05'],
     tags: [9, 10],
+    colorTags: [1],
   },
   6: {
     activityId: 6,
@@ -54,6 +59,7 @@ const ACTIVITIES: CalendarContent['activities'] = {
     endDate: '2024-04-08T17:00:00',
     repeat: ['2024-05-01', '2024-05-15'],
     tags: [11, 12],
+    colorTags: [2],
   },
   7: {
     activityId: 7,
@@ -63,6 +69,7 @@ const ACTIVITIES: CalendarContent['activities'] = {
     endDate: '2024-04-08T16:00:00',
     repeat: ['2024-05-20', '2024-06-05'],
     tags: [13, 14],
+    colorTags: [3],
   },
   8: {
     activityId: 8,
@@ -72,6 +79,7 @@ const ACTIVITIES: CalendarContent['activities'] = {
     endDate: '2024-04-10T13:00:00',
     repeat: ['2024-04-15', '2024-04-20'],
     tags: [1, 6],
+    colorTags: [4],
   },
   9: {
     activityId: 9,
@@ -81,6 +89,7 @@ const ACTIVITIES: CalendarContent['activities'] = {
     endDate: '2024-04-10T12:00:00',
     repeat: ['2024-04-12', '2024-04-14'],
     tags: [3, 19],
+    colorTags: [1],
   },
   10: {
     activityId: 10,
@@ -90,6 +99,7 @@ const ACTIVITIES: CalendarContent['activities'] = {
     endDate: '2024-04-12T16:00:00',
     repeat: ['2024-04-20', '2024-04-25'],
     tags: [1, 20],
+    colorTags: [2],
   },
   11: {
     activityId: 11,
@@ -99,6 +109,7 @@ const ACTIVITIES: CalendarContent['activities'] = {
     endDate: '2024-04-12T17:00:00',
     repeat: ['2024-04-18', '2024-04-22'],
     tags: [9, 10],
+    colorTags: [3],
   },
   12: {
     activityId: 12,
@@ -108,6 +119,7 @@ const ACTIVITIES: CalendarContent['activities'] = {
     endDate: '2024-04-17T17:00:00',
     repeat: ['2024-04-22', '2024-04-30'],
     tags: [21, 22],
+    colorTags: [4],
   },
   13: {
     activityId: 13,
@@ -117,6 +129,7 @@ const ACTIVITIES: CalendarContent['activities'] = {
     endDate: '2024-04-15T13:00:00',
     repeat: ['2024-04-25', '2024-04-28'],
     tags: [15, 23],
+    colorTags: [1],
   },
   14: {
     activityId: 14,
@@ -126,6 +139,7 @@ const ACTIVITIES: CalendarContent['activities'] = {
     endDate: '2024-04-16T12:00:00',
     repeat: ['2024-04-26', '2024-04-29'],
     tags: [24, 25],
+    colorTags: [2],
   },
   15: {
     activityId: 15,
@@ -135,6 +149,7 @@ const ACTIVITIES: CalendarContent['activities'] = {
     endDate: '2024-04-17T15:00:00',
     repeat: ['2024-04-28', '2024-05-01'],
     tags: [26, 27],
+    colorTags: [3],
   },
   16: {
     activityId: 16,
@@ -144,6 +159,7 @@ const ACTIVITIES: CalendarContent['activities'] = {
     endDate: '2024-04-18T16:00:00',
     repeat: ['2024-04-30', '2024-05-03'],
     tags: [28, 29],
+    colorTags: [4],
   },
   17: {
     activityId: 17,
@@ -153,6 +169,7 @@ const ACTIVITIES: CalendarContent['activities'] = {
     endDate: '2024-04-19T17:00:00',
     repeat: ['2024-05-02', '2024-05-05'],
     tags: [30, 31],
+    colorTags: [1],
   },
   18: {
     activityId: 18,
@@ -162,6 +179,7 @@ const ACTIVITIES: CalendarContent['activities'] = {
     endDate: '2024-04-20T12:00:00',
     repeat: ['2024-05-05', '2024-05-08'],
     tags: [32, 33],
+    colorTags: [2],
   },
   19: {
     activityId: 19,
@@ -171,6 +189,7 @@ const ACTIVITIES: CalendarContent['activities'] = {
     endDate: '2024-04-21T13:00:00',
     repeat: ['2024-05-06', '2024-05-09'],
     tags: [34, 35],
+    colorTags: [2],
   },
   20: {
     activityId: 20,
@@ -180,6 +199,7 @@ const ACTIVITIES: CalendarContent['activities'] = {
     endDate: '2024-04-22T16:00:00',
     repeat: ['2024-05-08', '2024-05-11'],
     tags: [36, 37],
+    colorTags: [3],
   },
 };
 const PROFILES: CalendarContent['profiles'] = [
@@ -351,7 +371,7 @@ const TAGS: CalendarContent['tags'] = {
   38: { tagId: 38, icon: '🧬', name: 'Bioinformatics' },
   39: { tagId: 39, icon: '🧪', name: 'Biotechnology' },
   40: { tagId: 40, icon: '🎭', name: 'Ethical Hacking' },
-  41: { tagId: 41, icon: '💰', name: 'Cryptocurrency' }
+  41: { tagId: 41, icon: '💰', name: 'Cryptocurrency' },
 };
 
 const ROLES: CalendarContent['roles'] = {
@@ -359,7 +379,15 @@ const ROLES: CalendarContent['roles'] = {
   2: { roleId: 2, label: 'Assistant' },
 };
 
+const COLOR_TAGS = {
+  1: { colorTagId: 1, color: '#FCFEB5', name: 'Bioinformatics' },
+  2: { colorTagId: 2, color: '#9FC3FE', name: 'Biotechnology' },
+  3: { colorTagId: 3, color: '#9AF5FE', name: 'Ethical Hacking' },
+  4: { colorTagId: 4, color: '#FEC5FE', name: 'Cryptocurrency' },
+};
+
 export const MOCK: CalendarContent = {
+  colorTags: COLOR_TAGS,
   activities: ACTIVITIES,
   profiles: PROFILES,
   groups: GROUPS,

@@ -38,7 +38,7 @@
 </ng-template>
 
 <ng-template #activitiesRow let-activities="activities">
-    <section *ngFor="let activity of activities" class="activity" (click)="clickOnActivity(activity)" [ngStyle]="activity.style" [innerHTML]="activity.htmlContent" >
+    <section *ngFor="let activity of activities" class="activity" (click)="clickOnActivity(activity)" [ngStyle]="activity.style" [innerHTML]="activity.htmlContent | safeHtml" >
     </section>
 </ng-template>
 

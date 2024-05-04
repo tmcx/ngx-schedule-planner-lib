@@ -16,6 +16,18 @@ export class ActivityHTML {
       return `<section class="text"><p title="${activity.name}">${activity.name}</p></section>`;
     }
 
+    let colorTags = activity.colorTags
+      .map(
+        ({ color, name }) =>
+          `<span style="background:${color};" title="${name}"></span>`
+      )
+      .join('');
+
+    colorTags =
+      colorTags.length > 0
+        ? `<span class="color-tags">${colorTags}</span>`
+        : colorTags;
+
     let htmlContent = '';
     for (const customization of INLINE_SHOW) {
       const { type, valuePath, isArray } = customization;
@@ -81,7 +93,7 @@ export class ActivityHTML {
       }
     }
 
-    return htmlContent;
+    return colorTags + htmlContent;
   }
 
   activityStyle(activity: IActivity) {

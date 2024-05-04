@@ -105,7 +105,7 @@ $image-width: 40px;
 
   & > span {
     background: $bottom-background-color;
-    box-shadow: 1px -1px 0 $bottom-border-color,3px 0 2px #b7b7b769;
+    box-shadow: 1px -1px 0 $bottom-border-color, 3px 0 2px #b7b7b769;
     height: calc(100% - 1px);
     position: sticky;
     left: calc($half-header-width + 1px);
@@ -269,6 +269,16 @@ $image-width: 40px;
 
     p {
       text-wrap: nowrap;
+    }
+  }
+
+  .color-tags {
+    height: 100%;
+
+    span {
+      display: inline-block;
+      height: 100%;
+      width: 5px;
     }
   }
 }

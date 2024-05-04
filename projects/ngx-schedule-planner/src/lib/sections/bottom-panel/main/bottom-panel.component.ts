@@ -14,13 +14,20 @@ import { isBetween } from '../../../utils/moment';
 import { CONFIG } from '../../../config/constants';
 import { ISubColumn } from '../../top-panel/components/right-panel/right-panel.interface';
 import { NoContentComponent } from '../components/no-content/no-content.component';
+import { SafeHtmlPipe } from '../../../shared/pipes/safe-html';
 
 @Component({
   standalone: true,
   selector: 'app-bottom-panel',
   templateUrl: './bottom-panel.component.html',
   styleUrls: ['./bottom-panel.component.scss'],
-  imports: [ShortNamePipe, MarkerComponent, NoContentComponent, CommonModule],
+  imports: [
+    ShortNamePipe,
+    SafeHtmlPipe,
+    MarkerComponent,
+    NoContentComponent,
+    CommonModule,
+  ],
 })
 export class BottomPanelComponent {
   creatingActivity!: ICreatingActivity;
