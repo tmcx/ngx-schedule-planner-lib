@@ -1,10 +1,6 @@
-$border-color: var(--ngx-sp-border-color);
-$border: solid 1px $border-color;
-$header-width: var(--ngx-header-width);
-$image-width: 40px;
-
 $bottom-profile-background-color: var(--bottom-profile-background-color);
 $bottom-activity-background-color: var(--bottom-activity-background-color);
+$bottom-activity-border-color: var(--bottom-activity-border-color);
 $bottom-background-color: var(--bottom-background-color);
 $bottom-border-color: var(--bottom-border-color);
 $bottom-font-color: var(--bottom-font-color);
@@ -12,8 +8,10 @@ $bottom-font-color: var(--bottom-font-color);
 $bottom-new-activity-section-background-color: var(
   --bottom-new-activity-section-background-color
 );
-
+$header-width: var(--header-width);
 $half-header-width: calc($header-width / 2);
+
+$image-width: 40px;
 
 :host {
   display: grid;
@@ -84,7 +82,7 @@ $half-header-width: calc($header-width / 2);
       align-content: flex-start;
 
       span {
-        border: $border;
+        border: solid 1px $bottom-activity-border-color;
         padding: 1px 2px;
         border-radius: 4px;
       }
@@ -212,7 +210,7 @@ $half-header-width: calc($header-width / 2);
   background-color: $bottom-activity-background-color;
   position: absolute;
   height: 22px;
-  border: $border;
+  border: solid 1px $bottom-activity-border-color;
   border-radius: 4px;
   display: grid;
   align-items: center;

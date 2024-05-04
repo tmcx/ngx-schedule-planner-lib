@@ -1,0 +1,88 @@
+$top-left-button-background: var(--top-left-button-background);
+$top-left-font-color: var(--top-left-font-color);
+$top-left-button-font-color: var(--top-left-button-font-color);
+$top-left-button-box-shadow: var(--top-left-button-box-shadow);
+$top-left-button-border-radius: var(--top-left-button-border-radius);
+$top-left-button-border-color: var(--top-left-button-border-color);
+$top-left-background: var(--top-left-background);
+$border: solid 1px $top-left-button-border-color;
+
+$top-right-button-border-radius: var(--top-right-button-border-radius);
+$top-right-button-border-color: var(--top-right-button-border-color);
+$top-right-button-background: var(--top-right-button-background);
+$top-right-button-box-shadow: var(--top-right-button-box-shadow);
+$top-right-button-font-color: var(--top-right-button-font-color);
+$top-right-font-color: var(--top-right-font-color);
+
+$bottom-activity-border-color: var(--bottom-activity-border-color);
+$bottom-button-background: var(--bottom-button-background);
+$bottom-button-border-color: var(--bottom-button-border-color);
+$bottom-button-box-shadow: var(--bottom-button-box-shadow);
+$bottom-button-border-radius: var(--bottom-button-border-radius);
+$bottom-button-font-color: var(--bottom-button-font-color);
+
+::ng-deep ngx-schedule-planner app-left-panel {
+  color: $top-left-font-color;
+
+  select,
+  button,
+  input,
+  option {
+    background: $top-left-button-background;
+    border: $border;
+    box-shadow: $top-left-button-box-shadow;
+    border-radius: $top-left-button-border-radius;
+    color: $top-left-button-font-color;
+  }
+
+  svg {
+    border-color: $top-left-button-border-color !important;
+  }
+  app-filter-btn .content,
+  app-filter-btn p,
+  app-filter-btn label {
+    background: $top-left-button-background !important;
+  }
+
+  app-filter-btn .content {
+    border-color: $top-left-button-border-color !important;
+  }
+}
+
+::ng-deep ngx-schedule-planner app-right-panel {
+  color: $top-right-font-color;
+
+  select,
+  button,
+  input[type="date"],
+  option {
+    background: $top-right-button-background;
+    border: solid 1px $top-right-button-border-color;
+    box-shadow: $top-right-button-box-shadow;
+    border-radius: $top-right-button-border-radius;
+    color: $top-right-button-font-color;
+  }
+}
+
+::ng-deep ngx-schedule-planner app-bottom-panel {
+  app-no-content {
+    svg {
+      fill: $bottom-activity-border-color !important;
+    }
+
+    h2 {
+      color: $bottom-activity-border-color !important;
+    }
+  }
+
+  select,
+  button,
+  input[type="date"],
+  option {
+    background: $bottom-button-background;
+    border: solid 1px $bottom-button-border-color;
+    box-shadow: $bottom-button-box-shadow;
+    border-radius: $bottom-button-border-radius;
+    color: $bottom-button-font-color;
+  }
+}

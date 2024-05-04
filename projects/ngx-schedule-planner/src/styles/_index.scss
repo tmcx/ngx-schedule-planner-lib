@@ -1,0 +1,42 @@
+$border-color: var(--global-border-color);
+
+::ng-deep ngx-schedule-planner {
+  * {
+    font-family: "Roboto", "sans-serif";
+    box-sizing: border-box;
+    margin: initial;
+    font-size: 12px;
+  }
+
+  input,
+  select,
+  button,
+  input[type="date"] {
+    background: #222;
+    border: solid 1px $border-color;
+    line-height: 100%;
+    height: 20px;
+
+    &:not([type="text"]) {
+      cursor: pointer;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  h2 {
+    font-size: 14px;
+  }
+
+  button {
+    &:hover {
+      opacity: 0.85;
+    }
+  }
+
+  .hidden {
+    display: none;
+  }
+}

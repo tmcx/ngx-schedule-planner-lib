@@ -1,5 +1,5 @@
-import { CONFIG, SELECTOR } from '../config/constants';
-import { ISelectors, STYLE_VAR_KEYS } from '../main/internal.interfaces';
+import { HEADER_STYLE, SELECTOR } from '../config/constants';
+import { ISelectors } from '../main/internal.interfaces';
 import { querySelector } from './functions';
 
 export class StyleProcessor {
@@ -13,7 +13,7 @@ export class StyleProcessor {
       SELECTOR[key] = SELECTOR[key].replace('{uuid}', uuid);
     });
 
-    await this.setNestedProps(CONFIG.STYLE, CONFIG.STYLE_VAR);
+    await this.setNestedProps(HEADER_STYLE.STYLE, HEADER_STYLE.STYLE_VAR);
   }
 
   static async setProp(varName: string, value: string) {

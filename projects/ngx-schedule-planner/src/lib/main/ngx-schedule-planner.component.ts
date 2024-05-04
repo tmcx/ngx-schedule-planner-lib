@@ -10,8 +10,8 @@ import { IActivity } from './internal.interfaces';
 import { ICustomization, CalendarContent } from '../../public-interfaces';
 import { floatingScroll, linkScroll, wait } from '../utils/functions';
 import {
-  CONFIG,
   HEADER,
+  HEADER_STYLE,
   SELECTOR,
   THEME,
   THEME_VARS,
@@ -79,6 +79,7 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
   }
 
   constructor(private calendarService: CalendarService) {
+    this.calendarService.setLoading(true);
     StyleProcessor.initialize(this.calendarService.uuid);
     this.inputContent = {};
     this.isCollapsed = this.calendarService.config.leftPanel.isCollapsed;
@@ -103,6 +104,7 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
         this.toggleCollapse();
       }
     });
+    this.calendarService.setLoading(false);
   }
 
   async ngAfterViewInit(): Promise<void> {
@@ -115,9 +117,11 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
   }
 
   async toggleCollapse() {
-    const { HEADER_WIDTH, HEADER_WIDTH_COLLAPSED } = CONFIG.STYLE;
-    const value = this.isCollapsed ? HEADER_WIDTH_COLLAPSED : HEADER_WIDTH;
-    StyleProcessor.setProp(CONFIG.STYLE_VAR.HEADER_WIDTH, value);
+    const {
+      STYLE: { WIDTH, WIDTH_COLLAPSED },
+    } = HEADER_STYLE;
+    const value = this.isCollapsed ? WIDTH_COLLAPSED : WIDTH;
+    StyleProcessor.setProp(HEADER_STYLE.STYLE_VAR.WIDTH, value);
     HEADER.WIDTH = value;
   }
 

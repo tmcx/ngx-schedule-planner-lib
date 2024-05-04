@@ -1,37 +1,6 @@
-$top-left-button-background: var(--top-left-button-background);
 $top-left-button-border-color: var(--top-left-button-border-color);
-$top-left-button-box-shadow: var(--top-left-button-box-shadow);
-$top-left-button-border-radius: var(--top-left-button-border-radius);
-$top-left-button-font-color: var(--top-left-button-font-color);
-$top-left-font-color: var(--top-left-font-color);
 $top-left-background: var(--top-left-background);
 $border: solid 1px $top-left-button-border-color;
-
-:host ::ng-deep {
-  * {
-    color: $top-left-font-color;
-
-    select,
-    button,
-    input,
-    option {
-      background: $top-left-button-background;
-      border: $border;
-      box-shadow: $top-left-button-box-shadow;
-      border-radius: $top-left-button-border-radius;
-      color: $top-left-button-font-color;
-    }
-
-    svg {
-      border-color: $top-left-button-border-color !important;
-    }
-    app-filter-btn .content,
-    app-filter-btn p,
-    app-filter-btn label {
-      background: $top-left-button-background !important;
-    }
-  }
-}
 
 :host {
   height: 100%;

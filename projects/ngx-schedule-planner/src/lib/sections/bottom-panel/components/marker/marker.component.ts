@@ -7,7 +7,7 @@ import { CalendarService } from '../../../../../lib/services/calendar/calendar.s
 import { format, isBetween } from '../../../../../lib/utils/moment';
 import moment from 'moment';
 import { interval } from 'rxjs';
-import { CONFIG, SELECTOR } from '../../../../config/constants';
+import { CONFIG, HEADER_STYLE, SELECTOR } from '../../../../config/constants';
 import { StyleProcessor } from '../../../../utils/style-processor';
 
 @Component({
@@ -40,7 +40,7 @@ export class MarkerComponent implements OnInit {
         getElementSize(BOTTOM_PANEL).then(
           async ({ scrollWidth: width, scrollHeight }) => {
             const leftPanelWidth = +(
-              await StyleProcessor.getProp(CONFIG.STYLE_VAR.HEADER_WIDTH)
+              await StyleProcessor.getProp(HEADER_STYLE.STYLE_VAR.WIDTH)
             ).split('px')[0];
             marker.style.height = scrollHeight + 'px';
             const oneSecondInSpace =

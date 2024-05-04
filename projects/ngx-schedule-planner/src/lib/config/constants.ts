@@ -21,24 +21,6 @@ export const CONFIG: IConstants = {
       ENTITY: [DailyCalendar, 'day'],
     },
   },
-  STYLE_VAR: {
-    HEADER_WIDTH_COLLAPSED: '--ngx-header-width-collapsed',
-    SP_HOST_BG_COLOR: '--ngx-sp-host-bg-color',
-    SP_BORDER_COLOR: '--ngx-sp-border-color',
-    LOADER_BG_COLOR: '--ngx-loader-bg-color',
-    HEADER_HEIGHT: '--ngx-header-height',
-    HEADER_WIDTH: '--ngx-header-width',
-    SCROLL_HEIGHT: '--ngx-scroll-height',
-  },
-  STYLE: {
-    HEADER_WIDTH_COLLAPSED: '47px',
-    SP_HOST_BG_COLOR: '#222222',
-    SP_BORDER_COLOR: '#b2b2b2',
-    LOADER_BG_COLOR: '#5e5e5e',
-    HEADER_HEIGHT: '110px',
-    HEADER_WIDTH: '350px',
-    SCROLL_HEIGHT: '17px',
-  },
   eventGroups: {
     SUB_COLUMNS: [
       EEvent.afterRefreshCalendarContent,
@@ -61,7 +43,12 @@ export const THEME = {
   GLOBAL: {
     BACKGROUND: '#FFFFFF',
     BORDER_RADIUS: '5px',
+    BORDER_COLOR: '#b9b9b9',
     BOX_SHADOW: '0px 0px 4px #004b8757',
+    LOADER: {
+      BORDER_COLOR: '#00000073',
+      BACKGROUND: '#00000073',
+    },
     SCROLL: {
       BACKGROUND: 'transparent',
       SLIDER_COLOR: '#1D7AE4',
@@ -102,9 +89,17 @@ export const THEME = {
     },
     ACTIVITY: {
       BACKGROUND: '#FFFFFF',
+      BORDER_COLOR: '#B2B2B2',
     },
     PROFILE: {
       BACKGROUND: '#FAFAFA',
+    },
+    INPUT: {
+      BORDER_RADIUS: '4px',
+      BACKGROUND: '#FFFFFF',
+      BORDER_COLOR: '#b9b9b9',
+      BOX_SHADOW: 'none',
+      FONT_COLOR: '#000000',
     },
   },
 };
@@ -113,7 +108,12 @@ export const THEME_VARS = {
   GLOBAL: {
     BACKGROUND: '--global-background',
     BORDER_RADIUS: '--global-border-radius',
+    BORDER_COLOR: '--global-border-color',
     BOX_SHADOW: '--global-box-shadow',
+    LOADER: {
+      BORDER_COLOR: '--loader-border-color',
+      BACKGROUND: '--loader-background',
+    },
     SCROLL: {
       BACKGROUND: '--global-scroll-background',
       SLIDER_COLOR: '--global-scroll-slider-color',
@@ -154,14 +154,35 @@ export const THEME_VARS = {
     },
     ACTIVITY: {
       BACKGROUND: '--bottom-activity-background-color',
+      BORDER_COLOR: '--bottom-activity-border-color',
     },
     PROFILE: {
       BACKGROUND: '--bottom-profile-background-color',
     },
+    INPUT: {
+      BORDER_RADIUS: '--bottom-button-border-radius',
+      BACKGROUND: '--bottom-button-background',
+      BORDER_COLOR: '--bottom-button-border-color',
+      BOX_SHADOW: '--bottom-button-box-shadow',
+      FONT_COLOR: '--bottom-button-font-color',
+    },
+  },
+};
+
+export const HEADER_STYLE = {
+  STYLE_VAR: {
+    WIDTH_COLLAPSED: '--header-width-collapsed',
+    HEIGHT: '--header-height',
+    WIDTH: '--header-width',
+  },
+  STYLE: {
+    WIDTH_COLLAPSED: '47px',
+    HEIGHT: '110px',
+    WIDTH: '350px',
   },
 };
 
 export var HEADER = {
-  HEIGHT: CONFIG.STYLE.HEADER_HEIGHT,
-  WIDTH: CONFIG.STYLE.HEADER_WIDTH,
+  HEIGHT: HEADER_STYLE.STYLE.HEIGHT,
+  WIDTH: HEADER_STYLE.STYLE.WIDTH,
 };

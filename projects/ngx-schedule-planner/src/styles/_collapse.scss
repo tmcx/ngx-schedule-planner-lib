@@ -1,0 +1,65 @@
+$header-width: var(--header-width);
+
+::ng-deep ngx-schedule-planner {
+  &[collapsed="true"] {
+    app-top-panel {
+      grid-template-columns: $header-width 1fr;
+      app-left-panel {
+        .main h2,
+        .main button:not(.collapse-btn),
+        .summary p,
+        .filters {
+          display: none;
+        }
+
+        .main {
+          gap: 10px 0;
+        }
+      }
+    }
+    app-bottom-panel {
+      grid-template-columns: calc($header-width / 2 - 1px) 1fr;
+
+      .profile-group {
+        display: grid;
+        grid-template-columns: calc($header-width / 2) 1fr;
+
+        .profile {
+          grid-template-rows: min-content 1fr !important;
+          grid-template-columns: min-content !important;
+          padding: 3px !important;
+
+          img {
+            height: 18px !important;
+            width: 18px !important;
+          }
+
+          h1 {
+            font-size: 15px;
+            text-align: center;
+          }
+        }
+        p,
+        .tags {
+          padding: 7px 3px !important;
+          display: none !important;
+        }
+      }
+    }
+
+    .user-groups {
+      & > span {
+        left: calc($header-width / 2) !important;
+      }
+      .group {
+        grid-template-columns: calc($header-width / 2) 1fr !important;
+        .group-header {
+          padding: 7px 3px !important;
+          h1:last-of-type {
+            display: none !important;
+          }
+        }
+      }
+    }
+  }
+}

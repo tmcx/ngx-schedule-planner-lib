@@ -77,8 +77,6 @@ interface ICDate {
   type: 'date';
 }
 
-export type STYLE_VAR_KEYS = keyof IConstants['STYLE_VAR'];
-
 export interface IConstants {
   CALENDAR: {
     [key in TMode]: {
@@ -89,18 +87,6 @@ export interface IConstants {
       };
       ENTITY: [any, moment.unitOfTime.StartOf];
     };
-  };
-  STYLE_VAR: {
-    HEADER_WIDTH_COLLAPSED: string;
-    SP_HOST_BG_COLOR: string;
-    SP_BORDER_COLOR: string;
-    LOADER_BG_COLOR: string;
-    HEADER_HEIGHT: string;
-    HEADER_WIDTH: string;
-    SCROLL_HEIGHT: string;
-  };
-  STYLE: {
-    [key in STYLE_VAR_KEYS]: string;
   };
   eventGroups: {
     SUB_COLUMNS: EEvent[];

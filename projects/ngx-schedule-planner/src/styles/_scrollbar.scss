@@ -1,0 +1,35 @@
+$global-scroll-background: var(--global-scroll-background);
+$global-scroll-slider-color: var(--global-scroll-slider-color);
+
+::ng-deep *:has(> .v-floating-scroll):hover {
+  .v-floating-scroll,
+  .h-floating-scroll {
+    opacity: 1 !important;
+  }
+}
+
+::ng-deep ngx-schedule-planner {
+  * {
+    scrollbar-color: $global-scroll-slider-color $global-scroll-background;
+    scrollbar-width: thin;
+  }
+
+  .floating-scroll {
+    transition: opacity 0.5s ease 0s;
+    position: absolute;
+    display: block;
+    overflow: auto;
+    opacity: 0.3;
+    z-index: 1;
+  }
+
+  .v-floating-scroll {
+    @extend .floating-scroll;
+    width: 11px;
+  }
+
+  .h-floating-scroll {
+    @extend .floating-scroll;
+    width: 10px;
+  }
+}

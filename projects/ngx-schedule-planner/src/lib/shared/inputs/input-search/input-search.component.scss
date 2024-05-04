@@ -1,6 +1,3 @@
-$border-color: var(--ngx-sp-border-color);
-$border: solid 1px $border-color;
-
 :host {
   position: relative;
   width: 100%;
@@ -17,6 +14,6 @@ input {
   height: 100%;
   fill: #b2b2b2;
   width: fit-content;
-  border-left: $border;
+  border-left: solid 1px transparent;
   padding: 3px;
 }
