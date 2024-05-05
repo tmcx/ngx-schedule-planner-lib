@@ -28,6 +28,7 @@ import { ISelectedRange } from '../sections/bottom-panel/main/bottom-panel.inter
 import { TMode } from '../sections/top-panel/components/right-panel/right-panel.interface';
 import { LoaderComponent } from '../shared/components/loader/loader.component';
 import { StyleProcessor } from '../utils/style-processor';
+import { Validator } from '../utils/validator';
 
 @Component({
   standalone: true,
@@ -69,6 +70,9 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
   }
 
   @Input() set timeRange(timeRange: ITimeRange) {
+    Validator.between('timeRange', timeRange.hrFrom, 0, 24);
+    Validator.between('timeRange', timeRange.hrTo, 0, 24);
+    Validator.lowerThan('timeRange', timeRange.hrFrom, timeRange.hrTo);
     this.inputContent['timeRange'] = timeRange;
     this.initialize();
   }
