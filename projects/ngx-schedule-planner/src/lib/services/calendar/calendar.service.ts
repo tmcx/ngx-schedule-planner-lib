@@ -199,7 +199,7 @@ export class CalendarService {
     startDate = setDate(startDate, { h: hrFrom, m: 0, s: 0, ms: 0 });
 
     let endDate = endOf(referenceDate, unit);
-    endDate = setDate(endDate, { h: hrTo - 1, m: 0, s: 0, ms: 0 });
+    endDate = setDate(endDate, { h: hrTo - 1, m: 59, s: 59, ms: 0 });
     const hoursAmount = hrTo - hrFrom;
     this.config.interval = {
       global: { startDate, endDate },
