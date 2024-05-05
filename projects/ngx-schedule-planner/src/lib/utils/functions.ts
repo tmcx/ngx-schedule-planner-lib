@@ -216,96 +216,112 @@ export async function onResizeDo(
   observer.observe(await querySelector(selector));
 }
 
-export async function floatingScroll(
+async function addScroll(
   selector: string,
-  dir: { vertical?: boolean; horizontal?: boolean }
+  options: {
+    type: 'h' | 'v';
+    margin: {
+      top?: Function;
+      right?: Function;
+      bottom?: Function;
+      left?: Function;
+    };
+    bePending?: string[];
+  }
 ) {
-  let vScroll: HTMLElement | undefined;
-  let hScroll: HTMLElement | undefined;
+  const { type } = options;
+  const target = await querySelector(selector);
+  (target.style as any).scrollbarWidth = 'none';
+  target.style.overflow = 'auto';
+  let parent = target.parentElement!;
+  const eScroll = document.createElement('span');
+  const id = type + '-fs' + unique(selector);
+  eScroll.id = id;
+  eScroll.classList.add(type + '-floating-scroll');
+  let scrollHeight = target.scrollHeight;
+  let scrollWidth = target.scrollWidth;
 
-  const el = await querySelector(selector);
-  (el.style as any).scrollbarWidth = 'none';
-  el.style.overflow = 'auto';
-
-  const vId = 'v-fs' + unique(selector);
-  if (dir.vertical) {
-    if (!el.parentElement?.querySelector(`.${vId}`)) {
-      vScroll = document.createElement('span');
-      vScroll.classList.add('v-floating-scroll');
-      vScroll.classList.add(vId);
-      vScroll.innerText = '.';
-
-      vScroll.style.height = `calc(100% - ${HEADER.HEIGHT})`;
-      vScroll.style.lineHeight = el.scrollHeight + 'px';
-      vScroll.style.top = HEADER.HEIGHT;
-      vScroll.style.right = '1px';
-
-      el.parentElement?.append(vScroll);
-    }
-  }
-
-  const hId = 'h-fs' + unique(selector);
-  if (dir.horizontal) {
-    if (!el.parentElement?.querySelector(`.${hId}`)) {
-      hScroll = document.createElement('span');
-      hScroll.classList.add('h-floating-scroll');
-      hScroll.classList.add(hId);
-      hScroll.innerText = '.';
-
-      hScroll.style.width = `calc(100% - ${HEADER.WIDTH})`;
-      hScroll.style.letterSpacing = el.scrollWidth + 'px';
-      hScroll.style.left = HEADER.WIDTH;
-      hScroll.style.bottom = '1px';
-      hScroll.style.height = '10px';
-
-      el.parentElement?.append(hScroll);
-    }
-  }
-
-  el.onscroll = (e) => {
-    if (hScroll) {
-      hScroll.scrollLeft = (e as any).target.scrollLeft;
-    }
-    if (vScroll) {
-      vScroll.scrollTop = (e as any).target.scrollTop;
-    }
+  const setPosition = () => {
+    Object.entries(options.margin).forEach(([key, value]) => {
+      (eScroll.style as any)[key] = value();
+    });
   };
 
-  if (hScroll) {
-    hScroll.onscroll = (e) => (el.scrollLeft = (e as any).target.scrollLeft);
-  }
-  if (vScroll) {
-    vScroll.onscroll = (e) => (el.scrollTop = (e as any).target.scrollTop);
+  const setVScroll = () => {
+    const bottom = options.margin.bottom && options.margin.bottom();
+    const top = options.margin.top && options.margin.top();
+    const heightReducer = top ?? bottom ?? '0px';
+    eScroll.style.height = `calc(100% - ${heightReducer})`;
+    eScroll.innerHTML = `<span style="height: calc(${scrollHeight}px - ${heightReducer} - 10px);"></span>`;
+    setPosition();
+  };
+
+  const setHScroll = () => {
+    const right = options.margin.right && options.margin.right();
+    const left = options.margin.left && options.margin.left();
+    const widthReducer = right ?? left ?? '0px';
+    eScroll.style.width = `calc(100% - ${widthReducer})`;
+    eScroll.innerHTML = `<span style="width: calc(${scrollWidth}px - ${widthReducer} - 10px);"></span>`;
+    setPosition();
+  };
+  parent.append(eScroll);
+  target.addEventListener('scroll', (e) => {
+    if (type == 'v') {
+      eScroll.scrollTop = (e as any).target.scrollTop;
+    } else {
+      eScroll.scrollLeft = (e as any).target.scrollLeft;
+    }
+  });
+  eScroll.addEventListener('scroll', (e) => {
+    if (type == 'v') {
+      target.scrollTop = (e as any).target.scrollTop;
+    } else {
+      target.scrollLeft = (e as any).target.scrollLeft;
+    }
+  });
+
+  if (type == 'v') {
+    setVScroll();
+  } else {
+    setHScroll();
   }
 
-  setInterval(async () => {
-    if (hScroll) {
-      const { horizontal } = await hasScroll(selector);
-      if (!horizontal) {
-        hScroll.style.display = 'none';
-      } else {
-        hScroll.style.display = 'block';
-        hScroll.scrollLeft = el.scrollLeft;
-        hScroll.style.left = HEADER.WIDTH;
-        hScroll.style.width = `calc(100% - ${HEADER.WIDTH})`;
-        hScroll.style.letterSpacing = `calc(${el.scrollWidth}px - 10px - ${HEADER.WIDTH})`;
+  const onResize = () => {
+    if (type == 'v') {
+      if (scrollHeight != target.scrollHeight) {
+        scrollHeight = target.scrollHeight;
+        setVScroll();
+      }
+    } else {
+      if (scrollWidth != target.scrollWidth) {
+        scrollWidth = target.scrollWidth;
+        setHScroll();
       }
     }
-    if (vScroll) {
-      const { vertical } = await hasScroll(selector);
-      if (!vertical) {
-        vScroll.style.display = 'none';
-      } else {
-        vScroll.style.display = 'block';
-        vScroll.scrollTop = el.scrollTop;
-        vScroll.style.top = HEADER.HEIGHT;
-        vScroll.style.lineHeight = el.scrollHeight + 'px';
-        vScroll.style.height = `calc(100% - ${HEADER.HEIGHT})`;
-      }
-    }
-  }, 100);
+  };
+  onResizeDo(selector, onResize);
+  options.bePending?.forEach((otherSelector) => {
+    onResizeDo(otherSelector, onResize);
+  });
+  return id;
+}
 
-  return { vId: '.' + vId, hId: '.' + hId };
+export async function floatingScroll(
+  selector: string,
+  options: { vertical?: boolean; horizontal?: boolean; bePending?: string[] }
+) {
+  return {
+    vId: await addScroll(selector, {
+      type: 'v',
+      margin: { top: () => HEADER.HEIGHT, right: () => '1px' },
+      bePending: options.bePending,
+    }),
+    hId: await addScroll(selector, {
+      type: 'h',
+      margin: { left: () => HEADER.WIDTH, bottom: () => '1px' },
+      bePending: options.bePending,
+    }),
+  };
 }
 
 function unique(str: string) {

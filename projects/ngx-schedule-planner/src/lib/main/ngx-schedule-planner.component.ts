@@ -121,9 +121,10 @@ export class NgxSchedulePlannerComponent implements AfterViewInit {
     const { hId } = await floatingScroll(SELECTOR.BOTTOM_PANEL, {
       vertical: true,
       horizontal: true,
+      bePending: ['.profile-group'],
     });
 
-    linkScroll([hId, 'app-right-panel .columns'], { scrollLeft: true });
+    linkScroll(['#' + hId, 'app-right-panel .columns'], { scrollLeft: true });
   }
 
   async toggleCollapse() {
