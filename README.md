@@ -166,9 +166,7 @@ export class AppComponent {
 ### Contributions are welcome! 
 If you'd like to contribute to ngx-schedule-planner, feel free to open an issue or submit a pull request on [GitHub](https://github.com/tmcx/ngx-schedule-planner-lib).
 
-### Licencia
-
-License
+### License
 This project is licensed under the MIT License. See the LICENSE file for more details.
 
 ---
