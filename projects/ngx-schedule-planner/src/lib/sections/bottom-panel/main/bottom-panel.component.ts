@@ -15,6 +15,7 @@ import { CONFIG } from '../../../config/constants';
 import { ISubColumn } from '../../top-panel/components/right-panel/right-panel.interface';
 import { NoContentComponent } from '../components/no-content/no-content.component';
 import { SafeHtmlPipe } from '../../../shared/pipes/safe-html';
+import { querySelectorAll } from '../../../utils/functions';
 
 @Component({
   standalone: true,
@@ -53,6 +54,7 @@ export class BottomPanelComponent {
       if (event == EEvent.filtering) {
         this.filters = this.calendarService.config.filters;
       }
+      this.addResizableRows();
     });
     this.resetCreatingActivity();
   }
@@ -131,5 +133,26 @@ export class BottomPanelComponent {
 
   clickOnActivity(activity: IActivity) {
     this.calendarService.clickOnActivity(activity);
+  }
+
+  async addResizableRows() {
+    const rows = await querySelectorAll('.row');
+
+    rows.forEach((row) => {
+      row.addEventListener('mousedown', (e) => {
+        const startY = e.pageY;
+        const startHeight = parseFloat(window.getComputedStyle(row).height);
+
+        document.addEventListener('mousemove', mouseMoveHandler);
+        document.addEventListener('mouseup', () => {
+          document.removeEventListener('mousemove', mouseMoveHandler);
+        });
+
+        function mouseMoveHandler(e: any) {
+          const deltaY = e.pageY - startY;
+          row.style.height = `${startHeight + deltaY}px`;
+        }
+      });
+    });
   }
 }

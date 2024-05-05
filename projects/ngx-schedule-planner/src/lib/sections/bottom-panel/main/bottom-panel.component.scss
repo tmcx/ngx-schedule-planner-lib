@@ -13,6 +13,8 @@ $half-header-width: calc($header-width / 2);
 
 $image-width: 40px;
 
+$row-height: 30px;
+
 :host {
   display: grid;
   position: relative;
@@ -159,7 +161,8 @@ $image-width: 40px;
     .row {
       position: relative;
       width: 100%;
-      height: 30px;
+      min-height: $row-height;
+      height: $row-height;
       padding: 4px 0 5px 0;
       box-shadow: 0px -1px 0px 0px $bottom-border-color,
         0 1px 0 0 $bottom-border-color;
@@ -168,6 +171,18 @@ $image-width: 40px;
         $bottom-background-color calc(100% - 1px),
         #f2f2f2 0
       );
+
+      &::after {
+        content: "";
+        cursor: row-resize;
+        background-repeat: no-repeat;
+        background-position: center bottom;
+        width: 100%;
+        height: 10px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+      }
     }
 
     .new-activity {
@@ -180,7 +195,7 @@ $image-width: 40px;
       display: grid;
       grid-auto-flow: column;
       padding: 2px 0 2px;
-      height: 30px;
+      height: $row-height;
 
       span {
         position: relative;
@@ -210,7 +225,7 @@ $image-width: 40px;
 ::ng-deep ngx-schedule-planner app-bottom-panel .activity {
   background-color: $bottom-activity-background-color;
   position: absolute;
-  height: 22px;
+  height: calc(100% - 8px);
   border: solid 1px $bottom-activity-border-color;
   border-radius: 4px;
   display: grid;
