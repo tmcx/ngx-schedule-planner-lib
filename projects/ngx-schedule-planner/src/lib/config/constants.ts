@@ -30,6 +30,9 @@ export const CONFIG: IConstants = {
       EEvent.mode,
     ],
   },
+  PRESENTATION: {
+    DATE_FORMAT: 'MMMM Do, h:mm:ss a',
+  },
 };
 export var SELECTOR: ISelectors = {
   HOST: `#{uuid}`,

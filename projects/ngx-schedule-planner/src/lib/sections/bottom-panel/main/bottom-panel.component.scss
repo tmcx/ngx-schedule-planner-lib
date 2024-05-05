@@ -208,77 +208,127 @@ $image-width: 40px;
 }
 
 ::ng-deep ngx-schedule-planner app-bottom-panel .activity {
-  background-color: $bottom-activity-background-color;
   position: absolute;
-  height: 22px;
-  border: solid 1px $bottom-activity-border-color;
-  border-radius: 4px;
-  display: grid;
-  align-items: center;
-  overflow: hidden;
-  grid-auto-flow: column;
-  align-items: center;
-  grid-auto-columns: max-content;
-  justify-content: start;
-  cursor: pointer;
-  gap: 3px;
 
   &:hover {
-    opacity: 0.8;
+    .content-details {
+      display: grid;
+    }
   }
 
-  * {
-    user-select: none;
-  }
-
-  .text {
+  .content {
+    background-color: $bottom-activity-background-color;
+    height: 22px;
+    border: solid 1px $bottom-activity-border-color;
+    border-radius: 4px;
     display: grid;
+    align-items: center;
+    overflow: hidden;
     grid-auto-flow: column;
-    p {
-      text-wrap: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      cursor: pointer;
+    align-items: center;
+    grid-auto-columns: max-content;
+    justify-content: start;
+    cursor: pointer;
+    gap: 3px;
+
+    &:hover {
+      opacity: 0.8;
+    }
+
+    * {
+      user-select: none;
+    }
+
+    .text {
+      display: grid;
+      grid-auto-flow: column;
+      p {
+        text-wrap: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        cursor: pointer;
+        line-height: 14px;
+      }
+    }
+
+    .tags {
+      display: grid;
+      grid-auto-flow: column;
       line-height: 14px;
+      span {
+        cursor: pointer;
+      }
+    }
+
+    .dates {
+      display: grid;
+      grid-auto-flow: column;
+      text-wrap: nowrap;
+      line-height: 14px;
+      span {
+        cursor: pointer;
+      }
+    }
+
+    .icon-texts {
+      display: grid;
+      grid-auto-flow: column;
+      line-height: 14px;
+
+      p {
+        text-wrap: nowrap;
+      }
+    }
+
+    .color-tags {
+      height: 100%;
+
+      span {
+        display: inline-block;
+        height: 100%;
+        width: 5px;
+      }
     }
   }
 
-  .tags {
-    display: grid;
-    grid-auto-flow: column;
-    line-height: 14px;
-    span {
-      cursor: pointer;
-    }
-  }
+  .content-details {
+    position: absolute;
+    border-radius: 5px;
+    display: none;
+    z-index: 3;
+    top: 75%;
+    left: 0;
+    padding: 5px;
+    background: #ffffff;
+    box-shadow: 0px 0px 2px 1px #b7b7b769;
+    width: 300px;
+    grid-gap: 5px 0;
 
-  .dates {
-    display: grid;
-    grid-auto-flow: column;
-    text-wrap: nowrap;
-    line-height: 14px;
-    span {
-      cursor: pointer;
+    * {
+      color: #000000de;
     }
-  }
 
-  .icon-texts {
-    display: grid;
-    grid-auto-flow: column;
-    line-height: 14px;
+    h2 {
+      margin-bottom: 5px;
+    }
 
     p {
-      text-wrap: nowrap;
-    }
-  }
+      display: flex;
+      flex-direction: column;
+      gap: 2px 0;
 
-  .color-tags {
-    height: 100%;
+      span {
+        margin-left: 10px;
+        display: flex;
 
-    span {
-      display: inline-block;
-      height: 100%;
-      width: 5px;
+        div {
+          border: solid 1px #d9d9d9;
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          margin: 1px;
+        }
+      }
     }
   }
 }

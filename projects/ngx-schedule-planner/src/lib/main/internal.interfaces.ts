@@ -32,6 +32,11 @@ export interface IActivity {
   name: string;
   startDate: Date;
   endDate: Date;
+  presentation: {
+    startDate: string;
+    endDate: string;
+    duration: string;
+  };
   repeat: string[];
   tags: ITag[];
   colorTags: IColorTag[];
@@ -97,6 +102,9 @@ export interface IConstants {
   };
   eventGroups: {
     SUB_COLUMNS: EEvent[];
+  };
+  PRESENTATION: {
+    DATE_FORMAT: string;
   };
 }
 

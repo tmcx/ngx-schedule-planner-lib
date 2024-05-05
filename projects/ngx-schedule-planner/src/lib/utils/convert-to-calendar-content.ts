@@ -1,9 +1,9 @@
-import { CalendarContent } from '../../public-interfaces';
 import { IActivity } from '../main/internal.interfaces';
 import { ICalendarContent } from '../services/calendar/calendar.interface';
 import { CalendarService } from '../services/calendar/calendar.service';
 import { ActivityHTML } from './classes/activity-html';
 import { clone, groupBy } from './functions';
+import { duration, format } from './moment';
 import moment from 'moment';
 
 export function convertToCalendarContent(
@@ -69,28 +69,45 @@ export function convertToCalendarContent(
         profile.activities
           .map(({ activityId }) => {
             const activity = originalContent.activities[activityId];
+            const actStartDate = new Date(activity.startDate);
+            const actEndDate = new Date(activity.endDate);
+            const strDuration = duration(actStartDate, actEndDate);
             return {
               ...activity,
-              startDate: new Date(activity.startDate),
-              endDate: new Date(activity.endDate),
+              startDate: actStartDate,
+              endDate: actEndDate,
               tags: activity.tags.map((tagId) => originalContent.tags[tagId]),
               colorTags: activity.colorTags.map(
                 (colorTagId) => originalContent.colorTags[colorTagId]
               ),
+              presentation: {
+                startDate: format(actStartDate),
+                endDate: format(actEndDate),
+                duration: strDuration,
+              },
             };
           })
           .flatMap((activity) => [
             activity,
             ...activity.repeat.map((repeat) => {
               const actClone = clone(activity);
+
+              const actStartDate = new Date(
+                repeat + 'T' + actClone.startDate.toISOString().split('T')[1]
+              );
+              const actEndDate = new Date(
+                repeat + 'T' + actClone.endDate.toISOString().split('T')[1]
+              );
+              const strDuration = duration(actStartDate, actEndDate);
               return {
                 ...actClone,
-                startDate: new Date(
-                  repeat + 'T' + actClone.startDate.toISOString().split('T')[1]
-                ),
-                endDate: new Date(
-                  repeat + 'T' + actClone.endDate.toISOString().split('T')[1]
-                ),
+                startDate: actStartDate,
+                endDate: actEndDate,
+                presentation: {
+                  startDate: format(actStartDate),
+                  endDate: format(actEndDate),
+                  duration: strDuration,
+                },
               };
             }),
           ]);

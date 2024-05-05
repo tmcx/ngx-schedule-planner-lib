@@ -37,14 +37,32 @@
   </ng-container>
 </ng-template>
 
-<ng-template #activitiesRow let-activities="activities">
+<ng-template #activitiesRow let-activities="activities" let-group="group">
   <ng-container  *ngFor="let activity of activities">
     <section
       *ngIf="!activity.hidden"
       class="activity"
-      (click)="clickOnActivity(activity)"
       [ngStyle]="activity.style"
-      [innerHTML]="activity.htmlContent | safeHtml" >
+      (click)="clickOnActivity(activity)">
+        <section class="content" [innerHTML]="activity.htmlContent | safeHtml"></section>
+        <section class="content-details">
+          <h2>{{activity.name}}</h2>
+          <section>
+            <b>From:</b> {{activity.presentation.startDate}} <b>To:</b> {{activity.presentation.endDate}} <br>
+            <b>Duration:</b> {{activity.presentation.duration}}
+          </section>
+          <section>
+            <b>Group:</b> {{group.icon}} {{group.name}}
+          </section>
+          <p>
+            <b>Color Tags:</b>
+            <span *ngFor="let tag of activity.colorTags">[<div [ngStyle]="{background: tag.color}"></div>] {{tag.name}}</span>
+          </p>
+          <p>
+            <b>Tags:</b>
+            <span *ngFor="let tag of activity.tags">{{tag.icon}} {{tag.name}}</span>
+          </p>
+        </section>
     </section>
   </ng-container>
 </ng-template>
@@ -88,7 +106,7 @@
 
           <ng-container *ngFor="let row of groupContent.rows">
             <section *ngIf="!row.hidden" class="row" [ngStyle]="{'background-size': 'calc(100% / ' + subColumns.length * 2 + ') 1px'}">
-                <ng-container *ngTemplateOutlet="activitiesRow; context: { activities: row.activities}"></ng-container>
+                <ng-container *ngTemplateOutlet="activitiesRow; context: { activities: row.activities, group: groupContent.group}"></ng-container>
             </section>
           </ng-container>
 

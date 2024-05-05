@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { CONFIG } from '../config/constants';
 
 export type DurationConstructor = moment.unitOfTime.DurationConstructor;
 
@@ -91,6 +92,13 @@ export function endOf(date: Date, unitOfTime: moment.unitOfTime.StartOf) {
   return moment(date).endOf(unitOfTime).toDate();
 }
 
-export function format(date: Date | moment.Moment | string, format?: string) {
+export function format(
+  date: Date | moment.Moment | string,
+  format = CONFIG.PRESENTATION.DATE_FORMAT
+) {
   return format ? moment(date).format(format) : moment(date).format();
+}
+
+export function duration(startDate: Date, endDate: Date) {
+  return moment.duration(moment(endDate).diff(startDate)).humanize();
 }
