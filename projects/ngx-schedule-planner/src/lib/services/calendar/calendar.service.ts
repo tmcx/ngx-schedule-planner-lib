@@ -232,7 +232,7 @@ export class CalendarService {
           ? false
           : !crossIncludes(rowContent.profile.tags, filters.tags, 'name');
 
-      rowContent.profile['hidden'] = byUserName && byGroupName && byTagName;
+      rowContent.profile['hidden'] = byUserName || byGroupName || byTagName;
       if (!byUserName) {
         showingUsers++;
       }
