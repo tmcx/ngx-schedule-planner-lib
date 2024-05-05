@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "build:pkg": "ng build ngx-schedule-planner",
+    "build:pkg": "ng build ngx-schedule-planner && cd dist/ngx-schedule-planner && npm pack && cd ../..",
+    "publish": "npm run build:pkg && cd dist/ngx-schedule-planner && npm version 1.0.0 && npm pack && npm publish && cd ../..",
     "watch": "ng build ngx-schedule-planner --watch --configuration development",
     "test": "ng test"
   },
