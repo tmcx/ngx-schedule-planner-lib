@@ -157,7 +157,10 @@ export function calculateLeftMinutes(
   const { hrFrom, hrTo } = interval;
   let copyBaseDate = moment(baseDate);
   let ignoreMins = 0;
-  while (copyBaseDate.date() < moment(actStartDate).date()) {
+  while (
+    copyBaseDate.year() + copyBaseDate.dayOfYear() <
+    moment(actStartDate).year() + moment(actStartDate).dayOfYear()
+  ) {
     ignoreMins += copyBaseDate
       .clone()
       .set({ hour: hrFrom })
