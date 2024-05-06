@@ -296,13 +296,31 @@ $image-width: 40px;
     border-radius: 5px;
     display: none;
     z-index: 3;
-    top: 75%;
-    left: 0;
     padding: 5px;
     background: #ffffff;
     box-shadow: 0px 0px 2px 1px #b7b7b769;
     width: 300px;
     grid-gap: 5px 0;
+
+    &.zone-a {
+      top: 75%;
+      left: 0;
+    }
+
+    &.zone-b {
+      top: 75%;
+      right: calc(100% - 5px);
+    }
+
+    &.zone-c {
+      bottom: 75%;
+      left: 0;
+    }
+
+    &.zone-d {
+      bottom: 75%;
+      right: calc(100% - 5px);
+    }
 
     * {
       color: #000000de;

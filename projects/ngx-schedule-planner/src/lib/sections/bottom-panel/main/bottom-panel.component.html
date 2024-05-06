@@ -45,7 +45,7 @@
       [ngStyle]="activity.style"
       (click)="clickOnActivity(activity)">
         <section class="content" [innerHTML]="activity.htmlContent | safeHtml"></section>
-        <section class="content-details">
+        <section class="content-details" [class]="activity.presentation.zone">
           <h2>{{activity.name}}</h2>
           <section>
             <b>From:</b> {{activity.presentation.startDate}} <b>To:</b> {{activity.presentation.endDate}} <br>

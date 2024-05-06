@@ -36,6 +36,7 @@ export interface IActivity {
     startDate: string;
     endDate: string;
     duration: string;
+    zone: string;
   };
   repeat: string[];
   tags: ITag[];

@@ -102,3 +102,13 @@ export function format(
 export function duration(startDate: Date, endDate: Date) {
   return moment.duration(moment(endDate).diff(startDate)).humanize();
 }
+
+export function middleDate(startDate: Date, endDate: Date) {
+  const mStartDate = moment(startDate);
+  const mEndDate = moment(endDate);
+  const diff = mEndDate.diff(mStartDate);
+  return mStartDate
+    .clone()
+    .add(diff / 2)
+    .toDate();
+}

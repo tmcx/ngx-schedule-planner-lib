@@ -84,6 +84,7 @@ export function convertToCalendarContent(
                 startDate: format(actStartDate),
                 endDate: format(actEndDate),
                 duration: strDuration,
+                zone: '',
               },
             };
           })
@@ -107,6 +108,7 @@ export function convertToCalendarContent(
                   startDate: format(actStartDate),
                   endDate: format(actEndDate),
                   duration: strDuration,
+                  zone: '',
                 },
               };
             }),

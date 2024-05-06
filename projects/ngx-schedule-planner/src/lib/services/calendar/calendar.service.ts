@@ -14,7 +14,7 @@ import {
   ICalendarServiceEvents,
   SortDirection,
 } from './calendar.interface';
-import { endOf, setDate, startOf } from '../../utils/moment';
+import { endOf, middleDate, setDate, startOf } from '../../utils/moment';
 import { ActivityHTML } from '../../utils/classes/activity-html';
 import { ISelectedRange } from '../../sections/bottom-panel/main/bottom-panel.interface';
 import {
@@ -274,5 +274,25 @@ export class CalendarService {
       return 0;
     };
     this.content.sort(sortFunction);
+
+    this.content.forEach((rowsContent, rowContentIndex) => {
+      rowsContent.current.forEach((rowContent) => {
+        rowContent.rows.forEach((row) => {
+          row.activities.forEach((activity) => {
+            const mDate = middleDate(
+              this.config.interval.global.startDate,
+              this.config.interval.global.endDate
+            );
+            if (rowContentIndex >= this.content.length - 2) {
+              activity.presentation.zone =
+                'zone-' + (activity.endDate > mDate ? 'd' : 'c');
+            } else {
+              activity.presentation.zone =
+                'zone-' + (activity.endDate > mDate ? 'b' : 'a');
+            }
+          });
+        });
+      });
+    });
   }
 }
